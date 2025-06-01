@@ -7,7 +7,7 @@ from typing import List, Union
 
 
 class ThemeManager:
-    """ThemeManager"""
+    """ThemeManager , a class to manage themes for PygameUI widgets."""
 
     theme: dict = {}  # contains all the theme data
     _built_in_themes: List[str] = ["light-blue", "dark-blue"]
@@ -15,12 +15,17 @@ class ThemeManager:
 
     @property
     def button(self) -> dict:
-        """font"""
+        """Get the button theme."""
         return ThemeManager.theme["button"]
+
+    @property
+    def themename(self) -> dict:
+        """Get the Name of Current theme."""
+        return ThemeManager._currently_loaded_theme
 
     @classmethod
     def load_theme(cls, theme_name_or_path: str):
-        """load_theme"""
+        """Load a theme by name or path."""
         script_directory = os.path.dirname(os.path.abspath(__file__))
 
         if theme_name_or_path in cls._built_in_themes:
@@ -39,10 +44,10 @@ class ThemeManager:
 
     @classmethod
     def save_theme(cls):
-        """save_theme"""
+        """Save the currently loaded theme."""
         if cls._currently_loaded_theme is not None:
             if cls._currently_loaded_theme not in cls._built_in_themes:
-                with open(cls._currently_loaded_theme, "r", encoding="utf-8") as f:
+                with open(cls._currently_loaded_theme, "w", encoding="utf-8") as f:
                     json.dump(cls.theme, f, indent=2)
             else:
                 raise ValueError(

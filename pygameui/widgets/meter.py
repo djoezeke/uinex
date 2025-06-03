@@ -1,0 +1,4 @@
+"""PygameUi Meter"""
+
+
+class Meter: ...

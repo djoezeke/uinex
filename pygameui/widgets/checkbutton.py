@@ -1,0 +1,4 @@
+"""PygameUi CheckButton"""
+
+
+class CheckButton: ...

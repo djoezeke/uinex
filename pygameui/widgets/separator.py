@@ -1,0 +1,4 @@
+"""PygameUi Separator"""
+
+
+class Separator: ...

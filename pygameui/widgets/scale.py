@@ -1,0 +1,4 @@
+"""PygameUi Scale"""
+
+
+class Scale: ...

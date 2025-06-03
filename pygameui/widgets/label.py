@@ -4,9 +4,9 @@ from typing import Union, Tuple, Optional, Any
 
 import pygame
 
-from pygameui.widgets.theme.theme import ThemeManager
-from pygameui.widgets.core.widget import Widget
-from pygameui.widgets.core.mixins import HoverableMixin
+from pygameui.core.mixins import HoverableMixin
+from pygameui.theme.theme import ThemeManager
+from pygameui.core.widget import Widget
 
 __all__ = ["Label"]
 
@@ -39,7 +39,7 @@ class Label(Widget, HoverableMixin):
         background: Optional[pygame.Color] = None,
         foreground: Optional[pygame.Color] = None,
         **kwargs
-    ):
+    ) -> "Label":
         """
         **kwargs (Dict):
             Other optional keyword arguments.
@@ -228,9 +228,10 @@ class Label(Widget, HoverableMixin):
         """Update the widget's logic."""
         self._set_state_()
 
-    # endregion
+    # endregion Private
 
 
+# region Testing
 # --------------------------------------------------------------------
 # testing and demonstration stuff
 
@@ -258,3 +259,5 @@ if __name__ == "__main__":
         pygame.display.flip()
 
     pygame.quit()
+
+# endregion Testing

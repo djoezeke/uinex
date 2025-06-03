@@ -1,0 +1,4 @@
+"""PygameUi SizeGrip"""
+
+
+class SizeGrip: ...

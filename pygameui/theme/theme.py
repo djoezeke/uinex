@@ -1,4 +1,9 @@
-"""PygameUI Widgets Themes Manager"""
+"""PygameUI Widgets Themes Manager
+This module provides a ThemeManager class to manage themes for PygameUI widgets.
+
+It allows loading, saving, and accessing themes for various widgets.
+It is designed to work with JSON theme files, which define the appearance of widgets.
+"""
 
 import os
 import pathlib
@@ -29,7 +34,7 @@ class ThemeManager:
         script_directory = os.path.dirname(os.path.abspath(__file__))
 
         if theme_name_or_path in cls._built_in_themes:
-            pygameui_path = pathlib.Path(script_directory).parent.parent
+            pygameui_path = pathlib.Path(script_directory).parent
             theme_path = os.path.join(
                 pygameui_path, "assets", "themes", f"{theme_name_or_path}.json"
             )

@@ -1,0 +1,4 @@
+"""PygameUi Entry"""
+
+
+class Entry: ...

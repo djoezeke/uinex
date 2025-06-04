@@ -1,0 +1,4 @@
+"""PygameUi Progressbar"""
+
+
+class Progressbar: ...

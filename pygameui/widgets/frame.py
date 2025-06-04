@@ -1,0 +1,4 @@
+"""PygameUi Frame"""
+
+
+class Frame: ...

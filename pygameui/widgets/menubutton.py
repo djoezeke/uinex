@@ -1,0 +1,4 @@
+"""PygameUi MenuButton"""
+
+
+class MenuButton: ...

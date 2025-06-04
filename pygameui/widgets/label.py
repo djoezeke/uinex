@@ -4,20 +4,33 @@ from typing import Union, Tuple, Optional, Any
 
 import pygame
 
-from pygameui.widgets.theme.theme import ThemeManager
-from pygameui.widgets.core.widget import Widget
-from pygameui.widgets.core.mixins import HoverableMixin
+from pygameui.core.mixins import HoverableMixin
+from pygameui.theme.theme import ThemeManager
+from pygameui.core.widget import Widget
+
+__all__ = ["Label"]
 
 
 class Label(Widget, HoverableMixin):
     """
     Label with rounded corners, border, hover effect.
+
+    Usage:
+        ```python
+        label = Label(master=screen, text="My Label")
+        label.place(x=100,y=100)
+        ...
+            label.handel(event)
+            label.update()
+            label.draw()
+        ...
+        ```
     For detailed information check out the documentation.
     """
 
     def __init__(
         self,
-        master: Optional[Any] = None,
+        master: Optional[Union[Widget, pygame.Surface]] = None,
         width: int = 200,
         height: int = 40,
         text: str = "Label",
@@ -26,13 +39,16 @@ class Label(Widget, HoverableMixin):
         background: Optional[pygame.Color] = None,
         foreground: Optional[pygame.Color] = None,
         **kwargs
-    ):
+    ) -> "Label":
+        """
+        **kwargs (Dict):
+            Other optional keyword arguments.
+        """
 
         # Text
         self._text: str = text
         self._wraplenght: bool = kwargs.pop("wraplength", True)
         self._underline: bool = kwargs.pop("underline", False)
-        self._cursor: pygame.Cursor = kwargs.pop("cursor", None)
 
         # Font
         font_: pygame.Font = pygame.font.SysFont(
@@ -94,7 +110,7 @@ class Label(Widget, HoverableMixin):
         """Get Label Text"""
         return self.configure(config="text")
 
-    def set_text(self, new_text) -> None:
+    def set_text(self, new_text: str) -> None:
         """Set Label Text"""
         return self.configure(config=None, **{"text": new_text})
 
@@ -137,20 +153,14 @@ class Label(Widget, HoverableMixin):
         self._text = kwargs.pop("text", self._text)
         self._font = kwargs.pop("font", self._font)
         self._image = kwargs.pop("image", self._image)
-        self._cursor = kwargs.pop("cursor", self._cursor)
         self._state = kwargs.pop("state", self._state)
         self._underline = kwargs.pop("underline", self._underline)
-
-        self._foreground = kwargs.pop("foreground", self._foreground)
-        self._background = kwargs.pop("background", self._background)
 
         self._hovercolor = kwargs.pop("hovercolor", self._hovercolor)
         self._hoverbackground = kwargs.pop("hoverbackground", self._hoverbackground)
 
         self._bordercolor = kwargs.pop("bordercolor", self._bordercolor)
-
         self._borderwidth = kwargs.get("borderwidth", self._borderwidth)
-
         self._border_radius = kwargs.get("border_radius", self._border_radius)
 
         super()._configure_set_(**kwargs)
@@ -164,17 +174,10 @@ class Label(Widget, HoverableMixin):
             return self._font
         if attribute == "image":
             return self._image
-        if attribute == "cursor":
-            return self._cursor
         if attribute == "state":
             return self._state
         if attribute == "underline":
             return self._underline
-
-        if attribute == "foreground":
-            return self._foreground
-        if attribute == "background":
-            return self._background
 
         if attribute == "hovercolor":
             return self._hovercolor
@@ -195,22 +198,27 @@ class Label(Widget, HoverableMixin):
         foreground = self._get_state_foreground_()
         background = self._get_state_background_()
 
-        self._surface.fill(background)
-
-        # Draw Rounded Rect
+        # Draw Label Background
         pygame.draw.rect(
-            self._surface,
+            self._master,
+            background,
+            self._rect,
+            border_radius=self._border_radius,
+        )
+
+        # Draw Label Border
+        pygame.draw.rect(
+            self._master,
             self._bordercolor,
             self._rect,
             self._borderwidth,
             self._border_radius,
         )
 
+        # Draw Label Text
         btn_text = self._font.render(self._text, True, foreground)
         btn_text_rect = btn_text.get_rect(center=self._rect.center)
-
-        self._surface.blit(btn_text, btn_text_rect)
-        self._master.blit(self._surface, self._rect)
+        self._master.blit(btn_text, btn_text_rect)
 
     def _handel_event_(self, event: pygame.Event, *args, **kwargs) -> None:
         """Handle an event for the widget."""
@@ -220,4 +228,36 @@ class Label(Widget, HoverableMixin):
         """Update the widget's logic."""
         self._set_state_()
 
-    # endregion
+    # endregion Private
+
+
+# region Testing
+# --------------------------------------------------------------------
+# testing and demonstration stuff
+
+if __name__ == "__main__":
+
+    pygame.init()
+    pygame.font.init()
+
+    screen = pygame.display.set_mode((480, 280))
+    pygame.display.set_caption("PygameUI Label")
+
+    label = Label(master=screen, text="My Label")
+
+    running: bool = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            label.handel(event)
+        label.update()
+
+        screen.fill((10, 30, 50))
+        label.draw()
+        pygame.display.flip()
+
+    pygame.quit()
+
+# endregion Testing

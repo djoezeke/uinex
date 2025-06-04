@@ -1,0 +1,4 @@
+"""PygameUi Floodguage"""
+
+
+class Floodguage: ...

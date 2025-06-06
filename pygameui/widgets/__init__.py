@@ -14,7 +14,7 @@ from pygameui.widgets.treeview import TreeView
 from pygameui.widgets.combobox import ComboBox
 from pygameui.widgets.separator import Separator
 from pygameui.widgets.menubutton import MenuButton
-from pygameui.widgets.floodgauge import Floodguage
+from pygameui.widgets.floodgauge import Floodgauge
 from pygameui.widgets.checkbutton import CheckButton
 from pygameui.widgets.radiobutton import RadioButton
 from pygameui.widgets.progressbar import Progressbar

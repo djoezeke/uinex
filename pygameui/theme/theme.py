@@ -1,8 +1,7 @@
-"""PygameUI Widgets Themes Manager
-This module provides a ThemeManager class to manage themes for PygameUI widgets.
+"""PygameUI ThemeManager
 
-It allows loading, saving, and accessing themes for various widgets.
-It is designed to work with JSON theme files, which define the appearance of widgets.
+Defines a modern, consistent theme for all widgets in PygameUI.
+You can customize colors, fonts, and widget-specific styles here.
 """
 
 import os
@@ -12,9 +11,141 @@ from typing import List, Union
 
 
 class ThemeManager:
-    """ThemeManager , a class to manage themes for PygameUI widgets."""
+    """
+    Central theme manager for PygameUI widgets.
+    Provides default colors, fonts, and per-widget style dictionaries.
+    """
 
-    theme: dict = {}  # contains all the theme data
+    theme = {
+        "font": {
+            "family": "Segoe UI",
+            "size": 18,
+            "bold": False,
+        },
+        "colors": {
+            "background": "#22304A",
+            "foreground": "#F5F7FA",
+            "accent": "#3A8DFF",
+            "accent2": "#339CFF",
+            "border": "#2C3E50",
+            "select": "#2C82C9",
+            "frame_bg": "#28365A",
+            "disabled": "#787878",
+            "error": "#FF4D4F",
+        },
+        "Label": {
+            "foreground": "#F5F7FA",
+            "background": "#22304A",
+        },
+        "Button": {
+            "foreground": "#F5F7FA",
+            "background": "#3A8DFF",
+            "hover": "#339CFF",
+            "active": "#2C82C9",
+            "border_radius": 8,
+            "bordercolor": "#339CFF",
+            "borderwidth": 0,
+        },
+        "Entry": {
+            "foreground": "#F5F7FA",
+            "background": "#28365A",
+            "bordercolor": "#339CFF",
+            "border_radius": 8,
+            "borderwidth": 2,
+        },
+        "CheckButton": {
+            "foreground": "#F5F7FA",
+            "background": "#22304A",
+            "check_color": "#3A8DFF",
+            "bordercolor": "#339CFF",
+        },
+        "RadioButton": {
+            "foreground": "#F5F7FA",
+            "background": "#22304A",
+            "circle_color": "#339CFF",
+            "check_color": "#3A8DFF",
+        },
+        "MenuButton": {
+            "foreground": "#F5F7FA",
+            "background": "#28365A",
+            "menu_background": "#22304A",
+            "menu_foreground": "#F5F7FA",
+            "hover": "#2C82C9",
+        },
+        "ComboBox": {
+            "foreground": "#F5F7FA",
+            "background": "#28365A",
+            "select_color": "#2C82C9",
+            "bordercolor": "#339CFF",
+        },
+        "TextBox": {
+            "foreground": "#F5F7FA",
+            "background": "#28365A",
+            "bordercolor": "#339CFF",
+            "border_radius": 8,
+            "borderwidth": 2,
+        },
+        "SpinBox": {
+            "foreground": "#F5F7FA",
+            "background": "#28365A",
+            "button_color": "#339CFF",
+            "bordercolor": "#339CFF",
+        },
+        "ListBox": {
+            "foreground": "#F5F7FA",
+            "background": "#28365A",
+            "select_color": "#2C82C9",
+            "bordercolor": "#339CFF",
+        },
+        "Progressbar": {
+            "bar_color": "#3A8DFF",
+            "background": "#22304A",
+            "border_color": "#339CFF",
+            "border_width": 2,
+            "show_value": True,
+        },
+        "Floodguage": {
+            "fill": "#3A8DFF",
+            "background": "#28365A",
+            "bordercolor": "#339CFF",
+            "border_radius": 14,
+            "borderwidth": 0,
+            "foreground": "#F5F7FA",
+        },
+        "Separator": {
+            "color": "#339CFF",
+            "thickness": 3,
+            "padding": 4,
+        },
+        "Meter": {
+            "bar_color": "#3A8DFF",
+            "background": "#28365A",
+            "border_color": "#339CFF",
+            "border_width": 2,
+            "show_value": True,
+        },
+        "Scale": {
+            "track_color": "#339CFF",
+            "handle_color": "#3A8DFF",
+            "handle_radius": 12,
+            "show_value": True,
+        },
+        "SizeGrip": {
+            "color": "#339CFF",
+            "hover_color": "#3A8DFF",
+        },
+        "TreeView": {
+            "foreground": "#F5F7FA",
+            "background": "#28365A",
+            "select_color": "#2C82C9",
+            "bordercolor": "#339CFF",
+        },
+        "Frame": {
+            "background": "#28365A",
+            "bordercolor": "#339CFF",
+        },
+    }
+
     _built_in_themes: List[str] = ["light-blue", "dark-blue"]
     _currently_loaded_theme: Union[str, None] = None
 

@@ -66,6 +66,10 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributo
 License: MIT
 """
 
+from pygameui.version import vernum
+
+__version__ = str(vernum)
+
 # Base Classes
 from pygameui.core.widget import Widget
 

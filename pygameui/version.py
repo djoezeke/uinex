@@ -1,16 +1,10 @@
-"""
-Library version.
-
-https://github.com/djoezeke/pygameui
-"""
+"""PygameUI version."""
 
 __all__ = ["Version", "vernum"]
 
 
 class Version(tuple):
-    """
-    Version class.
-    """
+    """Version class."""
 
     __slots__ = ()
     fields = "major", "minor", "patch"
@@ -30,4 +24,4 @@ class Version(tuple):
     patch = property(lambda self: self[2])
 
 
-vernum = Version(0, 0, 0)
+vernum = Version(25, 4, 17)

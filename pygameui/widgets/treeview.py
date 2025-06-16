@@ -20,6 +20,7 @@ Author: Your Name & PygameUI Contributors
 License: MIT
 """
 
+import django
 import pygame
 from pygameui.core.widget import Widget
 

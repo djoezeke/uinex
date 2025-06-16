@@ -72,11 +72,11 @@ class Label(Widget, HoverableMixin):
         width: int = 200,
         height: int = 40,
         text: str = "Label",
-        font: Optional[Union[Tuple, pygame.Font]] = None,
+        font: Optional[Union[Tuple, pygame.font.Font]] = None,
         image: Union[pygame.Surface, None] = None,
         background: Optional[pygame.Color] = None,
         foreground: Optional[pygame.Color] = None,
-        **kwargs
+        **kwargs,
     ) -> "Label":
         """
         Initialize a Label widget.
@@ -277,7 +277,7 @@ class Label(Widget, HoverableMixin):
             img_rect.left = self._rect.left + 8  # Padding from left
             self._master.blit(self._image, img_rect)
 
-    def _handle_event_(self, event: pygame.Event, *args, **kwargs) -> None:
+    def _handle_event_(self, event: pygame.event.Event, *args, **kwargs) -> None:
         """Handle an event for the widget.
 
         Args:

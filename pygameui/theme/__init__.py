@@ -1,7 +1,8 @@
 """PygameUI Widgets Themes & Manager."""
 
 from .theme import ThemeManager
-from .style import Style
+
+# from .style import Style
 
 # load default light blue theme
 try:

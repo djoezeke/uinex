@@ -64,26 +64,18 @@ class Separator(Widget):
             width = thickness  # + 2 * padding
             height = length if length is not None else 100
 
-        Widget.__init__(self, master, width, height, color, (0, 0, 0, 0), **kwargs)
+        Widget.__init__(self, master, width, height, color, **kwargs)
 
     def _perform_draw_(self, surface, *args, **kwargs):
         """Draw the separator line."""
         if self._orientation == "horizontal":
-            # y = self._rect.centery
-            # pygame.draw.line(
-            #     self._surface,
-            #     self._foreground,
-            #     (self._rect.x, self._rect.y),
-            #     (self._rect.width, self._rect.y),
-            #     self._thickness,
-            # )
-            self._surface.fill(self._foreground)
+            self._surface.fill(self._background)
             surface.blit(self._surface, self._rect)
         else:
             x = self._rect.centerx
             pygame.draw.line(
                 surface,
-                self._foreground,
+                self._background,
                 (x, self._padding),
                 (x, self._rect.height - self._padding),
                 self._thickness,

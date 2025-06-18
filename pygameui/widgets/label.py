@@ -84,6 +84,20 @@ class Label(Widget, HoverableMixin):
         Args:
             See class docstring for details.
         """
+        Widget.__init__(self, master, width, height,background, **kwargs)
+
+        custom_theme = {
+            "background": (0, 120, 215),
+            "disable_color": (0, 90, 180),
+            # Label
+            "text_color": (255, 255, 255),
+            "hover_text_color": (0, 90, 180),
+            "disable_text_color": (0, 90, 180),
+            "hover_color": (0, 120, 215), # background
+        }
+
+        self._theme.update(custom_theme)
+
         # Text
         self._text: str = text
         self._wraplength: bool = kwargs.pop("wraplength", True)
@@ -98,46 +112,6 @@ class Label(Widget, HoverableMixin):
         # Image/Icon
         self._image: pygame.Surface = image
 
-        # Shape
-        self._border_radius: int = kwargs.pop(
-            "border_radius",
-            ThemeManager.theme["Label"]["border_radius"],
-        )
-        self._borderwidth: int = kwargs.pop(
-            "borderwidth",
-            ThemeManager.theme["Label"]["borderwidth"],
-        )
-
-        # Colors
-        self._foreground: pygame.Color = pygame.Color(
-            ThemeManager.theme["Label"]["normal"]["foreground"]
-            if foreground is None
-            else foreground
-        )
-        self._background: pygame.Color = pygame.Color(
-            ThemeManager.theme["Label"]["normal"]["background"]
-            if background is None
-            else background
-        )
-        self._hovercolor: pygame.Color = kwargs.pop(
-            "hovercolor",
-            pygame.Color(ThemeManager.theme["Label"]["hovered"]["foreground"]),
-        )
-        self._hoverbackground: pygame.Color = kwargs.pop(
-            "hoverbackground",
-            pygame.Color(ThemeManager.theme["Label"]["hovered"]["background"]),
-        )
-        self._bordercolor: pygame.Color = kwargs.pop(
-            "bordercolor",
-            pygame.Color(ThemeManager.theme["Label"]["bordercolor"]),
-        )
-
-        # State
-        self._state: str = kwargs.pop("state", "normal")
-
-        Widget.__init__(
-            self, master, width, height, self._foreground, self._background, **kwargs
-        )
         HoverableMixin.__init__(self)
 
     # region Public
@@ -178,7 +152,7 @@ class Label(Widget, HoverableMixin):
         Returns:
             pygame.Color: The foreground color.
         """
-        return self._hovercolor if self._state == "hovered" else self._foreground
+        return self._theme["text_color"] if self._state == "hovered" else self._theme["text_color"]
 
     def _get_state_background_(self) -> pygame.Color:
         """Get the background color based on the current state.
@@ -186,7 +160,7 @@ class Label(Widget, HoverableMixin):
         Returns:
             pygame.Color: The background color.
         """
-        return self._hoverbackground if self._state == "hovered" else self._background
+        return self._theme["hover_color"] if self._state == "hovered" else self._theme["background"]
 
     def _configure_set_(self, **kwargs) -> None:
         """Configure method to set custom attributes.
@@ -194,18 +168,14 @@ class Label(Widget, HoverableMixin):
         Args:
             **kwargs: Attributes to set.
         """
-        self._text = kwargs.pop("text", self._text)
-        self._font = kwargs.pop("font", self._font)
-        self._image = kwargs.pop("image", self._image)
-        self._state = kwargs.pop("state", self._state)
-        self._underline = kwargs.pop("underline", self._underline)
+        self._text = self._kwarg_get(kwargs,"text",self._text)
+        self._font = self._kwarg_get(kwargs,"font",self._font)
+        self._image = self._kwarg_get(kwargs,"image",self._image)
+        self._underline = self._kwarg_get(kwargs,"underline",self._underline)
+        self._wraplength = self._kwarg_get(kwargs,"wraplength",self._wraplength)
 
-        self._hovercolor = kwargs.pop("hovercolor", self._hovercolor)
-        self._hoverbackground = kwargs.pop("hoverbackground", self._hoverbackground)
-
-        self._bordercolor = kwargs.pop("bordercolor", self._bordercolor)
-        self._borderwidth = kwargs.get("borderwidth", self._borderwidth)
-        self._border_radius = kwargs.get("border_radius", self._border_radius)
+        # hover_color
+        # text_color, disable_text_color
 
         super()._configure_set_(**kwargs)
 
@@ -218,24 +188,27 @@ class Label(Widget, HoverableMixin):
         Returns:
             Any: The value of the attribute.
         """
+
         if attribute == "text":
             return self._text
         if attribute == "font":
             return self._font
         if attribute == "image":
             return self._image
-        if attribute == "state":
-            return self._state
+        if attribute == "wraplength":
+            return self._wraplength
         if attribute == "underline":
             return self._underline
-        if attribute == "hovercolor":
-            return self._hovercolor
-        if attribute == "hoverbackground":
-            return self._hoverbackground
-        if attribute == "bordercolor":
-            return self._bordercolor
-        if attribute == "border_radius":
-            return self._border_radius
+        
+        if attribute == "text_color":
+            return
+        if attribute == "hover_text_color":
+            return 
+        if attribute == "disable_text_color":
+            return 
+
+        if attribute == "hover_color":
+            return   
 
         return super()._configure_get_(attribute)
 
@@ -259,7 +232,7 @@ class Label(Widget, HoverableMixin):
         # Draw Label Border
         pygame.draw.rect(
             self._master,
-            self._bordercolor,
+            self._theme["border_color"],
             self._rect,
             self._borderwidth,
             self._border_radius,
@@ -316,5 +289,7 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
 
-            label.handel(event)
+            label.handle(event)
         label.update()
+        label.draw()
+        pygame.display.flip()

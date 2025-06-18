@@ -60,10 +60,15 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         disabled: bool = False,
         **kwargs
     ):
+        Widget.__init__(self, master, width, height, **kwargs)
+
+        # Bind command if provided
+        if command is not None:
+            self.bind(pygame.MOUSEBUTTONDOWN, command)
+
         self._checked = checked
         self._disabled = disabled
         self._text = text
-        self._command = command
 
         # Font and theme
         font_ = pygame.font.SysFont(
@@ -77,7 +82,6 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         )
         height = kwargs.pop("height", max(28, self._font.get_height() + 8))
 
-        Widget.__init__(self, master, width, height, **kwargs)
         HoverableMixin.__init__(self)
         ClickableMixin.__init__(self)
 
@@ -96,14 +100,6 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
     def is_checked(self) -> bool:
         """Return True if checked, else False."""
         return self._checked
-
-    def disable(self):
-        """Disable the checkbutton."""
-        self._disabled = True
-
-    def enable(self):
-        """Enable the checkbutton."""
-        self._disabled = False
 
     def _perform_draw_(self, surface: pygame.Surface, *args, **kwargs) -> None:
         """

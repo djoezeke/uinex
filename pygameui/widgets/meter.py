@@ -19,7 +19,7 @@ Example:
 Author: Your Name & PygameUI Contributors
 License: MIT
 """
-
+import math
 import pygame
 from pygameui.core.widget import Widget
 
@@ -138,8 +138,8 @@ class Meter(Widget):
                 points = [center]
                 for angle in range(start_angle, end_angle + 1, 2):
                     rad = angle * 3.14159 / 180
-                    x = center[0] + int(radius * pygame.math.cos(rad))
-                    y = center[1] + int(radius * pygame.math.sin(rad))
+                    x = center[0] + int(radius * math.cos(rad))
+                    y = center[1] + int(radius * math.sin(rad))
                     points.append((x, y))
                 if len(points) > 2:
                     pygame.draw.polygon(surface, self.bar_color, points)

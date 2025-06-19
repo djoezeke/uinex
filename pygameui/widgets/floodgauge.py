@@ -19,11 +19,12 @@ Author: Sackey Ezekiel Etrue & PygameUI Contributors
 License: MIT
 """
 
-import pygame
 from typing import Optional, Any
 
-from pygameui.theme.theme import ThemeManager
+import pygame
+
 from pygameui.core.widget import Widget
+from pygameui.core.themes import ThemeManager
 
 
 class Floodgauge(Widget):

@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pygamui"
+dynamic = ["version"]
+dependencies = ["pygame"]
+authors = [
+  { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
+  {name = "PygameUI Contributers"},
+]
+maintainers = [
+  { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
+]
+description = Create modern looking GUIs with pygame.
+long_description = A modern and customizable pygame UI-library.
+long_description_content_type = text/markdown
+readme = "README.md"
+requires-python = ">=3.9"
+keywords=[
+  "pygame", "pygameui", "game ui", "2d", "games", "development", "gui", "library"
+]
+classifiers = [
+  "Framework :: PygameUI",
+  "Development Status :: 1 - Alpha"
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Games/Entertainment",
+  "Topic :: Multimedia :: Graphics",
+  "Topic :: Software Development :: Libraries :: Application Frameworks",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: Linux",
+  "Operating System :: MacOS",
+  "Operating System :: OS Independent",
+  "Typing :: Typed",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/djoezeke/pygameui"
+Documentation = "https://github.com/djoezeke/pygameui#readme"
+Issues = "https://github.com/djoezeke/pygameui/issues"
+"Release Notes" = "https://github.com/djoezeke/pygameui/releases"
+Source = "https://github.com/djoezeke/pygameui"
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "black",
+  "isort"
+]
+docs = [
+  "sphinx",
+]
+
+[tool.setuptools]
+packages = ["pygameui", "pygameui.core", "pygameui.widget", "pygameui.utils"]
+
+[tool.setuptools.packages.find]
+where="."
+exclude=['test',]
+include=["pygameui", "pygameui.core", "pygameui.widget", "pygameui.utils"]
+
+[tool.setuptools.package-data]
+"pygameui.assets.themes" = ["*.json"]
+"pygameui.assets" = ["**/*"]
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+
+[tool.isort]
+profile = "black"
+line-length = 120
+known_first_party = ["pygameui"]
+skip_glob = "**/__init__.py"
+
+[tool.setuptools.dynamic]
+version = {attr = "pygameui.__version__"}

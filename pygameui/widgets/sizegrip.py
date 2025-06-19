@@ -18,7 +18,9 @@ License: MIT
 """
 
 import pygame
+
 from pygameui.core.widget import Widget
+from pygameui.core.themes import ThemeManager
 
 __all__ = ["SizeGrip"]
 

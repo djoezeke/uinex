@@ -74,7 +74,7 @@ __version__ = str(vernum)
 from pygameui.core.widget import Widget
 
 # Theme/Manager Classes
-from pygameui.theme.theme import ThemeManager
+from pygameui.core.themes import ThemeManager
 
 # Widget Classes
 from pygameui.widgets.frame import Frame
@@ -125,12 +125,11 @@ def _apply_theme_to_all_widgets():
         TextBox,
         SpinBox,
         ListBox,
-        SizeGrip,          TreeView,
-      ComboBox,
-
+        SizeGrip,
+        TreeView,
+        ComboBox,
         Separator,
-                        MenuButton,
-
+        MenuButton,
         Floodgauge,
         CheckButton,
         RadioButton,

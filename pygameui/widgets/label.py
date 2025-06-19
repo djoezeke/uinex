@@ -18,11 +18,12 @@ License: MIT
 """
 
 from typing import Union, Tuple, Optional, Any
+
 import pygame
 
-from pygameui.core.mixins import HoverableMixin
-from pygameui.theme.theme import ThemeManager
 from pygameui.core.widget import Widget
+from pygameui.core.themes import ThemeManager
+from pygameui.core.mixins import HoverableMixin
 
 __all__ = ["Label"]
 

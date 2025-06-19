@@ -25,11 +25,12 @@ Author: Sackey Ezekiel Etrue & PygameUI Contributors
 License: MIT
 """
 
-import pygame
 from typing import Optional, Callable, Any
 
-from pygameui.theme.theme import ThemeManager
+import pygame
+
 from pygameui.core.widget import Widget
+from pygameui.core.themes import ThemeManager
 from pygameui.core.mixins import HoverableMixin, ClickableMixin
 
 

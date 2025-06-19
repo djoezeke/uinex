@@ -20,9 +20,9 @@ Author: Your Name & PygameUI Contributors
 License: MIT
 """
 
-import django
 import pygame
 from pygameui.core.widget import Widget
+from pygameui.core.themes import ThemeManager
 
 __all__ = ["TreeView"]
 

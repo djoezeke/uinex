@@ -10,12 +10,13 @@ def readme():
             return f.read()
     return ""
 
-
 setup(
     name="pygameui",
     version=f"{vernum}",
     author="Sackey Ezekiel Etrue",
     author_email="sackeyetrue@gmail.com",
+    maintainer="Sackey Ezekiel Etrue",
+    maintainer_email="sackeyetrue@gmail.com",
     description="Python Game Development User Interface (Pygame-GUI)",
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -28,18 +29,23 @@ setup(
         "Source": "https://github.com/djoezeke/pygameui",
     },
     license="MIT",
-    packages=find_packages(where="."),
+    packages=find_packages(
+        where=".",
+        exclude=['test',],
+        include=["pygameui", "pygameui.core", "pygameui.widget", "pygameui.utils"]
+        ),
     py_modules=["pygameui"],
-    include_package_data=True,
     install_requires=[
         "pygame>=2.0.0",
     ],
     extras_require={
-        "dev": ["pytest", "colorama"],
+        "dev": ["pytest", "black","isort"],
         "docs": ["sphinx"],
     },
     python_requires=">=3.9",
-    keywords="game pygame gui development pygameui",
+    keywords=[
+        "pygame", "pygameui", "game ui", "2d", "games", "development", "gui", "library"
+    ],
     platforms=["any"],
     classifiers=[
         "Development Status :: 1 - Beta",
@@ -60,5 +66,11 @@ setup(
         "Topic :: Software Development :: Libraries :: pygame",
         "Typing :: Typed",
     ],
+    setup_requires=['setuptools', "wheel"],
+    options={'bdist_wheel': {'universal': False}},
+    entry_points={
+        'pyinstaller40': ['hook-dirs = pygameui.hook:get_hook_dirs'],
+    },
     zip_safe=False,
+    include_package_data=True,
 )

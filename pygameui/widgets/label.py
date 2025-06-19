@@ -84,7 +84,7 @@ class Label(Widget, HoverableMixin):
         Args:
             See class docstring for details.
         """
-        Widget.__init__(self, master, width, height,background, **kwargs)
+        Widget.__init__(self, master, width, height, **kwargs)
 
         custom_theme = {
             "background": (0, 120, 215),
@@ -281,7 +281,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((480, 280))
     pygame.display.set_caption("PygameUI Label")
 
-    label = Label(master=screen, text="My Label")
+    label = Label(master=screen, text="My Label",tooltip="Say hello")
 
     running: bool = True
     while running:

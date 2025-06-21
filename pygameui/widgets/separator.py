@@ -18,7 +18,6 @@ License: MIT
 import pygame
 
 from pygameui.core.widget import Widget
-from pygameui.core.themes import ThemeManager
 
 __all__ = ["Separator"]
 
@@ -50,14 +49,13 @@ class Separator(Widget):
         orientation="horizontal",
         color=(10, 10, 10),
         thickness=2,
-        padding=40,
         length=None,
         **kwargs,
     ):
         self._orientation = orientation
         self._thickness = thickness
-        self._padding = padding
         self._length = length
+        self._color = color
 
         if orientation == "horizontal":
             width = length if length is not None else 100
@@ -66,20 +64,20 @@ class Separator(Widget):
             width = thickness  # + 2 * padding
             height = length if length is not None else 100
 
-        Widget.__init__(self, master, width, height, color, **kwargs)
+        Widget.__init__(self, master, width, height, **kwargs)
 
     def _perform_draw_(self, surface, *args, **kwargs):
         """Draw the separator line."""
         if self._orientation == "horizontal":
-            self._surface.fill(self._background)
+            self._surface.fill(self._color)
             surface.blit(self._surface, self._rect)
         else:
             x = self._rect.centerx
             pygame.draw.line(
                 surface,
-                self._background,
-                (x, self._padding),
-                (x, self._rect.height - self._padding),
+                self._color,
+                (x, self._rect.x),
+                (x, self._rect.height - self._rect.y),
                 self._thickness,
             )
 

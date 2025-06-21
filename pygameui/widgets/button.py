@@ -103,10 +103,10 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         self._state:str = state
         self._disabled:bool = disabled
 
-        self._text:str = text
-        self._wraplenght:bool = kwargs.pop("wraplenght", True)
-        self._underline:bool = kwargs.pop("underline", False)
-        self._image:pygame.Surface = image
+        self._text: str = text
+        self._wraplenght: bool = kwargs.pop("wraplenght", True)
+        self._underline: bool = kwargs.pop("underline", False)
+        self._image: pygame.Surface = image
 
         # Font
         font_: pygame.Font = pygame.font.SysFont(

@@ -13,7 +13,6 @@ Features:
 Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributors
 License: MIT
 """
-import timer
 from abc import abstractmethod
 from inspect import signature
 from typing import Union, Optional, Any,Callable

@@ -61,7 +61,7 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         disabled: bool = False,
         **kwargs
     ):
-        Widget.__init__(self, master,100 , height, **kwargs)
+        Widget.__init__(self, master, **kwargs)
         # NOTE: `width` and `height` are handled in kwargs, so we don't set them here.
 
         # Bind command if provided
@@ -91,8 +91,8 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         """Toggle the checked state and call the command callback if set."""
         if not self._disabled:
             self._checked = not self._checked
-            if self._command:
-                self._command(self._checked)
+            # if self._command:
+            #     self._command(self._checked)
 
     def set_checked(self, value: bool):
         """Set the checked state."""

@@ -116,6 +116,7 @@ def _apply_theme_to_all_widgets():
     This ensures all widgets update their appearance when the theme changes.
     """
     widget_classes = [
+        Widget,
         Frame,
         Label,
         Entry,

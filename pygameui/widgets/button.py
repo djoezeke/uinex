@@ -86,7 +86,7 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         hovercolor: Optional[pygame.Color] = None,
         border_color: Optional[pygame.Color] = None,
         command: Optional[Union[Callable[[], Any], None]] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         Initialize a Button widget.
@@ -100,8 +100,8 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         if command is not None:
             self.bind(pygame.MOUSEBUTTONDOWN, command)
 
-        self._state:str = state
-        self._disabled:bool = disabled
+        self._state: str = state
+        self._disabled: bool = disabled
 
         self._text: str = text
         self._wraplenght: bool = kwargs.pop("wraplenght", True)
@@ -127,10 +127,18 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         # text_color
         # hovercolor
         # border_color
-        
+
         DoubleClickMixin.__init__(self)
         ClickableMixin.__init__(self)
         HoverableMixin.__init__(self)
+
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, _text):
+        self._text = _text
 
     # region Public
 
@@ -199,11 +207,11 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         Args:
             **kwargs: Attributes to set.
         """
-        self._text = self._kwarg_get(kwargs,"text",self._text)
-        self._font = self._kwarg_get(kwargs,"font",self._font)
-        self._image = self._kwarg_get(kwargs,"image",self._image)
-        self._underline = self._kwarg_get(kwargs,"underline",self._underline)
-        self._wraplength = self._kwarg_get(kwargs,"wraplength",self._wraplength)
+        self._text = self._kwarg_get(kwargs, "text", self._text)
+        self._font = self._kwarg_get(kwargs, "font", self._font)
+        self._image = self._kwarg_get(kwargs, "image", self._image)
+        self._underline = self._kwarg_get(kwargs, "underline", self._underline)
+        self._wraplength = self._kwarg_get(kwargs, "wraplength", self._wraplength)
 
         # hover_color, select_color
         # text_color, disable_text_color, select_text_color
@@ -245,7 +253,6 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
 
         return super()._configure_get_(attribute)
 
-
     def _perform_draw_(self, surface: pygame.Surface, *args, **kwargs) -> None:
         """
         Draw the button widget on the given surface with a modern look.
@@ -282,9 +289,7 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
 
         # Draw border (rounded)
         if self._borderwidth > 0:
-            pygame.draw.rect(
-                surface, bordercolor, self._rect, self._borderwidth, self._border_radius
-            )
+            pygame.draw.rect(surface, bordercolor, self._rect, self._borderwidth, self._border_radius)
 
         # Draw optional image (left of text)
         text_offset_x = 0
@@ -352,7 +357,7 @@ if __name__ == "__main__":
     pygame.display.set_caption("PygameUI Label")
     clock = pygame.time.Clock()
 
-    button = Button(master=screen, text="Click Me",tooltip="Say hello")
+    button = Button(master=screen, text="Click Me", tooltip="Say hello")
     button.pack()
 
     running: bool = True

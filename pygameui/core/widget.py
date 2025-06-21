@@ -13,9 +13,10 @@ Features:
 Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributors
 License: MIT
 """
+
 from abc import abstractmethod
 from inspect import signature
-from typing import Union, Optional, Any,Callable
+from typing import Union, Optional, Any, Callable
 from pygame.event import Event
 from pygame import Surface
 import pygame
@@ -24,6 +25,7 @@ from pygameui.core.geometry import Grid, Pack, Place
 from pygameui.core.exceptions import PygameuiError
 
 __all__ = ["Widget"]
+
 
 class Widget(Place, Grid, Pack):
     """
@@ -77,9 +79,10 @@ class Widget(Place, Grid, Pack):
             "disable_color": (0, 90, 180),
             "border_color": (0, 90, 180),
         }
+
         self._theme.update(custom_theme)
 
-        if kwargs.pop("theme",None) is not None:
+        if kwargs.pop("theme", None) is not None:
             self._theme.update(kwargs.pop("theme"))
 
         # Command/event handler registry
@@ -93,19 +96,19 @@ class Widget(Place, Grid, Pack):
         self._mouse_enabled = True  # Enable/Accept Mouse interaction
 
         # State, interactivity and Visibility
-        self._state:str = "normal"  # Use set_state() to modify this status
-        self._disabled:bool = False  # Use enable() or disable() to modify this status
-        self._focused:bool = False  # Use focus() or unfocus() to modify this status
-        self._visible:bool = True  # Use show() or hide() to modify this status
+        self._state: str = "normal"  # Use set_state() to modify this status
+        self._disabled: bool = False  # Use enable() or disable() to modify this status
+        self._focused: bool = False  # Use focus() or unfocus() to modify this status
+        self._visible: bool = True  # Use show() or hide() to modify this status
 
-        self._dirty:bool = True  # Set if widget need to be redrawn or not
+        self._dirty: bool = True  # Set if widget need to be redrawn or not
 
         # Widget Attributes
-        self._height:int = height
-        self._width:int = width
+        self._height: int = height
+        self._width: int = width
 
         # Border color, radius and width
-        self._border_position:str = 'none'
+        self._border_position: str = "none"
 
         self._border_radius: int = kwargs.pop("border_radius", 0)
         self._border_radius: Union[dict, int] = kwargs.pop("border_radius", 0)
@@ -116,21 +119,21 @@ class Widget(Place, Grid, Pack):
             except KeyError:
                 self._border_radius = 0
         if isinstance(self._border_radius, int):
-                self._border_radius = self._border_radius
-                
+            self._border_radius = self._border_radius
+
         self._borderwidth: Union[dict, int] = kwargs.pop("borderwidth", 0)
         if isinstance(self._borderwidth, dict):
             try:
                 for side in ["left", "right", "top", "bottom"]:
                     self._borderwidth[side] = int(self._borderwidth.get(side, 0))
             except KeyError:
-                self._borderwidth = 0        
+                self._borderwidth = 0
         if isinstance(self._borderwidth, int):
             self._borderwidth = self._borderwidth
 
         # Shadow support
         self._shadow: bool = kwargs.pop("shadow", False)
-        self._shadow_width:int = kwargs.pop("shadow_width", 0)
+        self._shadow_width: int = kwargs.pop("shadow_width", 0)
         self._shadowoffset: tuple[int, int] = kwargs.pop("shadowoffset", (5, 5))
         if self._shadow:
             self._shadowcolor: pygame.Color = kwargs.pop("shadowcolor", (0, 0, 0))
@@ -140,13 +143,13 @@ class Widget(Place, Grid, Pack):
         # Surface and rect setup
         self._surface = pygame.Surface((width, height), pygame.SRCALPHA, 32)
         self._rect: pygame.Rect = self._surface.get_rect(topleft=(0, 0))
-        self._blendmode:int = pygame.BLEND_RGBA_ADD
+        self._blendmode: int = pygame.BLEND_RGBA_ADD
         self.blit_data = [self._surface, self._rect, None, self._blendmode]
 
         # Widget transforms
-        self._angle:int = kwargs.pop("angle", 0)  # Rotation angle (degrees)
-        self._flipx:bool = kwargs.pop("flipx", False)
-        self._flipy:bool = kwargs.pop("flip", False)
+        self._angle: int = kwargs.pop("angle", 0)  # Rotation angle (degrees)
+        self._flipx: bool = kwargs.pop("flipx", False)
+        self._flipy: bool = kwargs.pop("flip", False)
 
         # Master Surface and Rect
         if isinstance(master, pygame.Rect):
@@ -163,18 +166,14 @@ class Widget(Place, Grid, Pack):
             self._master_rect: pygame.Rect = None
 
         # Widget Tooltip
-        self._tooltip:str = self._kwarg_get(kwargs,"tooltip","")
-        self._show_tooltip:bool = False
-        self._tooltip_delay:float = kwargs.pop("tooltip_delay", 0.5)  # seconds
-        self._tooltip_timer:float = 0.0
+        self._tooltip: str = self._kwarg_get(kwargs, "tooltip", "")
+        self._show_tooltip: bool = False
+        self._tooltip_delay: float = kwargs.pop("tooltip_delay", 0.5)  # seconds
+        self._tooltip_timer: float = 0.0
 
         # Surface and rect setup
-        self._surface = pygame.Surface(
-            (width, height), pygame.SRCALPHA, 32
-        )  # Surface of the widget
-        self._rect: pygame.Rect = self._surface.get_rect(
-            topleft=(0, 0)
-        )  # To position the widget
+        self._surface = pygame.Surface((width, height), pygame.SRCALPHA, 32)  # Surface of the widget
+        self._rect: pygame.Rect = self._surface.get_rect(topleft=(0, 0))  # To position the widget
 
         # Blending and Blitting Data
         self._blendmode: int = pygame.BLEND_RGBA_ADD
@@ -222,7 +221,6 @@ class Widget(Place, Grid, Pack):
         :return: Raises copy exception
         """
         raise Exception("Widget class cannot be deep-copied")
-
 
     # region Properties
 
@@ -324,7 +322,6 @@ class Widget(Place, Grid, Pack):
 
     # endregion Properties
 
-        
     # region Abstracts
 
     @abstractmethod
@@ -358,7 +355,7 @@ class Widget(Place, Grid, Pack):
         raise NotImplementedError("Subclasses should implement this method.")
 
     # endregion Abstracts
-    
+
     @classmethod
     def set_theme(cls, theme_dict):
         """Set the widget's theme."""
@@ -373,13 +370,11 @@ class Widget(Place, Grid, Pack):
         Args:
             surface (pygame.Surface, optional): The surface to draw on.
         """
-        if self._visible:# and self._dirty :
+        if self._visible:  # and self._dirty :
             if self.__class__.__name__ == "Widget":
                 if self._master is not None:
                     surface = self._master
-                pygame.draw.rect(
-                    surface, self._background, self._rect.inflate(-20, -20), border_radius=1
-                )
+                pygame.draw.rect(surface, self._theme["background"], self._rect.inflate(-20, -20), border_radius=1)
                 self._dirty = False
             else:
                 if self._master is not None:
@@ -433,7 +428,6 @@ class Widget(Place, Grid, Pack):
             return self._configure_get_(config)
         return self._configure_set_(**kwargs)
 
-
     def bind(self, event: int, function: Optional[Callable] = None):
         """
         Bind a function to a button event.
@@ -452,9 +446,7 @@ class Widget(Place, Grid, Pack):
             elif num_params == 0:
                 self._handler[event] = lambda _: function()
             else:
-                raise ValueError(
-                    "Command function signatures can have 0 or 1 parameter."
-                )
+                raise ValueError("Command function signatures can have 0 or 1 parameter.")
         else:
             raise TypeError("Command function must be callable")
 
@@ -466,7 +458,7 @@ class Widget(Place, Grid, Pack):
             event (int): Pygame event type.
         """
         return self._handler.pop(event, None)
-            
+
     def post(self, event: int, data: Optional[dict[str, Any]] = None):
         """
         Widget to trigger/post an event.
@@ -480,7 +472,7 @@ class Widget(Place, Grid, Pack):
         data.update({"widget": self})
         pygame.event.post(pygame.event.Event(event, data))
 
-    def after(self,ms: int,function:Union[Callable,str],*args) -> str:
+    def after(self, ms: int, function: Union[Callable, str], *args) -> str:
         """
         Call function once after given time.
 
@@ -490,12 +482,12 @@ class Widget(Place, Grid, Pack):
             **args: parameters to function call.
         """
         # TODO : timming
-        if isinstance(function,str):
-            return self.call(function,*args)
-        if isinstance(function,Callable):
+        if isinstance(function, str):
+            return self.call(function, *args)
+        if isinstance(function, Callable):
             return function(*args)
-        
-    def createcommand(self,func_name:str,function:Callable) -> str:
+
+    def createcommand(self, func_name: str, function: Callable) -> str:
         """
         Add a function from a Widget Commands.
 
@@ -508,7 +500,7 @@ class Widget(Place, Grid, Pack):
         else:
             raise TypeError("Command function must be callable")
 
-    def deletecommand(self,func_name:str) -> str:
+    def deletecommand(self, func_name: str) -> str:
         """
         Remove a function from a Widget Commands.
 
@@ -517,8 +509,7 @@ class Widget(Place, Grid, Pack):
         """
         return self._commands.pop(func_name, None)
 
-
-    def call(self,func_name:str,*args) -> str:
+    def call(self, func_name: str, *args) -> str:
         """
         Call a Commands.
 
@@ -541,7 +532,7 @@ class Widget(Place, Grid, Pack):
             surface (pygame.Surface, optional): The surface to draw on.
         """
 
-        fps = kwargs.get('fps', 60)
+        fps = kwargs.get("fps", 60)
 
         if surface is None:
             surface = self._surface
@@ -563,7 +554,7 @@ class Widget(Place, Grid, Pack):
             self.update(delta)
             self.draw()
             pygame.display.flip()
-        
+
     def hide(self) -> None:
         """Hide the widget (set visibility to False)."""
         self._set_visible_(False)
@@ -591,7 +582,6 @@ class Widget(Place, Grid, Pack):
     def show(self) -> None:
         """Show the widget (set visibility to True)."""
         self._set_visible_(True)
-
 
     def set_tooltip(self, text: str, delay: float = 0.5):
         """Set the tooltip text and optional delay (in seconds)."""
@@ -624,6 +614,11 @@ class Widget(Place, Grid, Pack):
             self._master.widgets.remove(self)
             self._master.widgets.insert(0, self)
 
+    def resize(self, width, height):
+        """Resize this widget"""
+        self._width = width
+        self._height = height
+
     # endregion
 
     # region Private
@@ -636,40 +631,40 @@ class Widget(Place, Grid, Pack):
             **kwargs: Configuration options to set.
         """
 
-        self._height = self._kwarg_get(kwargs,"height",self._height)
-        self._width = self._kwarg_get(kwargs,"height",self._width)
-        self._cursor = self._kwarg_get(kwargs,"cursor",self._cursor)
-        self._theme = self._kwarg_get(kwargs,"cursor",self._theme)
-        self._state = self._kwarg_get(kwargs,"state",self._state)
-        self._disabled = self._kwarg_get(kwargs,"disabled",self._disabled)
-        self._focused = self._kwarg_get(kwargs,"focused",self._focused)
-        self._visible = self._kwarg_get(kwargs,"visible",self._visible)
-        self._dirty = self._kwarg_get(kwargs,"dirty",self._dirty)
+        self._height = self._kwarg_get(kwargs, "height", self._height)
+        self._width = self._kwarg_get(kwargs, "height", self._width)
+        self._cursor = self._kwarg_get(kwargs, "cursor", self._cursor)
+        self._theme = self._kwarg_get(kwargs, "cursor", self._theme)
+        self._state = self._kwarg_get(kwargs, "state", self._state)
+        self._disabled = self._kwarg_get(kwargs, "disabled", self._disabled)
+        self._focused = self._kwarg_get(kwargs, "focused", self._focused)
+        self._visible = self._kwarg_get(kwargs, "visible", self._visible)
+        self._dirty = self._kwarg_get(kwargs, "dirty", self._dirty)
 
-        self._shadow = self._kwarg_get(kwargs,"shadow",self._shadow)
-        self._shadow_width = self._kwarg_get(kwargs,"shadow_width",self._shadow_width)
-        self._shadowoffset = self._kwarg_get(kwargs,"shadowoffset",self._shadowoffset)
-        self._shadowcolor = self._kwarg_get(kwargs,"shadowcolor",self._shadowcolor)
+        self._shadow = self._kwarg_get(kwargs, "shadow", self._shadow)
+        self._shadow_width = self._kwarg_get(kwargs, "shadow_width", self._shadow_width)
+        self._shadowoffset = self._kwarg_get(kwargs, "shadowoffset", self._shadowoffset)
+        self._shadowcolor = self._kwarg_get(kwargs, "shadowcolor", self._shadowcolor)
 
-        self._surface = self._kwarg_get(kwargs,"surface",self._surface)
-        self._rect = self._kwarg_get(kwargs,"rect",self._rect)
+        self._surface = self._kwarg_get(kwargs, "surface", self._surface)
+        self._rect = self._kwarg_get(kwargs, "rect", self._rect)
 
-        self._angle = self._kwarg_get(kwargs,"angle",self._angle)
-        self._flipx = self._kwarg_get(kwargs,"flipx",self._flipx)
-        self._flipy = self._kwarg_get(kwargs,"flipy",self._flipy)
+        self._angle = self._kwarg_get(kwargs, "angle", self._angle)
+        self._flipx = self._kwarg_get(kwargs, "flipx", self._flipx)
+        self._flipy = self._kwarg_get(kwargs, "flipy", self._flipy)
 
-        self._master = self._kwarg_get(kwargs,"master",self._master)
-        self._master_rect = self._kwarg_get(kwargs,"master_rect",self._master_rect)
+        self._master = self._kwarg_get(kwargs, "master", self._master)
+        self._master_rect = self._kwarg_get(kwargs, "master_rect", self._master_rect)
 
-        self._tooltip = self._kwarg_get(kwargs,"shadow",self._shadow)
-        self._show_tooltip = self._kwarg_get(kwargs,"show_tooltip",self._show_tooltip)
-        self._tooltip_delay = self._kwarg_get(kwargs,"tooltip_delay",self._tooltip_delay)
-        self._tooltip_timer = self._kwarg_get(kwargs,"tooltip_timer",self._tooltip_timer)
+        self._tooltip = self._kwarg_get(kwargs, "shadow", self._shadow)
+        self._show_tooltip = self._kwarg_get(kwargs, "show_tooltip", self._show_tooltip)
+        self._tooltip_delay = self._kwarg_get(kwargs, "tooltip_delay", self._tooltip_delay)
+        self._tooltip_timer = self._kwarg_get(kwargs, "tooltip_timer", self._tooltip_timer)
 
-        self._border_radius = self._kwarg_get(kwargs,"border_radius",self._border_radius)
-        self._borderwidth = self._kwarg_get(kwargs,"borderwidth",self._borderwidth)
-        self._bordermode = self._kwarg_get(kwargs,"bordermode",self._bordermode)
-        self._border_position = self._kwarg_get(kwargs,"border_position",self._border_position)
+        self._border_radius = self._kwarg_get(kwargs, "border_radius", self._border_radius)
+        self._borderwidth = self._kwarg_get(kwargs, "borderwidth", self._borderwidth)
+        self._bordermode = self._kwarg_get(kwargs, "bordermode", self._bordermode)
+        self._border_position = self._kwarg_get(kwargs, "border_position", self._border_position)
 
         # background
         # disable_color
@@ -742,15 +737,15 @@ class Widget(Place, Grid, Pack):
             return self._bordermode
         if attribute == "border_position":
             return self._border_position
-        
+
         if attribute == "background":
             return
         if attribute == "disable_color":
-            return 
+            return
         if attribute == "shadowcolor":
             return
         if attribute == "bordercolor":
-            return 
+            return
 
         return None
 
@@ -789,7 +784,6 @@ class Widget(Place, Grid, Pack):
     def _disable_(self):
         """Run by subclass after disable()"""
 
-
     def _set_theme_color_(self):
         """
         Set the widget's theme color.
@@ -804,11 +798,8 @@ class Widget(Place, Grid, Pack):
         Can be overridden by subclasses.
         """
 
-    def _kwarg_get(self,
-        params: dict[str, Any],
-        key: str,
-        default: Any = None,
-        value_type: Optional[str] = None
+    def _kwarg_get(
+        self, params: dict[str, Any], key: str, default: Any = None, value_type: Optional[str] = None
     ) -> Any:
         """
         Return a value from a dictionary.
@@ -817,7 +808,7 @@ class Widget(Place, Grid, Pack):
             -   color       – Color or :py:class:`pygame.Color`
             -   border      – Border
             -   rect        – Color or :py:class:`pygame.Rect`
-            -   surface     – Color :py:class:`pygame.Surface` 
+            -   surface     – Color :py:class:`pygame.Surface`
 
         :param params: Parameters dictionary
         :param key: Key to look for
@@ -826,58 +817,58 @@ class Widget(Place, Grid, Pack):
         :return: The value associated to the key
         """
 
-        if not isinstance(params,dict):
+        if not isinstance(params, dict):
             raise Exception("Params must be of type dict.")
-        
-        if not isinstance(key,str):
+
+        if not isinstance(key, str):
             raise Exception("Key must be of type str.")
-        
+
         value = params.pop(key, default)
 
         if value_type is not None:
-            if isinstance(value_type,str) :
-                    if value_type == "color":
-                        if isinstance(value,pygame.Color):
+            if isinstance(value_type, str):
+                if value_type == "color":
+                    if isinstance(value, pygame.Color):
+                        return value
+                    if isinstance(value, str):
+                        return pygame.Color(value)
+                    raise Exception(f"Value Cant be Of type {value_type}")
+                if value_type == "surface":
+                    if isinstance(value, pygame.Surface):
+                        return value
+                    if isinstance(value, "Widget"):
+                        return value._surface
+                    raise Exception(f"Value Cant be Of type {value_type}")
+                if value_type == "rect":
+                    if isinstance(value, pygame.Rect):
+                        return value
+                    if isinstance(value, pygame.Surface):
+                        return value.get_rect()
+                    if isinstance(value, "Widget"):
+                        return value._rect
+                    raise Exception(f"Value Cant be Of type {value_type}")
+                if value_type == "border":
+                    if isinstance(value, int):
+                        return value
+                    if isinstance(value, dict):
+                        try:
+                            for side in ["left", "right", "top", "bottom"]:
+                                value[side] = int(value.get(side))
                             return value
-                        if isinstance(value,str):
-                            return pygame.Color(value)
-                        raise Exception(f"Value Cant be Of type {value_type}") 
-                    if value_type == "surface":
-                        if isinstance(value, pygame.Surface):
+                        except KeyError:
+                            raise Exception("Invalid sides")
+                    raise Exception(f"Value Cant be Of type {value_type}")
+                if value_type == "angle":
+                    if isinstance(value, int):
+                        if value >= 0 and value <= 360:
                             return value
-                        if isinstance(value,"Widget"):
-                            return value._surface
-                        raise Exception(f"Value Cant be Of type {value_type}") 
-                    if value_type == "rect":
-                        if isinstance(value,pygame.Rect):
-                            return value
-                        if isinstance(value, pygame.Surface):
-                            return value.get_rect()
-                        if isinstance(value,"Widget"):
-                            return value._rect
-                        raise Exception(f"Value Cant be Of type {value_type}") 
-                    if value_type == "border":
-                        if isinstance(value,int):
-                            return value
-                        if isinstance(value, dict):
-                            try:
-                                for side in ["left", "right", "top", "bottom"]:
-                                    value[side] = int(value.get(side))
-                                return value
-                            except KeyError:
-                                raise Exception("Invalid sides")
-                        raise Exception(f"Value Cant be Of type {value_type}") 
-                    if value_type == "angle":
-                        if isinstance(value,int):
-                            if value >= 0 and value <= 360:
-                                return value
-                            raise Exception(f"Angle must range 0-360 not {value}") 
-                        raise Exception(f"Value Cant be Of type {value_type}") 
+                        raise Exception(f"Angle must range 0-360 not {value}")
+                    raise Exception(f"Value Cant be Of type {value_type}")
 
         return value
 
     def rotate(self, angle: int) -> "Widget":
-        """Rotation Widget angle (degrees ``0-360``)        """
+        """Rotation Widget angle (degrees ``0-360``)"""
         assert isinstance(angle, int)
         if angle == self._angle:
             return self

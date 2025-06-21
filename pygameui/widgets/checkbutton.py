@@ -61,7 +61,8 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         disabled: bool = False,
         **kwargs
     ):
-        Widget.__init__(self, master, width, height, **kwargs)
+        Widget.__init__(self, master,100 , height, **kwargs)
+        # NOTE: `width` and `height` are handled in kwargs, so we don't set them here.
 
         # Bind command if provided
         if command is not None:

@@ -353,7 +353,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
 
     button = Button(master=screen, text="Click Me",tooltip="Say hello")
-    button.pack(anchor)
+    button.pack()
 
     running: bool = True
     while running:

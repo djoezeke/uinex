@@ -211,7 +211,7 @@ class Widget(Place, Grid, Pack):
 
         :return: Raises copy exception
         """
-        raise Exception("Widget class cannot be copied")
+        raise PygameuiError("Widget class cannot be copied")
 
     def __deepcopy__(self, memodict: dict) -> "Widget":
         """
@@ -220,7 +220,7 @@ class Widget(Place, Grid, Pack):
         :param memodict: Memo dict
         :return: Raises copy exception
         """
-        raise Exception("Widget class cannot be deep-copied")
+        raise PygameuiError("Widget class cannot be deep-copied")
 
     # region Properties
 
@@ -428,6 +428,27 @@ class Widget(Place, Grid, Pack):
             return self._configure_get_(config)
         return self._configure_set_(**kwargs)
 
+    def setconfig(self, **kwargs):
+        """
+        Configure the options for this widget.
+
+        Args:
+            **kwargs: Sets the given configuration options.
+        """
+        return self._configure_set_(**kwargs)
+
+    def getconfig(self, config=None):
+        """
+        Get configuration options for this widget.
+
+        Args:
+            config (str): Gets the value of this config.
+
+        Returns:
+            Any: The value of the config if requested, otherwise None.
+        """
+        return self._configure_get_(config)
+
     def bind(self, event: int, function: Optional[Callable] = None):
         """
         Bind a function to a button event.
@@ -481,6 +502,7 @@ class Widget(Place, Grid, Pack):
             function (callable,str): function which shall be called.
             **args: parameters to function call.
         """
+
         # TODO : timming
         if isinstance(function, str):
             return self.call(function, *args)

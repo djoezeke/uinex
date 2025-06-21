@@ -370,4 +370,5 @@ if __name__ == "__main__":
             button.handle(event)
         button.update(delta)
         button.draw()
+
         pygame.display.flip()

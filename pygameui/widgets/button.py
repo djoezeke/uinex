@@ -322,12 +322,12 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         self._check_click(event)
 
         # If clicked/hovered/doubleclicked, call bound command if present
-        if self.clicked or self.hovered or self.doubleclicked:
-            try:
-                command = self._handler[event.type]
-                command()
-            except KeyError:
-                pass
+        # if self.clicked or self.hovered or self.doubleclicked:
+        #     try:
+        #         command = self._handler[event.type]
+        #         command()
+        #     except KeyError:
+        #         pass
 
     def _perform_update_(self, delta: float, *args, **kwargs) -> None:
         """
@@ -357,7 +357,10 @@ if __name__ == "__main__":
     pygame.display.set_caption("PygameUI Label")
     clock = pygame.time.Clock()
 
-    button = Button(master=screen, text="Click Me", tooltip="Say hello")
+    def command(hello):
+        print(f"Clicked {hello.text}")
+
+    button = Button(master=screen, text="Click Me", tooltip="Say hello", command=command)
     button.pack()
 
     running: bool = True
@@ -369,6 +372,8 @@ if __name__ == "__main__":
 
             button.handle(event)
         button.update(delta)
+
+        screen.fill("white")
         button.draw()
 
         pygame.display.flip()

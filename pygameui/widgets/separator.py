@@ -47,7 +47,7 @@ class Separator(Widget):
         self,
         master,
         orientation="horizontal",
-        color=(10, 10, 10),
+        color=(58, 141, 255),
         thickness=2,
         length=None,
         **kwargs,
@@ -59,30 +59,20 @@ class Separator(Widget):
 
         if orientation == "horizontal":
             width = length if length is not None else 100
-            height = thickness  # + 2 * padding
+            height = thickness
         else:
-            width = thickness  # + 2 * padding
+            width = thickness
             height = length if length is not None else 100
 
         Widget.__init__(self, master, width, height, **kwargs)
 
     def _perform_draw_(self, surface, *args, **kwargs):
         """Draw the separator line."""
-        if self._orientation == "horizontal":
-            self._surface.fill(self._color)
-            surface.blit(self._surface, self._rect)
-        else:
-            x = self._rect.centerx
-            pygame.draw.line(
-                surface,
-                self._color,
-                (x, self._rect.x),
-                (x, self._rect.height - self._rect.y),
-                self._thickness,
-            )
+        self._surface.fill(self._color)
+        surface.blit(self._surface, self._rect)
 
     def _handle_event_(self, event, *args, **kwargs):
         """Separator does not handle events."""
 
     def _perform_update_(self, delta, *args, **kwargs):
-        """Separator does not"""
+        """Separator does not perform updates."""

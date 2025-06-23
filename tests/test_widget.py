@@ -67,6 +67,47 @@ def test_widget_hide_show(screen):
     pygame.display.flip()
 
 
+def test_button_diable_enable(screen):
+    """Test if the widget can be disabled and enabled."""
+    widget = Widget(master=screen, width=200, height=50)
+    assert widget.disabled is False
+    assert widget.state == "normal"
+    widget.disable()
+    assert widget.disabled is True
+    assert widget.state == "disabled"
+    widget.enable()
+    assert widget.disabled is False
+    assert widget.state == "normal"
+    widget.draw()
+    pygame.display.flip()
+
+
+def test_button_focus_unfocus(screen):
+    """Test if the widget can be hidden and shown."""
+    widget = Widget(master=screen, width=200, height=50)
+    assert widget.focused is False
+    widget.focus()
+    assert widget.focused is True
+    widget.unfocus()
+    assert widget.focused is False
+    widget.draw()
+    pygame.display.flip()
+
+
+@pytest.mark.skip("Dirty feature is currently not implemented.")
+def test_button_dirty_clean(screen):
+    """Test if the widget can be hidden and shown."""
+    widget = Widget(master=screen, width=200, height=50)
+    assert widget.dirty is True
+    widget.draw()
+    assert widget.dirty is False
+    # widget
+    assert widget.dirty is True
+    widget.draw()
+    assert widget.dirty is False
+    pygame.display.flip()
+
+
 @pytest.mark.skip("This feature is currently broken.")
 def test_widget_pack(screen):
     """Test if the widget can be packed."""

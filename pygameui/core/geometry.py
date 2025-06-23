@@ -10,7 +10,19 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Framework 
 License: MIT
 """
 
+from typing import Optional, Union, Literal, TypeAlias
+
+# from pygameui.core.widget import Widget
+
 __all__ = ["Pack", "Grid", "Place"]
+
+Anchor: TypeAlias = Literal["nw", "n", "ne", "w", "center", "e", "sw", "s", "se"]
+Compound: TypeAlias = Literal["top", "left", "center", "right", "bottom", "none"]
+Relief: TypeAlias = Literal["raised", "sunken", "flat", "ridge", "solid", "groove"]
+Bordermode: TypeAlias = Literal["inside", "outside", "ignore"]
+Side: TypeAlias = Literal["left", "right", "top", "bottom"]
+ScreenUnits: TypeAlias = Union[int, float]
+Fill: TypeAlias = Literal["none", "x", "y", "both"]
 
 
 class Pack:
@@ -33,14 +45,14 @@ class Pack:
 
     def __init__(self):
         """Initialize packing options to None."""
-        self._anchor: str = None
-        self._expand: bool = None
-        self._fill: str = None
-        self._side: str = None
-        self._ipadx: int = None
-        self._ipady: int = None
-        self._padx: int = None
-        self._pady: int = None
+        self._fill: Fill = None
+        self._side: Side = None
+        self._anchor: Anchor = None
+        self._ipadx: ScreenUnits = None
+        self._ipady: ScreenUnits = None
+        self._expand: Union[bool, Literal[0, 1]] = None
+        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
+        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
 
     # region Properties
     @property
@@ -95,9 +107,7 @@ class Pack:
     @ipadx.setter
     def ipadx(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in x direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in x direction must be a non-negative integer")
         self._ipadx = value
 
     @property
@@ -108,9 +118,7 @@ class Pack:
     @ipady.setter
     def ipady(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in y direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in y direction must be a non-negative integer")
         self._ipady = value
 
     @property
@@ -139,7 +147,20 @@ class Pack:
 
     # region Public
 
-    def pack(self, **kwargs):
+    def pack(
+        self,
+        anchor: Anchor = None,
+        ipadx: ScreenUnits = 0,
+        ipady: ScreenUnits = 0,
+        after: Optional["Widget"] = None,
+        before: Optional["Widget"] = None,
+        expand: Union[bool, Literal[0, 1]] = 0,
+        fill: Literal["none", "x", "y", "both"] = None,
+        side: Literal["left", "right", "top", "bottom"] = None,
+        padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
+        pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
+        **kwargs,
+    ):
         """Pack a widget in the parent widget.
 
         Keyword Args:
@@ -151,46 +172,10 @@ class Pack:
             padx (int): Padding in x direction.
             pady (int): Padding in y direction.
             side (str): Where to add this widget ('top', 'bottom', 'left', 'right').
+
         """
-        self._anchor = kwargs.pop("anchor", self._anchor)
-        self._expand = kwargs.pop("expand", self._expand)
-        self._fill = kwargs.pop("fill", self._fill)
-        self._side = kwargs.pop("side", self._side)
-        self._ipadx = kwargs.pop("ipadx", self._ipadx)
-        self._ipady = kwargs.pop("ipady", self._ipady)
-        self._padx = kwargs.pop("padx", self._padx)
-        self._pady = kwargs.pop("pady", self._pady)
+        # NOTE: This method assumes the widget has _rect and _master attributes.
 
-        if kwargs:
-            raise TypeError(
-                f"pack() got an unexpected keyword argument: {list(kwargs.keys())[0]}"
-            )
-        self._pack_()
-
-    def pack_info(self):
-        """Return a dictionary of the current packing options for this widget."""
-        return {
-            "anchor": self._anchor,
-            "expand": self._expand,
-            "fill": self._fill,
-            "side": self._side,
-            "ipadx": self._ipadx,
-            "ipady": self._ipady,
-            "padx": self._padx,
-            "pady": self._pady,
-        }
-
-    info = pack_info
-
-    # endregion Public
-
-    # region Private
-
-    def _pack_(self):
-        """Calculate the position and size of the widget based on packing options.
-
-        NOTE: This method assumes the widget has _rect and _master attributes.
-        """
         if self._side is None:
             self._side = "top"
 
@@ -230,7 +215,22 @@ class Pack:
         if self._pady is not None:
             self._rect.height += self._pady * 2
 
-    # endregion Private
+    def pack_info(self):
+        """Return a dictionary of the current packing options for this widget."""
+        return {
+            "anchor": self._anchor,
+            "expand": self._expand,
+            "fill": self._fill,
+            "side": self._side,
+            "ipadx": self._ipadx,
+            "ipady": self._ipady,
+            "padx": self._padx,
+            "pady": self._pady,
+        }
+
+    info = pack_info
+
+    # endregion Public
 
 
 class Grid:
@@ -250,16 +250,18 @@ class Grid:
 
     def __init__(self):
         """Initialize grid options to None."""
-        self._column: int = None
-        self._columnspan: int = None
         self._row: int = None
+        self._column: int = None
         self._rowspan: int = None
-        self._ipadx: int = None
-        self._ipady: int = None
-        self._padx: int = None
-        self._pady: int = None
+        self._columnspan: int = None
+        self._ipadx: ScreenUnits = None
+        self._ipady: ScreenUnits = None
+        self._sticky: Literal["n", "s", "w", "e"] = None
+        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
+        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
 
     # region Properties
+
     @property
     def column(self):
         """Column of the widget in the grid."""
@@ -312,9 +314,7 @@ class Grid:
     @ipadx.setter
     def ipadx(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in x direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in x direction must be a non-negative integer")
         self._ipadx = value
 
     @property
@@ -325,9 +325,7 @@ class Grid:
     @ipady.setter
     def ipady(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in y direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in y direction must be a non-negative integer")
         self._ipady = value
 
     @property
@@ -388,7 +386,19 @@ class Grid:
 
     # region Public
 
-    def grid(self, **kwargs):
+    def grid(
+        self,
+        row: int = 0,
+        column: int = 0,
+        rowspan: int = 1,
+        columnspan: int = 1,
+        ipadx: ScreenUnits = 0,
+        ipady: ScreenUnits = 0,
+        sticky: Literal["n", "s", "w", "e"] = None,
+        padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
+        pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
+        **kwargs,
+    ):
         """Position a widget in the parent widget in a grid.
 
         Keyword Args:
@@ -401,46 +411,20 @@ class Grid:
             row (int): Cell row (starting with 0).
             rowspan (int): Widget spans several rows.
             sticky (str): Sides to stick to if cell is larger (NSEW).
+
         """
-        self._column = kwargs.pop("column", self._column)
-        self._columnspan = kwargs.pop(
-            "columnspan", 1 if self._column is not None else 1
-        )
-        self._row = kwargs.pop("row", self._row)
-        self._rowspan = kwargs.pop("rowspan", 1 if self._row is not None else 1)
-        self._ipadx = kwargs.pop("ipadx", self._ipadx)
-        self._ipady = kwargs.pop("ipady", self._ipady)
-        self._padx = kwargs.pop("padx", self._padx)
-        self._pady = kwargs.pop("pady", self._pady)
+        # NOTE: This method assumes the widget has _rect and _master attributes.
 
-        if kwargs:
-            raise TypeError(
-                f"grid() got an unexpected keyword argument: {list(kwargs.keys())[0]}"
-            )
-        self._grid_()
+        self._row = row
+        self._padx = padx
+        self._pady = pady
+        self._ipadx = ipadx
+        self._ipady = ipady
+        self._sticky = sticky
+        self._column = column
+        self._rowspan = rowspan
+        self._columnspan = columnspan
 
-    def grid_info(self):
-        """Return a dictionary of the current grid options for this widget."""
-        return {
-            "column": self._column,
-            "columnspan": self._columnspan,
-            "row": self._row,
-            "rowspan": self._rowspan,
-            "ipadx": self._ipadx,
-            "ipady": self._ipady,
-            "padx": self._padx,
-            "pady": self._pady,
-        }
-
-    # endregion Public
-
-    # region Private
-
-    def _grid_(self):
-        """Calculate the position and size of the widget in the grid.
-
-        NOTE: This method assumes the widget has _rect and _master attributes.
-        """
         cell_width = self._master.get_width() // Grid.num_columns
         cell_height = self._master.get_height() // Grid.num_rows
 
@@ -463,7 +447,22 @@ class Grid:
         if self._pady is not None:
             self._rect.height += self._pady * 2
 
-    # endregion Private
+    def grid_info(self):
+        """Return a dictionary of the current grid options for this widget."""
+        return {
+            "column": self._column,
+            "columnspan": self._columnspan,
+            "row": self._row,
+            "rowspan": self._rowspan,
+            "ipadx": self._ipadx,
+            "ipady": self._ipady,
+            "padx": self._padx,
+            "pady": self._pady,
+        }
+
+    info = grid_info
+
+    # endregion Public
 
 
 class Place:
@@ -485,14 +484,15 @@ class Place:
 
     def __init__(self):
         """Initialize place options to None."""
-        self._x: int = None
-        self._y: int = None
-        self._relx: float = None
-        self._rely: float = None
-        self._anchor: str = None
-        self._relwidth: float = None
-        self._relheight: float = None
-        self._bordermode: str = None
+        self._x: ScreenUnits = 0
+        self._y: ScreenUnits = 0
+        self._anchor: Anchor = None
+        self._relx: Union[int, float] = 0
+        self._rely: Union[int, float] = 0
+        self._in_: Optional["Widget"] = None
+        self._relwidth: Union[int, float] = 0
+        self._relheight: Union[int, float] = 0
+        self._bordermode: Literal["inside", "outside", "ignore"] = None
 
     # region Properties
 
@@ -582,7 +582,21 @@ class Place:
 
     # region Public
 
-    def place(self, **kwargs):
+    def place(
+        self,
+        x: ScreenUnits = 0,
+        y: ScreenUnits = 0,
+        anchor: Anchor = None,
+        relx: Union[int, float] = 0,
+        rely: Union[int, float] = 0,
+        in_: Optional["Widget"] = None,
+        relwidth: Union[int, float] = 0,
+        relheight: Union[int, float] = 0,
+        width: Optional[ScreenUnits] = None,
+        height: Optional[ScreenUnits] = None,
+        bordermode: Literal["inside", "outside", "ignore"] = None,
+        **kwargs,
+    ):
         """Place a widget in the parent widget.
 
         Keyword Args:
@@ -596,21 +610,35 @@ class Place:
             relwidth (float): Relative width (0.0 to 1.0).
             relheight (float): Relative height (0.0 to 1.0).
             bordermode (str): 'inside' or 'outside'.
-        """
-        self._x = kwargs.pop("x", self._x)
-        self._y = kwargs.pop("y", self._y)
-        self._relx = kwargs.pop("relx", self._relx)
-        self._rely = kwargs.pop("rely", self._rely)
-        self._anchor = kwargs.pop("anchor", self._anchor)
-        self._relwidth = kwargs.pop("relwidth", self._relwidth)
-        self._relheight = kwargs.pop("relheight", self._relheight)
-        self._bordermode = kwargs.pop("bordermode", self._bordermode)
 
-        if kwargs:
-            raise TypeError(
-                f"place() got an unexpected keyword argument: {list(kwargs.keys())[0]}"
-            )
-        self._place_()
+        """
+        # NOTE: This method assumes the widget has _rect and _master attributes.
+
+        self._x = x
+        self._y = y
+        self._anchor = anchor
+        self._relx = relx
+        self._rely = rely
+        self._in_: in_
+        self._relwidth = relwidth
+        self._relheight = relheight
+        self._bordermode = bordermode
+
+        self._rect.x = self._x
+        # self._rect.x = int(self._master.get_width() * self._relx)
+
+        self._rect.y = self._y
+        # self._rect.y = int(self._master.get_height() * self._rely)
+
+        if hasattr(self, "_width") and width is not None:
+            self._rect.width = width
+        if self._relwidth is not None:
+            self._rect.width = int(self._master.get_width() * self._relwidth)
+
+        if hasattr(self, "_height") and height is not None:
+            self._rect.height = height
+        if self._relheight is not None:
+            self._rect.height = int(self._master.get_height() * self._relheight)
 
     def place_info(self):
         """Return a dictionary of the current placing options for this widget."""
@@ -628,32 +656,3 @@ class Place:
     info = place_info
 
     # endregion Public
-
-    # region Private
-
-    def _place_(self):
-        """Calculate the position and size of the widget.
-
-        NOTE: This method assumes the widget has _rect and _master attributes.
-        """
-        if self._x is not None:
-            self._rect.x = self._x
-        if self._relx is not None:
-            self._rect.x = int(self._master.get_width() * self._relx)
-
-        if self._y is not None:
-            self._rect.y = self._y
-        if self._rely is not None:
-            self._rect.y = int(self._master.get_height() * self._rely)
-
-        if hasattr(self, "_width") and self._width is not None:
-            self._rect.width = self._width
-        if self._relwidth is not None:
-            self._rect.width = int(self._master.get_width() * self._relwidth)
-
-        if hasattr(self, "_height") and self._height is not None:
-            self._rect.height = self._height
-        if self._relheight is not None:
-            self._rect.height = int(self._master.get_height() * self._relheight)
-
-    # endregion Private

@@ -101,7 +101,8 @@ class Widget(Place, Grid, Pack):
         self._focused: bool = False  # Use focus() or unfocus() to modify this status
         self._visible: bool = True  # Use show() or hide() to modify this status
 
-        self._dirty: bool = True  # Set if widget need to be redrawn or not
+        # Set if widget need to be redrawn or not
+        self._dirty: bool = True  # Use dirty property to modify this status
 
         # Widget Attributes
         self._height: int = height
@@ -245,6 +246,51 @@ class Widget(Place, Grid, Pack):
         self._focused = value
 
     @property
+    def dirty(self) -> bool:
+        """Get or Set the widget is dirty."""
+        return self._dirty
+
+    @dirty.setter
+    def dirty(self, value: bool):
+        self._dirty = value
+
+    @property
+    def keyboard(self) -> bool:
+        """Get or Set the widget keyboard interaction."""
+        return self._keyboard_enabled
+
+    @keyboard.setter
+    def keyboard(self, value: bool):
+        self._keyboard_enabled = value
+
+    @property
+    def mouse(self) -> bool:
+        """Get or Set the widget mouse interaction."""
+        return self._mouse_enabled
+
+    @mouse.setter
+    def mouse(self, value: bool):
+        self._mouse_enabled = value
+
+    @property
+    def joystick(self) -> bool:
+        """Get or Set the widget joystick interaction."""
+        return self._joystick_enabled
+
+    @joystick.setter
+    def joystick(self, value: bool):
+        self._joystick_enabled = value
+
+    @property
+    def touchscreen(self) -> bool:
+        """Get or Set the widget touchscreen interaction."""
+        return self._touchscreen_enabled
+
+    @touchscreen.setter
+    def touchscreen(self, value: bool):
+        self._touchscreen_enabled = value
+
+    @property
     def width(self) -> int:
         """Get or set the width of the widget."""
         return self._width
@@ -370,7 +416,7 @@ class Widget(Place, Grid, Pack):
         Args:
             surface (pygame.Surface, optional): The surface to draw on.
         """
-        if self._visible:  # and self._dirty :
+        if self._visible:
             if self.__class__.__name__ == "Widget":
                 if self._master is not None:
                     surface = self._master
@@ -462,10 +508,10 @@ class Widget(Place, Grid, Pack):
 
         if callable(function):
             num_params = len(signature(function).parameters)
-            if num_params == 1:
+            if num_params == 0:
                 self._handler[event] = function
-            elif num_params == 0:
-                self._handler[event] = lambda _: function()
+            elif num_params == 1:
+                self._handler[event] = lambda: function(self)
             else:
                 raise ValueError("Command function signatures can have 0 or 1 parameter.")
         else:

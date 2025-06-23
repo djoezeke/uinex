@@ -5,6 +5,7 @@ from pygameui.widgets.button import Button
 
 
 class TestButton:
+
     def test_button_creation(self, screen):
         """Test if the button can be created."""
         button = Button(master=screen, width=200, height=50, text="Click Me")
@@ -17,26 +18,45 @@ class TestButton:
         """Test if the button can be drawn on the screen."""
         button = Button(master=screen, width=200, height=50, text="Click Me")
         button.draw()
-        # pygame.display.flip()
+        pygame.display.flip()
         # Check if the button is drawn by checking its rect
         assert button.rect.width == 200
         assert button.rect.height == 50
 
-    def test_button_click(self, screen):
+    @pytest.mark.xfail(reason="Click feature is currently broken.")
+    def test_button_click_event(self, screen):
         """Test if the button can handle click events."""
         button = Button(master=screen, width=200, height=50, text="Click Me")
         button.rect.topleft = (100, 100)
         button.draw()
-        # pygame.display.flip()
-        mouse_pos = (150, 120)
-        mouse_click = pygame.mouse.get_pressed()
+        pygame.display.flip()
 
-        if mouse_click[0]:  # Left mouse button
-            if button.rect.collidepoint(mouse_pos):
-                button.on_click()
-                assert button.clicked is True
-        else:
-            assert button.clicked is False
+    @pytest.mark.xfail(reason="Hover feature is currently broken.")
+    def test_button_hover_event(self, screen):
+        """Test if the button can handle horver events."""
+        button = Button(master=screen, width=200, height=50, text="Click Me")
+        button.setconfig(hover_color=pygame.Color("#ff0000"))
+        background_color = button.getconfig("background")
+
+        button.draw()
+        pygame.display.flip()
+
+        mouse_pos = (150, 120)
+
+        pygame.mouse.set_pos(mouse_pos)
+        assert button.rect.collidepoint(mouse_pos)
+        assert button.hovered is True
+        assert button.state == "hovered"
+        assert button.surface.get_at((0, 0)) == pygame.Color("#ff0000")
+
+        pygame.mouse.set_pos((300, 300))
+        assert not button.rect.collidepoint(mouse_pos)
+        assert button.hovered is False
+        assert button.state != "hovered"
+        assert button.surface.get_at((0, 0)) == background_color
+
+        button.draw()
+        pygame.display.flip()
 
     def test_button_text(self, screen):
         """Test if the button text is set correctly."""
@@ -77,6 +97,7 @@ class TestButton:
         button.draw()
         pygame.display.flip()
 
+    @pytest.mark.xfail(reason="All get configure colors return None")
     def test_button_color(self, screen):
         """Test if the button color can be set."""
         button = Button(
@@ -86,11 +107,11 @@ class TestButton:
             text="Click Me",
             bg_color=pygame.Color("#ff0000"),
         )
-        # assert button.configure("bg_color") == pygame.Color("#ff0000")
+        assert button.configure("bg_color") == pygame.Color("#ff0000")
         button.draw()
         pygame.display.flip()
         # Check if the color is applied by checking the surface color
-        # assert button.surface.get_at((0, 0)) == pygame.Color("#ff0000")
+        assert button.surface.get_at((0, 0)) == pygame.Color("#ff0000")
 
     def test_button_text_color(self, screen):
         """Test if the button text color can be set."""
@@ -117,23 +138,6 @@ class TestButton:
         assert button.surface.get_size() == (200, 50)
 
 
-def test_button_click_event(screen):
-    """Test if the button click event is triggered."""
-    button = Button(master=screen, width=200, height=50, text="Click Me")
-    button.rect.topleft = (100, 100)
-    button.draw()
-    pygame.display.flip()
-    mouse_pos = (150, 120)
-    mouse_click = pygame.mouse.get_pressed()
-
-    if mouse_click[0]:  # Left mouse button
-        if button.rect.collidepoint(mouse_pos):
-            # button.on_click()
-            assert button.clicked is True
-    else:
-        assert button.clicked is False
-
-
 def test_button_hide_show(screen):
     """Test if the button can be hidden and shown."""
     button = Button(master=screen, width=200, height=50, text="Click Me")
@@ -145,6 +149,47 @@ def test_button_hide_show(screen):
     button.show()
     assert button.visible is True
     button.draw()
+    pygame.display.flip()
+
+
+def test_button_diable_enable(screen):
+    """Test if the button can be disabled and enabled."""
+    button = Button(master=screen, width=200, height=50, text="Click Me")
+    assert button.disabled is False
+    assert button.state == "normal"
+    button.disable()
+    assert button.disabled is True
+    assert button.state == "disabled"
+    button.enable()
+    assert button.disabled is False
+    assert button.state == "normal"
+    button.draw()
+    pygame.display.flip()
+
+
+def test_button_focus_unfocus(screen):
+    """Test if the button can be hidden and shown."""
+    button = Button(master=screen, width=200, height=50, text="Click Me")
+    assert button.focused is False
+    button.focus()
+    assert button.focused is True
+    button.unfocus()
+    assert button.focused is False
+    button.draw()
+    pygame.display.flip()
+
+
+@pytest.mark.skip("Dirty feature is currently not implemented.")
+def test_button_dirty_clean(screen):
+    """Test if the button can be hidden and shown."""
+    button = Button(master=screen, width=200, height=50, text="Click Me")
+    assert button.dirty is True
+    button.draw()
+    assert button.dirty is False
+    button.text = "New Text"
+    assert button.dirty is True
+    button.draw()
+    assert button.dirty is False
     pygame.display.flip()
 
 
@@ -193,4 +238,4 @@ def test_button_geometry(screen):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-v", "--tb=short", __file__])

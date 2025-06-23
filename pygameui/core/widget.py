@@ -68,7 +68,7 @@ class Widget(Place, Grid, Pack):
             background (pygame.Color, optional): Background color.
             **kwargs: Additional configuration options.
         """
-
+        pygame.font.init()
         self._cursor: pygame.Cursor = kwargs.pop("cursor", None)
 
         # Default theme
@@ -599,11 +599,13 @@ class Widget(Place, Grid, Pack):
         Args:
             surface (pygame.Surface, optional): The surface to draw on.
         """
+        pygame.init()
+        pygame.font.init()
 
         fps = kwargs.get("fps", 60)
 
         if surface is None:
-            surface = self._surface
+            surface = pygame.display.set_mode(self.surface.get_size())
 
         assert isinstance(fps, int)
         assert isinstance(surface, pygame.Surface)
@@ -620,7 +622,7 @@ class Widget(Place, Grid, Pack):
 
                 self.handle(event)
             self.update(delta)
-            self.draw()
+            self.draw(surface)
             pygame.display.flip()
 
     def hide(self) -> None:

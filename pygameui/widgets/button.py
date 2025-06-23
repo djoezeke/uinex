@@ -23,8 +23,7 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributo
 License: MIT
 """
 
-from inspect import signature
-from typing import Union, Tuple, Callable, Optional, Dict, Any
+from typing import Union, Tuple, Callable, Optional, Any
 
 import pygame
 
@@ -124,13 +123,11 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         }
         self._theme.update(custom_theme)
 
-        # text_color
-        # hovercolor
-        # border_color
-
         DoubleClickMixin.__init__(self)
         ClickableMixin.__init__(self)
         HoverableMixin.__init__(self)
+
+    # region Property
 
     @property
     def text(self):
@@ -139,6 +136,8 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
     @text.setter
     def text(self, _text):
         self._text = _text
+
+    # endregion
 
     # region Public
 

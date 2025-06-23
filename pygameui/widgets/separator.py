@@ -15,6 +15,8 @@ Author: Your Name & PygameUI Contributors
 License: MIT
 """
 
+from typing import Literal, Optional, Union, Any
+
 import pygame
 
 from pygameui.core.widget import Widget
@@ -45,17 +47,13 @@ class Separator(Widget):
 
     def __init__(
         self,
-        master,
-        orientation="horizontal",
-        color=(58, 141, 255),
-        thickness=2,
-        length=None,
+        master: Optional[Any] = None,
+        length: int = 200,
+        thickness: int = 2,
+        color: pygame.Color = (58, 141, 255),
+        orientation: Literal["horizontal", "vertical"] = "horizontal",
         **kwargs,
     ):
-        self._orientation = orientation
-        self._thickness = thickness
-        self._length = length
-        self._color = color
 
         if orientation == "horizontal":
             width = length if length is not None else 100
@@ -66,8 +64,24 @@ class Separator(Widget):
 
         Widget.__init__(self, master, width, height, **kwargs)
 
+        self._orientation = orientation
+        self._thickness = thickness
+        self._length = length
+        self._color = color
+
+    # region Property
+
+    # endregion
+
+    # region Public
+
+    # endregion
+
+    # region Private
+
     def _perform_draw_(self, surface, *args, **kwargs):
         """Draw the separator line."""
+
         self._surface.fill(self._color)
         surface.blit(self._surface, self._rect)
 
@@ -76,3 +90,36 @@ class Separator(Widget):
 
     def _perform_update_(self, delta, *args, **kwargs):
         """Separator does not perform updates."""
+
+    # endregion
+
+
+# --------------------------------------------------------------------
+# testing and demonstration stuff
+
+if __name__ == "__main__":
+
+    pygame.init()
+    pygame.font.init()
+
+    screen = pygame.display.set_mode((480, 280))
+    pygame.display.set_caption("PygameUI Seperator")
+    clock = pygame.time.Clock()
+
+    seperator = Separator(master=screen, orientation="vertical")
+    seperator.place(x=20, y=20)
+
+    running: bool = True
+    while running:
+        delta = clock.tick(60) / 1000
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            seperator.handle(event)
+        seperator.update(delta)
+
+        screen.fill("white")
+        seperator.draw()
+
+        pygame.display.flip()

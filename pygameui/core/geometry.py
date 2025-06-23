@@ -630,15 +630,15 @@ class Place:
         self._rect.y = self._y
         # self._rect.y = int(self._master.get_height() * self._rely)
 
-        if hasattr(self, "_width") and width is not None:
-            self._rect.width = width
-        if self._relwidth is not None:
-            self._rect.width = int(self._master.get_width() * self._relwidth)
+        # if hasattr(self, "_width") and width is not None:
+        #     self._rect.width = width
+        # if self._relwidth is not None:
+        #     self._rect.width = int(self._master.get_width() * self._relwidth)
 
-        if hasattr(self, "_height") and height is not None:
-            self._rect.height = height
-        if self._relheight is not None:
-            self._rect.height = int(self._master.get_height() * self._relheight)
+        # if hasattr(self, "_height") and height is not None:
+        #     self._rect.height = height
+        # if self._relheight is not None:
+        #     self._rect.height = int(self._master.get_height() * self._relheight)
 
     def place_info(self):
         """Return a dictionary of the current placing options for this widget."""

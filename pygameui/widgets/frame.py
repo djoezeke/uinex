@@ -59,27 +59,14 @@ class Frame(Widget):
         bordercolor: Optional[pygame.Color] = None,
         borderwidth: Optional[int] = None,
         border_radius: Optional[int] = None,
-        **kwargs
+        **kwargs,
     ):
-        theme = ThemeManager.theme.get("Frame", {})
-        self._background = pygame.Color(
-            background if background is not None else theme.get("background", "#22304A")
-        )
-        self._bordercolor = pygame.Color(
-            bordercolor
-            if bordercolor is not None
-            else theme.get("bordercolor", "#3A8DFF")
-        )
-        self._borderwidth = (
-            borderwidth if borderwidth is not None else theme.get("borderwidth", 2)
-        )
-        self._border_radius = (
-            border_radius
-            if border_radius is not None
-            else theme.get("border_radius", 10)
-        )
+        Widget.__init__(self, master, width, height, **kwargs)
 
-        Widget.__init__(self, master, width, height, self._background, **kwargs)
+        custom_theme = {
+            "background": (0, 120, 215),
+        }
+        self._theme.update(custom_theme)
 
     def _perform_draw_(self, surface: pygame.Surface, *args, **kwargs) -> None:
         """
@@ -91,16 +78,8 @@ class Frame(Widget):
         Args:
             surface (pygame.Surface): The surface to draw on.
         """
-        rect = self._rect
-        # Draw background
-        # pygame.draw.rect(
-        #     surface, self._background, rect, border_radius=self._border_radius
-        # )
-        # Draw border
-        if self._borderwidth > 0:
-            pygame.draw.rect(
-                surface, self._bordercolor, rect, self._borderwidth, self._border_radius
-            )
+        self._surface.fill(self._theme["background"])
+        surface.blit(self._surface, self._rect)
 
     def _handle_event_(self, event: pygame.event.Event, *args, **kwargs) -> None:
         """Frame does not handle events by default."""

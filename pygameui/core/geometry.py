@@ -1,18 +1,19 @@
 """PygameUI Geometry Managers
 
 This module provides geometry manager base classes for widget layout in PygameUI.
+
 Supported managers:
-    - Pack:   Simple side-based packing (like Tkinter's pack)
+    - Pack:   Side-based packing (like Tkinter's pack)
     - Grid:   Table/grid-based placement (like Tkinter's grid)
     - Place:  Absolute or relative placement (like Tkinter's place)
+
+Each manager provides methods and properties for flexible widget layout.
 
 Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Framework Contributors
 License: MIT
 """
 
 from typing import Optional, Union, Literal, TypeAlias
-
-# from pygameui.core.widget import Widget
 
 __all__ = ["Pack", "Grid", "Place"]
 
@@ -26,11 +27,12 @@ Fill: TypeAlias = Literal["none", "x", "y", "both"]
 
 
 class Pack:
-    """Geometry manager Pack.
+    """
+    Geometry manager Pack.
 
     Provides side-based packing for widgets, similar to Tkinter's pack manager.
     Widgets can be packed to the top, bottom, left, or right of their parent,
-    with options for padding, filling, and expansion.
+    with options for padding, filling, expansion, and anchor.
 
     Attributes:
         _anchor (str): Anchor position (e.g., 'n', 's', 'e', 'w', 'center').
@@ -39,25 +41,30 @@ class Pack:
         _side (str): Side of parent to pack to ('top', 'bottom', 'left', 'right').
         _ipadx (int): Internal padding (x).
         _ipady (int): Internal padding (y).
-        _padx (int): External padding (x).
-        _pady (int): External padding (y).
+        _padx (int or tuple): External padding (x).
+        _pady (int or tuple): External padding (y).
     """
 
     def __init__(self):
-        """Initialize packing options to None."""
+        """
+        Initialize packing options to defaults.
+        """
         self._fill: Fill = None
         self._side: Side = None
         self._anchor: Anchor = None
-        self._ipadx: ScreenUnits = None
-        self._ipady: ScreenUnits = None
-        self._expand: Union[bool, Literal[0, 1]] = None
-        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
-        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
+        self._ipadx: ScreenUnits = 0
+        self._ipady: ScreenUnits = 0
+        self._expand: Union[bool, Literal[0, 1]] = False
+        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
+        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
 
     # region Properties
+
     @property
-    def anchor(self):
-        """Anchor position of the widget (e.g., 'n', 's', 'e', 'w', 'center')."""
+    def anchor(self) -> Optional[str]:
+        """
+        Anchor position of the widget (e.g., 'n', 's', 'e', 'w', 'center').
+        """
         return self._anchor
 
     @anchor.setter
@@ -67,8 +74,10 @@ class Pack:
         self._anchor = value
 
     @property
-    def expand(self):
-        """Whether the widget should expand when the parent grows."""
+    def expand(self) -> bool:
+        """
+        Whether the widget should expand when the parent grows.
+        """
         return self._expand
 
     @expand.setter
@@ -78,8 +87,10 @@ class Pack:
         self._expand = value
 
     @property
-    def fill(self):
-        """How the widget should fill the available space ('none', 'x', 'y', 'both')."""
+    def fill(self) -> Optional[str]:
+        """
+        How the widget should fill the available space ('none', 'x', 'y', 'both').
+        """
         return self._fill
 
     @fill.setter
@@ -89,8 +100,10 @@ class Pack:
         self._fill = value
 
     @property
-    def side(self):
-        """Side of the parent widget where the widget should be placed."""
+    def side(self) -> Optional[str]:
+        """
+        Side of the parent widget where the widget should be placed.
+        """
         return self._side
 
     @side.setter
@@ -100,8 +113,10 @@ class Pack:
         self._side = value
 
     @property
-    def ipadx(self):
-        """Internal padding in the x direction."""
+    def ipadx(self) -> int:
+        """
+        Internal padding in the x direction.
+        """
         return self._ipadx
 
     @ipadx.setter
@@ -111,8 +126,10 @@ class Pack:
         self._ipadx = value
 
     @property
-    def ipady(self):
-        """Internal padding in the y direction."""
+    def ipady(self) -> int:
+        """
+        Internal padding in the y direction.
+        """
         return self._ipady
 
     @ipady.setter
@@ -122,8 +139,10 @@ class Pack:
         self._ipady = value
 
     @property
-    def padx(self):
-        """External padding in the x direction."""
+    def padx(self) -> Union[int, tuple]:
+        """
+        External padding in the x direction.
+        """
         return self._padx
 
     @padx.setter
@@ -133,8 +152,10 @@ class Pack:
         self._padx = value
 
     @property
-    def pady(self):
-        """External padding in the y direction."""
+    def pady(self) -> Union[int, tuple]:
+        """
+        External padding in the y direction.
+        """
         return self._pady
 
     @pady.setter
@@ -152,71 +173,103 @@ class Pack:
         anchor: Anchor = None,
         ipadx: ScreenUnits = 0,
         ipady: ScreenUnits = 0,
-        after: Optional["Widget"] = None,
-        before: Optional["Widget"] = None,
-        expand: Union[bool, Literal[0, 1]] = 0,
+        expand: Union[bool, Literal[0, 1]] = False,
         fill: Literal["none", "x", "y", "both"] = None,
-        side: Literal["left", "right", "top", "bottom"] = None,
+        side: Literal["left", "right", "top", "bottom"] = "top",
         padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
         pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
         **kwargs,
     ):
-        """Pack a widget in the parent widget.
+        """
+        Pack a widget in the parent widget.
 
-        Keyword Args:
-            anchor (str): Position widget according to given direction.
-            expand (bool): Expand widget if parent size grows.
-            fill (str): Fill widget if widget grows ('none', 'x', 'y', 'both').
-            ipadx (int): Internal padding in x direction.
-            ipady (int): Internal padding in y direction.
-            padx (int): Padding in x direction.
-            pady (int): Padding in y direction.
-            side (str): Where to add this widget ('top', 'bottom', 'left', 'right').
-
+        Args:
+            anchor (str, optional): Position widget according to given direction.
+            expand (bool, optional): Expand widget if parent size grows.
+            fill (str, optional): Fill widget if widget grows ('none', 'x', 'y', 'both').
+            ipadx (int, optional): Internal padding in x direction.
+            ipady (int, optional): Internal padding in y direction.
+            padx (int or tuple, optional): Padding in x direction.
+            pady (int or tuple, optional): Padding in y direction.
+            side (str, optional): Where to add this widget ('top', 'bottom', 'left', 'right').
+            after, before: Not implemented, for compatibility.
+            **kwargs: Additional options (ignored).
         """
         # NOTE: This method assumes the widget has _rect and _master attributes.
 
-        if self._side is None:
-            self._side = "top"
+        self._side = side or self._side or "top"
+        self._anchor = anchor or self._anchor or "center"
+        self._fill = fill or self._fill or "none"
+        self._expand = expand or self._expand or False
+        self._ipadx = ipadx
+        self._ipady = ipady
+        self._padx = padx
+        self._pady = pady
+
+        master = getattr(self, "_master", None)
+        rect = getattr(self, "_rect", None)
+        if master is None or rect is None:
+            return
+
+        # Calculate padding
+        padx = self._padx if isinstance(self._padx, (int, float)) else sum(self._padx)
+        pady = self._pady if isinstance(self._pady, (int, float)) else sum(self._pady)
+        ipadx = self._ipadx or 0
+        ipady = self._ipady or 0
+
+        # Fill and expand
+        if self._fill in ("x", "both"):
+            rect.width = master.get_width() - 2 * padx
+        if self._fill in ("y", "both"):
+            rect.height = master.get_height() - 2 * pady
+        if self._expand:
+            if self._side in ("top", "bottom"):
+                rect.width = master.get_width() - 2 * padx
+            elif self._side in ("left", "right"):
+                rect.height = master.get_height() - 2 * pady
+
+        # Internal padding
+        rect.width += 2 * ipadx
+        rect.height += 2 * ipady
 
         # Positioning based on side
         if self._side == "top":
-            self._rect.y = 0
+            rect.x = padx
+            rect.y = pady
         elif self._side == "bottom":
-            self._rect.y = self._master.get_height() - self._rect.height
+            rect.x = padx
+            rect.y = master.get_height() - rect.height - pady
         elif self._side == "left":
-            self._rect.x = 0
+            rect.x = padx
+            rect.y = pady
         elif self._side == "right":
-            self._rect.x = self._master.get_width() - self._rect.width
+            rect.x = master.get_width() - rect.width - padx
+            rect.y = pady
 
-        # Fill options
-        if self._fill == "x":
-            self._rect.width = self._master.get_width()
-        elif self._fill == "y":
-            self._rect.height = self._master.get_height()
-        elif self._fill == "both":
-            self._rect.width = self._master.get_width()
-            self._rect.height = self._master.get_height()
+        # Anchor adjustment (center, n, s, e, w, etc.)
+        if self._anchor == "center":
+            rect.center = master.get_rect().center
+        elif self._anchor == "n":
+            rect.midtop = master.get_rect().midtop
+        elif self._anchor == "s":
+            rect.midbottom = master.get_rect().midbottom
+        elif self._anchor == "e":
+            rect.midright = master.get_rect().midright
+        elif self._anchor == "w":
+            rect.midleft = master.get_rect().midleft
+        elif self._anchor == "ne":
+            rect.topright = master.get_rect().topright
+        elif self._anchor == "nw":
+            rect.topleft = master.get_rect().topleft
+        elif self._anchor == "se":
+            rect.bottomright = master.get_rect().bottomright
+        elif self._anchor == "sw":
+            rect.bottomleft = master.get_rect().bottomleft
 
-        # Expand options
-        if self._expand:
-            if self._side in ["top", "bottom"]:
-                self._rect.width = self._master.get_width()
-            elif self._side in ["left", "right"]:
-                self._rect.height = self._master.get_height()
-
-        # Padding adjustments
-        if self._ipadx is not None:
-            self._rect.width += self._ipadx * 2
-        if self._ipady is not None:
-            self._rect.height += self._ipady * 2
-        if self._padx is not None:
-            self._rect.width += self._padx * 2
-        if self._pady is not None:
-            self._rect.height += self._pady * 2
-
-    def pack_info(self):
-        """Return a dictionary of the current packing options for this widget."""
+    def pack_info(self) -> dict:
+        """
+        Return a dictionary of the current packing options for this widget.
+        """
         return {
             "anchor": self._anchor,
             "expand": self._expand,
@@ -250,15 +303,15 @@ class Grid:
 
     def __init__(self):
         """Initialize grid options to None."""
-        self._row: int = None
-        self._column: int = None
-        self._rowspan: int = None
-        self._columnspan: int = None
-        self._ipadx: ScreenUnits = None
-        self._ipady: ScreenUnits = None
+        self._row: int = 0
+        self._column: int = 0
+        self._rowspan: int = 1
+        self._columnspan: int = 1
+        self._ipadx: ScreenUnits = 0
+        self._ipady: ScreenUnits = 0
         self._sticky: Literal["n", "s", "w", "e"] = None
-        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
-        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = None
+        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
+        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
 
     # region Properties
 
@@ -416,36 +469,43 @@ class Grid:
         # NOTE: This method assumes the widget has _rect and _master attributes.
 
         self._row = row
-        self._padx = padx
-        self._pady = pady
-        self._ipadx = ipadx
-        self._ipady = ipady
-        self._sticky = sticky
         self._column = column
         self._rowspan = rowspan
         self._columnspan = columnspan
+        self._ipadx = ipadx
+        self._ipady = ipady
+        self._sticky = sticky
+        self._padx = padx
+        self._pady = pady
 
-        cell_width = self._master.get_width() // Grid.num_columns
-        cell_height = self._master.get_height() // Grid.num_rows
+        master = getattr(self, "_master", None)
+        rect = getattr(self, "_rect", None)
+        if master is None or rect is None:
+            return
 
-        if self._column is not None:
-            self._rect.x = self._column * cell_width
-        if self._row is not None:
-            self._rect.y = self._row * cell_height
-        if self._rowspan is not None:
-            self._rect.height = cell_height * self._rowspan
-        if self._columnspan is not None:
-            self._rect.width = cell_width * self._columnspan
+        cell_width = master.get_width() // Grid.num_columns
+        cell_height = master.get_height() // Grid.num_rows
 
-        # Padding adjustments
-        if self._ipadx is not None:
-            self._rect.width += self._ipadx * 2
-        if self._ipady is not None:
-            self._rect.height += self._ipady * 2
-        if self._padx is not None:
-            self._rect.width += self._padx * 2
-        if self._pady is not None:
-            self._rect.height += self._pady * 2
+        rect.x = self._column * cell_width
+        rect.y = self._row * cell_height
+        rect.width = cell_width * self._columnspan
+        rect.height = cell_height * self._rowspan
+
+        # Internal and external padding
+        rect.width += 2 * (self._ipadx or 0)
+        rect.height += 2 * (self._ipady or 0)
+        rect.width += 2 * (self._padx if isinstance(self._padx, (int, float)) else sum(self._padx))
+        rect.height += 2 * (self._pady if isinstance(self._pady, (int, float)) else sum(self._pady))
+
+        # Sticky (align inside cell)
+        if self._sticky == "n":
+            rect.y = self._row * cell_height
+        elif self._sticky == "s":
+            rect.y = (self._row + 1) * cell_height - rect.height
+        elif self._sticky == "e":
+            rect.x = (self._column + 1) * cell_width - rect.width
+        elif self._sticky == "w":
+            rect.x = self._column * cell_width
 
     def grid_info(self):
         """Return a dictionary of the current grid options for this widget."""
@@ -458,6 +518,7 @@ class Grid:
             "ipady": self._ipady,
             "padx": self._padx,
             "pady": self._pady,
+            "sticky": self._sticky,
         }
 
     info = grid_info
@@ -489,7 +550,6 @@ class Place:
         self._anchor: Anchor = None
         self._relx: Union[int, float] = 0
         self._rely: Union[int, float] = 0
-        self._in_: Optional["Widget"] = None
         self._relwidth: Union[int, float] = 0
         self._relheight: Union[int, float] = 0
         self._bordermode: Literal["inside", "outside", "ignore"] = None
@@ -589,7 +649,6 @@ class Place:
         anchor: Anchor = None,
         relx: Union[int, float] = 0,
         rely: Union[int, float] = 0,
-        in_: Optional["Widget"] = None,
         relwidth: Union[int, float] = 0,
         relheight: Union[int, float] = 0,
         width: Optional[ScreenUnits] = None,
@@ -619,26 +678,48 @@ class Place:
         self._anchor = anchor
         self._relx = relx
         self._rely = rely
-        self._in_: in_
         self._relwidth = relwidth
         self._relheight = relheight
         self._bordermode = bordermode
 
-        self._rect.x = self._x
-        # self._rect.x = int(self._master.get_width() * self._relx)
+        master = getattr(self, "_master", None)
+        rect = getattr(self, "_rect", None)
+        if master is None or rect is None:
+            return
 
-        self._rect.y = self._y
-        # self._rect.y = int(self._master.get_height() * self._rely)
+        # Calculate absolute position
+        rect.x = int(x + (master.get_width() * relx))
+        rect.y = int(y + (master.get_height() * rely))
 
-        # if hasattr(self, "_width") and width is not None:
-        #     self._rect.width = width
-        # if self._relwidth is not None:
-        #     self._rect.width = int(self._master.get_width() * self._relwidth)
+        # Set width/height
+        if width is not None:
+            rect.width = width
+        elif relwidth:
+            rect.width = int(master.get_width() * relwidth)
+        if height is not None:
+            rect.height = height
+        elif relheight:
+            rect.height = int(master.get_height() * relheight)
 
-        # if hasattr(self, "_height") and height is not None:
-        #     self._rect.height = height
-        # if self._relheight is not None:
-        #     self._rect.height = int(self._master.get_height() * self._relheight)
+        # Anchor adjustment
+        if anchor == "center":
+            rect.center = (rect.x, rect.y)
+        elif anchor == "n":
+            rect.midtop = (rect.x, rect.y)
+        elif anchor == "s":
+            rect.midbottom = (rect.x, rect.y)
+        elif anchor == "e":
+            rect.midright = (rect.x, rect.y)
+        elif anchor == "w":
+            rect.midleft = (rect.x, rect.y)
+        elif anchor == "ne":
+            rect.topright = (rect.x, rect.y)
+        elif anchor == "nw":
+            rect.topleft = (rect.x, rect.y)
+        elif anchor == "se":
+            rect.bottomright = (rect.x, rect.y)
+        elif anchor == "sw":
+            rect.bottomleft = (rect.x, rect.y)
 
     def place_info(self):
         """Return a dictionary of the current placing options for this widget."""
@@ -650,6 +731,8 @@ class Place:
             "anchor": self._anchor,
             "relwidth": self._relwidth,
             "relheight": self._relheight,
+            "width": self._rect.width,
+            "height": self._rect.height,
             "bordermode": self._bordermode,
         }
 

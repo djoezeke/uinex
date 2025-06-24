@@ -67,7 +67,7 @@ def test_widget_hide_show(screen):
     pygame.display.flip()
 
 
-def test_button_diable_enable(screen):
+def test_widget_diable_enable(screen):
     """Test if the widget can be disabled and enabled."""
     widget = Widget(master=screen, width=200, height=50)
     assert widget.disabled is False
@@ -82,7 +82,7 @@ def test_button_diable_enable(screen):
     pygame.display.flip()
 
 
-def test_button_focus_unfocus(screen):
+def test_widget_focus_unfocus(screen):
     """Test if the widget can be hidden and shown."""
     widget = Widget(master=screen, width=200, height=50)
     assert widget.focused is False
@@ -95,7 +95,7 @@ def test_button_focus_unfocus(screen):
 
 
 @pytest.mark.skip("Dirty feature is currently not implemented.")
-def test_button_dirty_clean(screen):
+def test_widget_dirty_clean(screen):
     """Test if the widget can be hidden and shown."""
     widget = Widget(master=screen, width=200, height=50)
     assert widget.dirty is True
@@ -112,7 +112,7 @@ def test_button_dirty_clean(screen):
 def test_widget_pack(screen):
     """Test if the widget can be packed."""
     widget = Widget(master=screen, width=200, height=50)
-    widget.pack(side="top", padx=10, pady=10)
+    widget.pack(padx=10, pady=10)
     assert widget.rect.topleft == (10, 10)
     assert widget.rect.size == (200, 50)
     widget.draw()
@@ -130,7 +130,6 @@ def test_widget_grid(screen):
     pygame.display.flip()
 
 
-@pytest.mark.skip("This feature is currently broken.")
 def test_widget_place(screen):
     """Test if the widget can be placed."""
     widget = Widget(master=screen, width=200, height=50)
@@ -141,7 +140,6 @@ def test_widget_place(screen):
     pygame.display.flip()
 
 
-@pytest.mark.xfail(reason="A Certain Geometry Method is broken.")
 def test_widget_geometry(screen):
     """Test if the widget geometry can be set."""
     widget = Widget(master=screen, width=200, height=50)

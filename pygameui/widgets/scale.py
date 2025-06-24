@@ -210,11 +210,7 @@ class Scale(Widget):
         # Snap to step
         value = round((value - vmin) / self.step) * self.step + vmin
         value = min(max(value, vmin), vmax)
-        if (
-            isinstance(self.from_, int)
-            and isinstance(self.to, int)
-            and isinstance(self.step, int)
-        ):
+        if isinstance(self.from_, int) and isinstance(self.to, int) and isinstance(self.step, int):
             value = int(value)
         return value
 
@@ -240,6 +236,32 @@ class Scale(Widget):
             if self.on_change:
                 self.on_change(self.value)
             self._dirty = True
+
+    def get_value(self):
+        """Return the current value of the scale."""
+        return self.value
+
+    def set_range(self, from_, to):
+        """Set the minimum and maximum values of the scale."""
+        self.from_ = from_
+        self.to = to
+        self.value = min(max(self.value, self.from_), self.to)
+        self._dirty = True
+
+    def set_step(self, step):
+        """Set the step size for the scale."""
+        self.step = step
+
+    def set_orientation(self, orientation):
+        """Set the orientation of the scale."""
+        if orientation not in ("horizontal", "vertical"):
+            raise ValueError("Orientation must be 'horizontal' or 'vertical'")
+        self.orientation = orientation
+        self._dirty = True
+
+    def reset(self):
+        """Reset the scale to its minimum value."""
+        self.set_value(self.from_)
 
     def configure(self, config=None, **kwargs):
         """

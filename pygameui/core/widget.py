@@ -20,6 +20,7 @@ from typing import Union, Optional, Any, Callable
 from pygame.event import Event
 from pygame import Surface
 import pygame
+import time
 
 from pygameui.core.geometry import Grid, Pack, Place
 from pygameui.core.exceptions import PygameuiError
@@ -136,10 +137,9 @@ class Widget(Place, Grid, Pack):
         self._shadow: bool = kwargs.pop("shadow", False)
         self._shadow_width: int = kwargs.pop("shadow_width", 0)
         self._shadowoffset: tuple[int, int] = kwargs.pop("shadowoffset", (5, 5))
-        if self._shadow:
-            self._shadowcolor: pygame.Color = kwargs.pop("shadowcolor", (0, 0, 0))
-            if isinstance(self._shadowcolor, str):
-                self._shadowcolor = pygame.Color(self._shadowcolor)
+        self._shadowcolor: pygame.Color = kwargs.pop("shadowcolor", (0, 0, 0))
+        if isinstance(self._shadowcolor, str):
+            self._shadowcolor = pygame.Color(self._shadowcolor)
 
         # Surface and rect setup
         self._surface = pygame.Surface((width, height), pygame.SRCALPHA, 32)
@@ -189,6 +189,8 @@ class Widget(Place, Grid, Pack):
         Place.__init__(self)
         Grid.__init__(self)
         Pack.__init__(self)
+
+        self._after_queue = []  # List of (run_at, callable, args, kwargs)
 
     def __getitem__(self, config: str) -> Any:
         """Get an item from the widget's configuration."""
@@ -456,6 +458,7 @@ class Widget(Place, Grid, Pack):
         """
         mouse_pos = pygame.mouse.get_pos()
         if self._visible:
+            self._process_after_queue()
             self._perform_update_(delta, *args, **kwargs)
             self._update_tooltip_(mouse_pos, delta)
 
@@ -539,58 +542,40 @@ class Widget(Place, Grid, Pack):
         data.update({"widget": self})
         pygame.event.post(pygame.event.Event(event, data))
 
-    def after(self, ms: int, function: Union[Callable, str], *args) -> str:
+    def after(self, ms: int, function: Union[Callable, str], *args, **kwargs) -> str:
         """
-        Call function once after given time.
-
+        Call function once after given time (in milliseconds).
         Args:
-            ms (int): specifies the time in milliseconds.
-            function (callable,str): function which shall be called.
-            **args: parameters to function call.
+            ms (int): Time in milliseconds.
+            function (callable or str): Function or command name.
+            *args, **kwargs: Arguments to pass to the function.
         """
-
-        # TODO : timming
+        run_at = time.time() + ms / 1000.0
         if isinstance(function, str):
-            return self.call(function, *args)
-        if isinstance(function, Callable):
-            return function(*args)
 
-    def createcommand(self, func_name: str, function: Callable) -> str:
-        """
-        Add a function from a Widget Commands.
+            def callback():
+                self.call(function, *args, **kwargs)
 
-        Args:
-            func_name (str): Name of command.
-            function (callable): Function to Add.
-        """
-        if callable(function):
-            self._commands[func_name] = function
+        elif callable(function):
+
+            def callback():
+                function(*args, **kwargs)
+
         else:
-            raise TypeError("Command function must be callable")
+            raise TypeError("Function must be a callable or command name string.")
+        self._after_queue.append((run_at, callback))
+        return str(float(run_at))  # Return a handle (timestamp string)
 
-    def deletecommand(self, func_name: str) -> str:
-        """
-        Remove a function from a Widget Commands.
-
-        Args:
-            func_name (str): Name of command.
-        """
-        return self._commands.pop(func_name, None)
-
-    def call(self, func_name: str, *args) -> str:
-        """
-        Call a Commands.
-
-        Args:
-            func_name (str): Name of function to call.
-            **args: parameters to function call.
-        """
-
-        try:
-            command = self._commands[func_name]
-            return command(*args)
-        except KeyError:
-            pass
+    def _process_after_queue(self):
+        """Check and run scheduled after callbacks."""
+        now = time.time()
+        to_run = [item for item in self._after_queue if item[0] <= now]
+        self._after_queue = [item for item in self._after_queue if item[0] > now]
+        for _, callback in to_run:
+            try:
+                callback()
+            except Exception:
+                pass
 
     def mainloop(self, *args, surface: Surface = None, **kwargs) -> None:
         """
@@ -702,7 +687,7 @@ class Widget(Place, Grid, Pack):
         """
 
         self._height = self._kwarg_get(kwargs, "height", self._height)
-        self._width = self._kwarg_get(kwargs, "height", self._width)
+        self._width = self._kwarg_get(kwargs, "width", self._width)
         self._cursor = self._kwarg_get(kwargs, "cursor", self._cursor)
         self._theme = self._kwarg_get(kwargs, "cursor", self._theme)
         self._state = self._kwarg_get(kwargs, "state", self._state)

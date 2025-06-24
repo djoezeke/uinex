@@ -150,16 +150,8 @@ class Meter(Progressbar):
 
             foreground = self._theme["bar_color"]
             background = self._theme["background"]
-            bordercolor = self._theme["border_color"]
 
             rect = self._rect
-
-            # Draw filled rounded rectangle for button background
-            # pygame.draw.rect(surface, background, self._rect, border_radius=self._border_radius)
-
-            # Draw border (rounded)
-            if self._borderwidth > 0:
-                pygame.draw.rect(surface, bordercolor, self._rect, self._borderwidth, self._border_radius)
 
             percent = (self._value - self._minimum) / (self._maximum - self._minimum)
             percent = max(0.0, min(1.0, percent))

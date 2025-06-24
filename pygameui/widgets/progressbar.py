@@ -5,20 +5,27 @@ that fills as progress increases. It supports value bounds, orientation, colors,
 
 Features:
     - Horizontal or vertical orientation
+    - Determinate and indeterminate modes
     - Customizable min, max, and current value
     - Customizable colors and border
     - Optional value display (numeric or percent)
-    - Callback for value change
+    - Callback for value change (extendable)
+    - Mouse interaction for value setting
 
 Example:
-    pb = Progressbar(master, lenght=200, thickness=24, value=50)
+    pb = Progressbar(master=screen, length=200, thickness=24, value=50)
     pb.set(50)
+    pb.start()  # For indeterminate mode
+    pb.step(10) # Increment by 10
+    pb.stop()   # Stop indeterminate animation
 
 Author: Your Name & PygameUI Contributors
 License: MIT
 """
 
+import time
 from typing import Literal, Optional, Union, Any
+
 import pygame
 
 from pygameui.core.widget import Widget
@@ -27,16 +34,13 @@ __all__ = ["Progressbar"]
 
 
 class Progressbar(Widget):
-    """Modern Progressbar Widget.
+    """A modern, customizable progress bar widget for PygameUI.
 
-    A widget that shows the status of a long-running operation
-    with an optional text indicator.
+    The Progressbar visually represents the progress of a task. It can operate in two modes:
+    - Determinate: Shows the amount completed relative to the total.
+    - Indeterminate: Shows an animated bar to indicate ongoing activity when progress cannot be measured.
 
-    Similar to the `Floodgauge`, this widget can operate in
-    two modes. *determinate* mode shows the amount completed
-    relative to the total amount of work to be done, and
-    *indeterminate* mode provides an animated display to let the
-    user know that something is happening.
+    Supports horizontal and vertical orientations, color customization, and optional percentage display.
 
     Examples:
 
@@ -63,6 +67,23 @@ class Progressbar(Widget):
         # increment the value by 10 steps
         progress.step(10)
         ```
+
+    Attributes:
+        text (str): Optional label or text to display.
+        mode (str): 'determinate' or 'indeterminate'.
+        mask (str): Optional string format for the label (e.g., '{}% Complete').
+        orientation (str): 'horizontal' or 'vertical'.
+        minimum (float): Minimum value.
+        maximum (float): Maximum value.
+        value (float): Current value.
+        indeterminate (bool): Whether indeterminate animation is active.
+        indet_pos (float): Current position of the indeterminate bar.
+        indet_speed (float): Speed of the indeterminate animation (pixels/sec).
+        step_amount (float): Default step increment.
+        last_update (float): Last update time for animation.
+        font (pygame.font.Font): Font for text display.
+        theme (dict): Color and style settings.
+
     """
 
     def __init__(
@@ -137,6 +158,12 @@ class Progressbar(Widget):
         self._maximum = max(1, float(maximum))
         self._value = max(self._minimum, min(float(value), self._maximum))
 
+        self._indeterminate = False
+        self._indet_pos = 0.0
+        self._indet_speed = kwargs.get("indeterminate_speed", 100)  # pixels per second
+        self._step_amount = 1.0
+        self._last_update = time.time()
+
         self._font = font or pygame.font.SysFont(None, 18)
 
         custom_theme = {
@@ -156,37 +183,77 @@ class Progressbar(Widget):
     # region Public
 
     def start(self):
-        """Start Autoincrementing."""
-
-    def step(self, value: float):
-        """Increment value by step."""
+        """Start Autoincrementing (indeterminate mode)."""
+        if self._mode == "indeterminate":
+            self._indeterminate = True
+            self._indet_pos = 0.0
+            self._last_update = time.time()
 
     def stop(self):
-        """Stop Autoincrementing."""
+        """Stop indeterminate animation."""
+        self._indeterminate = False
+
+    def step(self, value: float = None):
+        """Increment the progressbar value by a step.
+
+        Args:
+            value (float, optional): Amount to increment. If None, uses default step amount.
+        """
+        if value is None:
+            value = self._step_amount
+        self.set(self._value + value)
 
     def set(self, value: float):
-        """Set the current value (clamped to [0, maximum])."""
+        """Set the current value (clamped to [minimum, maximum]).
+
+        Args:
+            value (float): New value to set.
+        """
         value = max(self._minimum, min(float(value), self._maximum))
         if value != self._value:
             self._value = value
             self._dirty = True
 
     def get(self) -> float:
-        """Get the current value."""
+        """Get the current value.
+
+        Returns:
+            float: The current value of the progressbar.
+        """
         return self._value
 
     def set_max(self, maximum: float):
-        """Set the maximum value."""
+        """Set the maximum value.
+
+        Args:
+            maximum (float): New maximum value.
+        """
         if maximum != self._maximum:
             self._maximum = maximum
             self._value = max(self._minimum, min(float(self._value), self._maximum))
             self._dirty = True
 
     def set_min(self, minimum: float):
-        """Set the minimum value."""
+        """Set the minimum value.
+
+        Args:
+            minimum (float): New minimum value.
+        """
         if minimum != self._minimum:
             self._minimum = minimum
             self._value = max(self._minimum, min(float(self._value), self._maximum))
+            self._dirty = True
+
+    def set_orientation(self, orientation: Literal["horizontal", "vertical"]):
+        """Set the orientation of the progressbar.
+
+        Args:
+            orientation (str): 'horizontal' or 'vertical'.
+        """
+        if orientation not in ["horizontal", "vertical"]:
+            raise ValueError("Orientation must be 'horizontal' or 'vertical'.")
+        if orientation != self.orientation:
+            self.orientation = orientation
             self._dirty = True
 
     # endregion
@@ -221,28 +288,49 @@ class Progressbar(Widget):
         percent = (self._value - self._minimum) / (self._maximum - self._minimum)
         percent = max(0.0, min(1.0, percent))
 
-        if self.orientation == "horizontal":
-            fill_width = int((rect.width - 2 * self._borderwidth) * percent)
-            fill_rect = pygame.Rect(
-                rect.left + self._borderwidth,
-                rect.top + self._borderwidth,
-                fill_width,
-                rect.height - 2 * self._borderwidth,
-            )
+        if self._mode == "indeterminate" and self._indeterminate:
+            # Draw moving bar for indeterminate mode
+            bar_length = rect.width if self.orientation == "horizontal" else rect.height
+            indet_width = int(bar_length * 0.3)
+            pos = int(self._indet_pos)
+            if self.orientation == "horizontal":
+                fill_rect = pygame.Rect(
+                    rect.left + pos,
+                    rect.top + self._borderwidth,
+                    indet_width,
+                    rect.height - 2 * self._borderwidth,
+                )
+            else:
+                fill_rect = pygame.Rect(
+                    rect.left + self._borderwidth,
+                    rect.top + pos,
+                    rect.width - 2 * self._borderwidth,
+                    indet_width,
+                )
             pygame.draw.rect(surface, foreground, fill_rect)
-
-        elif self.orientation == "vertical":
-            fill_height = int((rect.height - 2 * self._borderwidth) * percent)
-            fill_rect = pygame.Rect(
-                rect.left + self._borderwidth,
-                rect.bottom - self._borderwidth - fill_height,
-                rect.width - 2 * self._borderwidth,
-                fill_height,
-            )
-            pygame.draw.rect(surface, foreground, fill_rect)
+        else:
+            # ...existing determinate drawing code...
+            if self.orientation == "horizontal":
+                fill_width = int((rect.width - 2 * self._borderwidth) * percent)
+                fill_rect = pygame.Rect(
+                    rect.left + self._borderwidth,
+                    rect.top + self._borderwidth,
+                    fill_width,
+                    rect.height - 2 * self._borderwidth,
+                )
+                pygame.draw.rect(surface, foreground, fill_rect)
+            elif self.orientation == "vertical":
+                fill_height = int((rect.height - 2 * self._borderwidth) * percent)
+                fill_rect = pygame.Rect(
+                    rect.left + self._borderwidth,
+                    rect.bottom - self._borderwidth - fill_height,
+                    rect.width - 2 * self._borderwidth,
+                    fill_height,
+                )
+                pygame.draw.rect(surface, foreground, fill_rect)
 
         # Draw text (percentage) if enabled
-        if self._text:
+        if self._text and self._mode == "determinate":
             percent_val = int(percent * 100)
             if self._mask:
                 text = self._mask.format(percent_val)
@@ -253,23 +341,47 @@ class Progressbar(Widget):
             surface.blit(txt_surf, txt_rect)
 
     def _handle_event_(self, event, *args, **kwargs):
-        """Handle mouse events for interactive value setting (optional)."""
+        """Handle mouse events for interactive value setting (optional).
 
+        Args:
+            event (pygame.event.Event): The event to handle.
+        """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if not self._rect.collidepoint(event.pos):
+                return
             mouse = (event.pos[0] - self._rect.x, event.pos[1] - self._rect.y)
-
             if self.orientation == "horizontal":
                 percent = (mouse[0] - self._borderwidth) / (self._rect.width - 2 * self._borderwidth)
             elif self.orientation == "vertical":
                 percent = 1.0 - (mouse[1] - self._borderwidth) / (self._rect.height - 2 * self._borderwidth)
-
-            value = self._minimum + percent * (self._maximum - self._maximum)
+            value = self._minimum + percent * (self._maximum - self._minimum)
             self.set(value)
 
     def _perform_update_(self, delta, *args, **kwargs):
-        """Update logic for Progressbar (not used)."""
+        """Update logic for Progressbar (handles indeterminate animation).
+
+        Args:
+            delta (float): Time since last update (seconds).
+        """
+        if self._mode == "indeterminate" and self._indeterminate:
+            now = time.time()
+            elapsed = now - self._last_update
+            self._last_update = now
+            bar_length = self._rect.width if self.orientation == "horizontal" else self._rect.height
+            self._indet_pos += self._indet_speed * elapsed
+            if self._indet_pos > bar_length:
+                self._indet_pos = 0.0
+            self._dirty = True
 
     def _configure_get_(self, attribute: str) -> Any:
+        """Get configuration attribute value.
+
+        Args:
+            attribute (str): Attribute name.
+
+        Returns:
+            Any: Attribute value.
+        """
         if attribute is not None:
             if attribute == "value":
                 return self._value
@@ -279,32 +391,33 @@ class Progressbar(Widget):
                 return self._maximum
             if attribute == "orientation":
                 return self.orientation
-
             return super()._configure_get_(attribute)
 
     def _configure_set_(self, **kwargs) -> None:
+        """Set configuration attributes.
 
+        Args:
+            **kwargs: Attribute values to set.
+        """
         if "value" in kwargs:
-            self.set_value(kwargs["value"])
+            self.set(kwargs["value"])
         if "minimum" in kwargs:
             self._minimum = kwargs["minimum"]
-            self.set_value(self._value)
+            self.set(self._value)
         if "maximum" in kwargs:
             self._maximum = kwargs["maximum"]
-            self.set_value(self._value)
+            self.set(self._value)
         if "orientation" in kwargs:
             self.orientation = kwargs["orientation"]
-
         return super()._configure_set_(**kwargs)
 
     # endregion
 
 
 # --------------------------------------------------------------------
-# testing and demonstration stuff
+# Example usage and demonstration
 
 if __name__ == "__main__":
-
     pygame.init()
     pygame.font.init()
 
@@ -321,11 +434,9 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
             progress.handle(event)
         progress.update(delta)
 
         screen.fill("white")
         progress.draw()
-
         pygame.display.flip()

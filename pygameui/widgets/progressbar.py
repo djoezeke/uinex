@@ -87,11 +87,11 @@ class Progressbar(Widget):
             master (Widget or pygame.Surface, optional): Parent widget or surface.
 
             length (int, optional):
-                Specifies the length of the long axis of the floodgauge.
+                Specifies the length of the long axis of the progressbar.
                 (width if orientation = horizontal, height if if vertical);
 
             thickness (int, optional):
-                Specifies the length of the long axis of the floodgauge.
+                Specifies the length of the long axis of the progressbar.
                 (height if orientation = horizontal, width if if vertical);
 
             maximum (int or float): Maximum value. Defaults to 100.
@@ -230,7 +230,8 @@ class Progressbar(Widget):
                 rect.height - 2 * self._borderwidth,
             )
             pygame.draw.rect(surface, foreground, fill_rect)
-        else:
+
+        elif self.orientation == "vertical":
             fill_height = int((rect.height - 2 * self._borderwidth) * percent)
             fill_rect = pygame.Rect(
                 rect.left + self._borderwidth,
@@ -243,13 +244,27 @@ class Progressbar(Widget):
         # Draw text (percentage) if enabled
         if self._text:
             percent_val = int(percent * 100)
-            text = f"{percent_val}%"
+            if self._mask:
+                text = self._mask.format(percent_val)
+            else:
+                text = f"{percent_val}%"
             txt_surf = self._font.render(text, True, self._theme["text_color"])
             txt_rect = txt_surf.get_rect(center=rect.center)
             surface.blit(txt_surf, txt_rect)
 
     def _handle_event_(self, event, *args, **kwargs):
-        """Progressbar does not handle events by default."""
+        """Handle mouse events for interactive value setting (optional)."""
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mouse = (event.pos[0] - self._rect.x, event.pos[1] - self._rect.y)
+
+            if self.orientation == "horizontal":
+                percent = (mouse[0] - self._borderwidth) / (self._rect.width - 2 * self._borderwidth)
+            elif self.orientation == "vertical":
+                percent = 1.0 - (mouse[1] - self._borderwidth) / (self._rect.height - 2 * self._borderwidth)
+
+            value = self._minimum + percent * (self._maximum - self._maximum)
+            self.set(value)
 
     def _perform_update_(self, delta, *args, **kwargs):
         """Update logic for Progressbar (not used)."""
@@ -297,7 +312,7 @@ if __name__ == "__main__":
     pygame.display.set_caption("PygameUI Progressbar")
     clock = pygame.time.Clock()
 
-    progress = Progressbar(master=screen, text="Pro", value=20, orientation="vertical")
+    progress = Progressbar(master=screen, text="Pro", value=20, orientation="horizontal", mask="{}% Storage Used")
     progress.pack()
 
     running: bool = True

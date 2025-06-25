@@ -89,7 +89,7 @@ class Progressbar(Widget):
     def __init__(
         self,
         master: Optional[Any] = None,
-        text: str = None,
+        text: str = "progress",
         length: int = 200,
         thickness: int = 24,
         mask: Optional[str] = None,

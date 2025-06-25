@@ -210,7 +210,7 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         self._font = self._kwarg_get(kwargs, "font", self._font)
         self._image = self._kwarg_get(kwargs, "image", self._image)
         self._underline = self._kwarg_get(kwargs, "underline", self._underline)
-        self._wraplength = self._kwarg_get(kwargs, "wraplength", self._wraplength)
+        # self._wraplength = self._kwarg_get(kwargs, "wraplength", self._wraplength)
 
         # hover_color, select_color
         # text_color, disable_text_color, select_text_color
@@ -231,8 +231,8 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
             return self._font
         if attribute == "image":
             return self._image
-        if attribute == "wraplength":
-            return self._wraplength
+        # if attribute == "wraplength":
+        #     return self._wraplength
         if attribute == "underline":
             return self._underline
 

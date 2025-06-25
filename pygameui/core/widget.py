@@ -579,7 +579,7 @@ class Widget(Place, Grid, Pack):
 
     def mainloop(self, *args, surface: Surface = None, **kwargs) -> None:
         """
-        Draw the widget on the given surface.
+        Draw the widget on the given surface. Basically for testing.
 
         Args:
             surface (pygame.Surface, optional): The surface to draw on.
@@ -588,12 +588,15 @@ class Widget(Place, Grid, Pack):
         pygame.font.init()
 
         fps = kwargs.get("fps", 60)
+        assert isinstance(fps, int)
 
         if surface is None:
-            surface = pygame.display.set_mode(self.surface.get_size())
-
-        assert isinstance(fps, int)
-        assert isinstance(surface, pygame.Surface)
+            surface = pygame.display.set_mode((self._rect.width + 100, self._rect.height + 100))
+            pygame.display.set_caption(f"PygameUI {self.__class__.__name__} ")
+            self._master = surface
+            self.pack(anchor="center")
+        else:
+            assert isinstance(surface, pygame.Surface)
 
         clock = pygame.time.Clock()
 
@@ -607,7 +610,7 @@ class Widget(Place, Grid, Pack):
 
                 self.handle(event)
             self.update(delta)
-            self.draw(surface)
+            self.draw()
             pygame.display.flip()
 
     def hide(self) -> None:

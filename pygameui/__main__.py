@@ -13,14 +13,6 @@ import sys
 import pygame
 
 
-# # In Button.__init__:
-# theme = ThemeManager.theme.get("Button", {})
-# self.background = background or theme.get("background", (58, 141, 255))
-# self.foreground = foreground or theme.get("foreground", (245, 247, 250))
-# self.border_radius = border_radius if border_radius is not None else theme.get("border_radius", 8)
-# # ...and so on for other style properties
-
-
 def initialize_pygame():
     """
     Initialize Pygame and its font module.
@@ -41,7 +33,7 @@ def create_window(width: int = 800, height: int = 600) -> pygame.Surface:
         pygame.Surface: The created window surface.
     """
     window = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("PygameUI Main Module")
+    pygame.display.set_caption("PygameUI Widgets")
     return window
 
 

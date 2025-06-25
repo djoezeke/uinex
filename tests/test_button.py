@@ -160,6 +160,7 @@ class TestButton:
         """Test setconfig and getconfig methods."""
         button = Button(master=screen, width=100, height=40, text="Test")
         # button.setconfig(text="Updated", underline=True)
+        button.setconfig(text="Updated")
         assert button.getconfig("text") == "Updated"
         # assert button.getconfig("underline") is True
 

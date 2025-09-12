@@ -65,24 +65,20 @@ docs = [
   "sphinx",
 ]
 
-[tool.setuptools.packages.find]
-where="."
-exclude=['test',]
-include=["pygameui", "pygameui.core", "pygameui.widget", "pygameui.utils"]
+[tool.uv.sources]
+pygameui = { path = "../PygameUI", editable = true }
 
-[tool.setuptools.package-data]
-"pygameui.assets.themes" = ["*.json"]
-"pygameui.assets" = ["**/*"]
+# Configure Ruff's linting rules
+[tool.ruff]
+select = ["E", "W", "F", "I"] # Example: select error, warning, flake8-bugbear, and isort rules
+ignore = ["E501"] # Example: ignore line length errors
+line-length = 120 # Example: set line length
 
-[tool.black]
-line-length = 120
-target-version = ['py312']
-
-[tool.isort]
-profile = "black"
-line-length = 120
-known_first_party = ["pygameui"]
-skip_glob = "**/__init__.py"
-
-[tool.setuptools.dynamic]
-version = {attr = "pygameui.__version__"}
+# Further linting configurations
+[tool.ruff.lint]
+unfixable = ["F841"] # Example: prevent fixing of unused local variables
+    
+# Configure Ruff's formatter
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

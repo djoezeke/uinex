@@ -1,11 +1,9 @@
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "pygamui"
-dynamic = ["version"]
-dependencies = ["pygame"]
+name = "pygameui"
+version = "0.1.0"
+dependencies = [
+    "pygame",
+]
 authors = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
   {name = "PygameUI Contributers"},
@@ -17,7 +15,7 @@ description = "Create modern looking GUIs with pygame."
 long_description = "A modern and customizable pygame UI-library."
 long_description_content_type = "text/markdown"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.13"
 keywords=[
   "pygame", "pygameui", "game ui", "2d", "games", "development", "gui", "library"
 ]
@@ -42,6 +40,13 @@ classifiers = [
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
+
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
+
+[project.scripts]
+pygameui = "pygameui.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/djoezeke/pygameui"

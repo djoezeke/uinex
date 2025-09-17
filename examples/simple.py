@@ -7,7 +7,6 @@ from uinex import Label, Button, Separator
 # PygameUI Simple Widget Demonstration.
 
 if __name__ == "__main__":
-
     pygame.init()
     pygame.font.init()
 

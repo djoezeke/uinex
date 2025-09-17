@@ -129,7 +129,19 @@ class Meter(Progressbar):
             width = height = max(width, height)
 
         Progressbar.__init__(
-            self, master, text, width, height, mask, value, minimum, maximum, font, mode, style, **kwargs
+            self,
+            master,
+            text,
+            width,
+            height,
+            mask,
+            value,
+            minimum,
+            maximum,
+            font,
+            mode,
+            style,
+            **kwargs,
         )
 
     # region Private
@@ -147,7 +159,6 @@ class Meter(Progressbar):
         """
 
         if self.orientation == "circular":
-
             foreground = self._theme["bar_color"]
             background = self._theme["background"]
 
@@ -209,7 +220,6 @@ class Meter(Progressbar):
 # testing and demonstration stuff
 
 if __name__ == "__main__":
-
     pygame.init()
     pygame.font.init()
 

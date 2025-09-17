@@ -71,7 +71,7 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
         placeholder: str = "",
         on_change: Optional[Callable[[str], None]] = None,
         disabled: bool = False,
-        **kwargs
+        **kwargs,
     ):
         self._text = text
         self._placeholder = placeholder
@@ -139,7 +139,11 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
         state = (
             "disabled"
             if self._disabled
-            else "focused" if self._focused else "hovered" if self.hovered else "normal"
+            else "focused"
+            if self._focused
+            else "hovered"
+            if self.hovered
+            else "normal"
         )
         entry_theme = theme.get(state, theme.get("normal", {}))
 

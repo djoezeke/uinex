@@ -122,7 +122,19 @@ class Floodgauge(Progressbar):
         """
 
         Progressbar.__init__(
-            self, master, text, length, thickness, mask, value, minimum, maximum, font, mode, orientation, **kwargs
+            self,
+            master,
+            text,
+            length,
+            thickness,
+            mask,
+            value,
+            minimum,
+            maximum,
+            font,
+            mode,
+            orientation,
+            **kwargs,
         )
 
     # region Private
@@ -158,7 +170,6 @@ class Floodgauge(Progressbar):
 # testing and demonstration stuff
 
 if __name__ == "__main__":
-
     pygame.init()
     pygame.font.init()
 

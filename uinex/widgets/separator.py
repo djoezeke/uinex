@@ -54,7 +54,6 @@ class Separator(Widget):
         orientation: Literal["horizontal", "vertical"] = "horizontal",
         **kwargs,
     ):
-
         if orientation == "horizontal":
             width = length if length is not None else 100
             height = thickness
@@ -98,7 +97,6 @@ class Separator(Widget):
 # testing and demonstration stuff
 
 if __name__ == "__main__":
-
     pygame.init()
     pygame.font.init()
 

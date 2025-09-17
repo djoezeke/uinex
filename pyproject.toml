@@ -6,7 +6,7 @@ build-backend = "uv_build"
 name = "uinex"
 version = "0.1.0"
 dependencies = [
-    "pillow>=11.3.0",
+    "pillow",
     "pygame",
 ]
 authors = [
@@ -37,7 +37,6 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Application Frameworks",
   "Operating System :: Microsoft :: Windows",
 ]
-
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
@@ -51,17 +50,33 @@ Issues = "https://github.com/djoezeke/uinex/issues"
 "Release Notes" = "https://github.com/djoezeke/uinex/releases"
 Source = "https://github.com/djoezeke/uinex"
 
+[dependency-groups]
+dev = []
+
 [project.optional-dependencies]
-dev = [
-  "pytest",
-]
+dev = []
 docs = []
+
+[tool.uv]
+package = true 
 
 [tool.uv.sources]
 uinex = { path = "../uinex", editable = true }
 
+[tool.uv.build-backend]
+module-name = "uinex"
+module-root = ""
+source-include = ["*.md",]
+source-exclude = ["tests/",]
+wheel-exclude = ["*.bin"]
+namespaces = false
+
 # Configure Ruff's linting rules
 [tool.ruff]
+src = ["uinex", "examples", "tests"]
+fix = true
+show-fixes = true
+output-format = "full"
 select = ["E", "W", "F", "I"] # Example: select error, warning, flake8-bugbear, and isort rules
 ignore = ["E501"] # Example: ignore line length errors
 line-length = 120 # Example: set line length
@@ -69,7 +84,22 @@ line-length = 120 # Example: set line length
 # Further linting configurations
 [tool.ruff.lint]
 unfixable = ["F841"] # Example: prevent fixing of unused local variables
-    
+  select = [
+    "B",  # flake8-bugbear
+    "E",  # pycodestyle error
+    "F",  # pyflakes
+    "I",  # isort
+    "UP",  # pyupgrade
+    "W",  # pycodestyle warning
+]
+ignore = [
+    "UP038",  # keep isinstance tuple
+]
+  
+[tool.ruff.lint.isort]
+force-single-line = true
+order-by-type = false
+
 # Configure Ruff's formatter
 [tool.ruff.format]
 quote-style = "double"

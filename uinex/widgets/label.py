@@ -94,7 +94,7 @@ class Label(Widget, HoverableMixin):
             "text_color": (255, 255, 255),
             "hover_text_color": (0, 90, 180),
             "disable_text_color": (0, 90, 180),
-            "hover_color": (0, 120, 215), # background
+            "hover_color": (0, 120, 215),  # background
         }
 
         self._theme.update(custom_theme)
@@ -153,7 +153,11 @@ class Label(Widget, HoverableMixin):
         Returns:
             pygame.Color: The foreground color.
         """
-        return self._theme["text_color"] if self._state == "hovered" else self._theme["text_color"]
+        return (
+            self._theme["text_color"]
+            if self._state == "hovered"
+            else self._theme["text_color"]
+        )
 
     def _get_state_background_(self) -> pygame.Color:
         """Get the background color based on the current state.
@@ -161,7 +165,11 @@ class Label(Widget, HoverableMixin):
         Returns:
             pygame.Color: The background color.
         """
-        return self._theme["hover_color"] if self._state == "hovered" else self._theme["background"]
+        return (
+            self._theme["hover_color"]
+            if self._state == "hovered"
+            else self._theme["background"]
+        )
 
     def _configure_set_(self, **kwargs) -> None:
         """Configure method to set custom attributes.
@@ -169,11 +177,11 @@ class Label(Widget, HoverableMixin):
         Args:
             **kwargs: Attributes to set.
         """
-        self._text = self._kwarg_get(kwargs,"text",self._text)
-        self._font = self._kwarg_get(kwargs,"font",self._font)
-        self._image = self._kwarg_get(kwargs,"image",self._image)
-        self._underline = self._kwarg_get(kwargs,"underline",self._underline)
-        self._wraplength = self._kwarg_get(kwargs,"wraplength",self._wraplength)
+        self._text = self._kwarg_get(kwargs, "text", self._text)
+        self._font = self._kwarg_get(kwargs, "font", self._font)
+        self._image = self._kwarg_get(kwargs, "image", self._image)
+        self._underline = self._kwarg_get(kwargs, "underline", self._underline)
+        self._wraplength = self._kwarg_get(kwargs, "wraplength", self._wraplength)
 
         # hover_color
         # text_color, disable_text_color
@@ -200,16 +208,16 @@ class Label(Widget, HoverableMixin):
             return self._wraplength
         if attribute == "underline":
             return self._underline
-        
+
         if attribute == "text_color":
             return
         if attribute == "hover_text_color":
-            return 
+            return
         if attribute == "disable_text_color":
-            return 
+            return
 
         if attribute == "hover_color":
-            return   
+            return
 
         return super()._configure_get_(attribute)
 
@@ -275,14 +283,13 @@ class Label(Widget, HoverableMixin):
 # Testing and demonstration
 
 if __name__ == "__main__":
-
     pygame.init()
     pygame.font.init()
 
     screen = pygame.display.set_mode((480, 280))
     pygame.display.set_caption("PygameUI Label")
 
-    label = Label(master=screen, text="My Label",tooltip="Say hello")
+    label = Label(master=screen, text="My Label", tooltip="Say hello")
 
     running: bool = True
     while running:

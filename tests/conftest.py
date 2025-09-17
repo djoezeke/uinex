@@ -3,7 +3,6 @@ import pytest
 
 
 def pytest_report_header(config):
-
     if config.get_verbosity() > 0:
         return ["info1: did you know that this is a fun project", "did you?"]
     else:
@@ -11,7 +10,9 @@ def pytest_report_header(config):
 
 
 def pytest_addoption(parser):
-    parser.addoption("--runslow", action="store_true", default=False, help="run slow tests")
+    parser.addoption(
+        "--runslow", action="store_true", default=False, help="run slow tests"
+    )
 
 
 def pytest_configure(config):

@@ -5,7 +5,6 @@ from uinex.core.widget import Widget
 
 
 class TestWidget:
-
     def test_widget_creation(self, screen):
         """Test if the widget can be created."""
         widget = Widget(master=screen, width=200, height=50)

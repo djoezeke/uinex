@@ -22,8 +22,8 @@ License: MIT
 
 import pygame
 
-from pygameui.core.widget import Widget
-from pygameui.core.themes import ThemeManager
+from uinex.core.widget import Widget
+from uinex.core.themes import ThemeManager
 
 __all__ = ["Scale"]
 

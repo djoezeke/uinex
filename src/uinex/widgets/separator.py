@@ -19,7 +19,7 @@ from typing import Literal, Optional, Union, Any
 
 import pygame
 
-from pygameui.core.widget import Widget
+from uinex.core.widget import Widget
 
 __all__ = ["Separator"]
 

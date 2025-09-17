@@ -27,9 +27,9 @@ from typing import Optional, Callable, Any
 
 import pygame
 
-from pygameui.core.widget import Widget
-from pygameui.core.themes import ThemeManager
-from pygameui.core.mixins import HoverableMixin, ClickableMixin
+from uinex.core.widget import Widget
+from uinex.core.themes import ThemeManager
+from uinex.core.mixins import HoverableMixin, ClickableMixin
 
 
 class CheckButton(Widget, HoverableMixin, ClickableMixin):

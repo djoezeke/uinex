@@ -22,8 +22,8 @@ from pygame import Surface
 import pygame
 import time
 
-from pygameui.core.geometry import Grid, Pack, Place
-from pygameui.core.exceptions import PygameuiError
+from uinex.core.geometry import Grid, Pack, Place
+from uinex.core.exceptions import PygameuiError
 
 __all__ = ["Widget"]
 

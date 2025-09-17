@@ -1,7 +1,7 @@
 """PygameUI Simple Widgets Demo"""
 
 import pygame
-from pygameui import Label, Button, Separator
+from uinex import Label, Button, Separator
 
 # --------------------------------------------------------------------
 # PygameUI Simple Widget Demonstration.
@@ -12,7 +12,7 @@ if __name__ == "__main__":
     pygame.font.init()
 
     screen = pygame.display.set_mode((560, 480))
-    pygame.display.set_caption("Simple Demo | PygameUI")
+    pygame.display.set_caption("Simple Demo | Uinex")
     # pygame.display.set_icon()
 
     BACKGROUND = (0, 233, 45)

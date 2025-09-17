@@ -1,6 +1,6 @@
 import os
 from setuptools import setup, find_packages
-from pygameui.version import vernum
+from uinex.version import vernum
 
 
 def readme():

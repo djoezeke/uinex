@@ -27,10 +27,10 @@ from typing import Union, Tuple, Callable, Optional, Any
 
 import pygame
 
-from pygameui.core.themes import ThemeManager
-from pygameui.core.widget import Widget
+from uinex.core.themes import ThemeManager
+from uinex.core.widget import Widget
 
-from pygameui.core.mixins import (
+from uinex.core.mixins import (
     HoverableMixin,
     DoubleClickMixin,
     ClickableMixin,

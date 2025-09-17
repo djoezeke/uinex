@@ -1,7 +1,7 @@
 import pygame
 import pytest
 
-from pygameui.core.widget import Widget
+from uinex.core.widget import Widget
 
 
 class DummyWidget(Widget):

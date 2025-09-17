@@ -66,35 +66,35 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributo
 License: MIT
 """
 
-from pygameui.version import vernum
+from uinex.version import vernum
 
 __version__ = str(vernum)
 
 # Base Classes
-from pygameui.core.widget import Widget
+from uinex.core.widget import Widget
 
 # Theme/Manager Classes
-from pygameui.core.themes import ThemeManager
+from uinex.core.themes import ThemeManager
 
 # Widget Classes
-from pygameui.widgets.frame import Frame
-from pygameui.widgets.label import Label
-from pygameui.widgets.entry import Entry
-from pygameui.widgets.meter import Meter
-from pygameui.widgets.scale import Scale
-from pygameui.widgets.button import Button
-from pygameui.widgets.textbox import TextBox
-from pygameui.widgets.spinbox import SpinBox
-from pygameui.widgets.listbox import ListBox
-from pygameui.widgets.sizegrip import SizeGrip
-from pygameui.widgets.treeview import TreeView
-from pygameui.widgets.combobox import ComboBox
-from pygameui.widgets.separator import Separator
-from pygameui.widgets.menubutton import MenuButton
-from pygameui.widgets.floodgauge import Floodgauge
-from pygameui.widgets.checkbutton import CheckButton
-from pygameui.widgets.radiobutton import RadioButton
-from pygameui.widgets.progressbar import Progressbar
+from uinex.widgets.frame import Frame
+from uinex.widgets.label import Label
+from uinex.widgets.entry import Entry
+from uinex.widgets.meter import Meter
+from uinex.widgets.scale import Scale
+from uinex.widgets.button import Button
+from uinex.widgets.textbox import TextBox
+from uinex.widgets.spinbox import SpinBox
+from uinex.widgets.listbox import ListBox
+from uinex.widgets.sizegrip import SizeGrip
+from uinex.widgets.treeview import TreeView
+from uinex.widgets.combobox import ComboBox
+from uinex.widgets.separator import Separator
+from uinex.widgets.menubutton import MenuButton
+from uinex.widgets.floodgauge import Floodgauge
+from uinex.widgets.checkbutton import CheckButton
+from uinex.widgets.radiobutton import RadioButton
+from uinex.widgets.progressbar import Progressbar
 
 # Utility Functions
 

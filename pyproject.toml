@@ -1,7 +1,12 @@
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
+
 [project]
-name = "pygameui"
+name = "uinex"
 version = "0.1.0"
 dependencies = [
+    "pillow>=11.3.0",
     "pygame",
 ]
 authors = [
@@ -17,7 +22,7 @@ long_description_content_type = "text/markdown"
 readme = "README.md"
 requires-python = ">=3.13"
 keywords=[
-  "pygame", "pygameui", "game ui", "2d", "games", "development", "gui", "library"
+  "pygame", "uinex", "game ui", "2d", "games", "development", "gui", "library"
 ]
 classifiers = [
   "Framework :: PygameUI",
@@ -41,32 +46,24 @@ classifiers = [
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
-[build-system]
-requires = ["uv_build>=0.8.15,<0.9.0"]
-build-backend = "uv_build"
-
 [project.scripts]
-pygameui = "pygameui.__main__:main"
+uinex = "uinex.__main__:main"
 
 [project.urls]
-Homepage = "https://github.com/djoezeke/pygameui"
-Documentation = "https://github.com/djoezeke/pygameui#readme"
-Issues = "https://github.com/djoezeke/pygameui/issues"
-"Release Notes" = "https://github.com/djoezeke/pygameui/releases"
-Source = "https://github.com/djoezeke/pygameui"
+Homepage = "https://github.com/djoezeke/uinex"
+Documentation = "https://github.com/djoezeke/uinex#readme"
+Issues = "https://github.com/djoezeke/uinex/issues"
+"Release Notes" = "https://github.com/djoezeke/uinex/releases"
+Source = "https://github.com/djoezeke/uinex"
 
 [project.optional-dependencies]
 dev = [
   "pytest",
-  "black",
-  "isort"
 ]
-docs = [
-  "sphinx",
-]
+docs = []
 
 [tool.uv.sources]
-pygameui = { path = "../PygameUI", editable = true }
+uinex = { path = "../uinex", editable = true }
 
 # Configure Ruff's linting rules
 [tool.ruff]

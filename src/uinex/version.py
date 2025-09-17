@@ -14,7 +14,7 @@ class Version(tuple):
 
     def __repr__(self) -> str:
         fields = (f"{fld}={val}" for fld, val in zip(self.fields, self))
-        return f'{self.__class__.__name__}({", ".join(fields)})'
+        return f"{self.__class__.__name__}({', '.join(fields)})"
 
     def __str__(self) -> str:
         return f"{self[0]}.{self[1]}.{self[2]}"
@@ -24,4 +24,4 @@ class Version(tuple):
     patch = property(lambda self: self[2])
 
 
-vernum = Version(25, 4, 17)
+vernum = Version(0, 1, 0)

@@ -36,9 +36,8 @@ classifiers = [
   "Topic :: Multimedia :: Graphics",
   "Topic :: Software Development :: Libraries :: Application Frameworks",
   "Operating System :: Microsoft :: Windows",
-  "Operating System :: Linux",
-  "Operating System :: MacOS",
 ]
+
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
 

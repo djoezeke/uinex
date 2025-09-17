@@ -25,7 +25,6 @@ keywords=[
   "pygame", "uinex", "game ui", "2d", "games", "development", "gui", "library"
 ]
 classifiers = [
-  "Framework :: PygameUI",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
@@ -39,8 +38,6 @@ classifiers = [
   "Operating System :: Microsoft :: Windows",
   "Operating System :: Linux",
   "Operating System :: MacOS",
-  "Operating System :: OS Independent",
-  "Typing :: Typed",
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]

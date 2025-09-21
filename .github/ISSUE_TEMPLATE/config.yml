@@ -1,8 +1,7 @@
 blank_issues_enabled: false
 
 contact_links:
-
-  - name: Uinex 
+  - name: Uinex
     url: https://github.com/djoezeke/uinex
     about: Modern GUIs with pygame.
 

@@ -1,11 +1,3 @@
-def readme():
-    fname = "README.md"
-    if os.path.exists(fname):
-        with open(fname, encoding="utf-8") as f:
-            return f.read()
-    return ""
-
-
 import os
 from setuptools import setup, find_packages
 from uinex.version import vernum
@@ -39,16 +31,12 @@ setup(
     },
     license="MIT",
     package_dir={"": "src"},
-    packages=find_packages(where="src"),
-    install_requires=[
-        "pillow>=11.3.0",
-        "pygame",
-    ],
+    packages=find_packages(where="."),
+    install_requires=["pygame>=2.6.1", "pillow>=11.3.0"],
     extras_require={
-        "dev": ["pytest", "build", "twine", "wheel"],
+        "dev": [],
         "docs": [],
     },
-    python_requires=">=3.13",
     keywords=[
         "pygame",
         "uinex",
@@ -60,24 +48,20 @@ setup(
         "library",
     ],
     platforms=["any"],
+    python_requires=">=3.13",
     classifiers=[
-        "Framework :: Uinex",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Operating System :: Microsoft :: Windows",
-        "Operating System :: Linux",
-        "Operating System :: MacOS",
+        "Programming Language :: Python :: 3.13",
         "Operating System :: OS Independent",
         "Topic :: Games/Entertainment",
         "Topic :: Multimedia :: Graphics",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
-        "Typing :: Typed",
     ],
+    setup_requires=["setuptools", "wheel"],
+    options={"bdist_wheel": {"universal": False}},
     include_package_data=True,
     zip_safe=False,
 )

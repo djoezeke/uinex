@@ -137,9 +137,7 @@ def _apply_theme_to_all_widgets():
         Progressbar,
     ]
     for widget_cls in widget_classes:
-        if hasattr(widget_cls, "set_theme") and callable(
-            getattr(widget_cls, "set_theme")
-        ):
+        if hasattr(widget_cls, "set_theme") and callable(getattr(widget_cls, "set_theme")):
             widget_cls.set_theme(ThemeManager.theme)
         # Optionally, update all existing widget instances if you keep a registry
 

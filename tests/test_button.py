@@ -129,9 +129,7 @@ class TestButton:
 
     def test_button_font_size(self, screen):
         """Test if the button font size can be set."""
-        button = Button(
-            master=screen, width=200, height=50, text="Click Me", font_size=30
-        )
+        button = Button(master=screen, width=200, height=50, text="Click Me", font_size=30)
         # assert font_size == 30
         button.draw()
         pygame.display.flip()

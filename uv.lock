@@ -83,7 +83,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pillow", specifier = ">=11.3.0" },
+    { name = "pillow" },
     { name = "pygame" },
 ]
 provides-extras = ["dev", "docs"]

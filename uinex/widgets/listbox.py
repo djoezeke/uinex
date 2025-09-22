@@ -100,9 +100,7 @@ class ListBox(Widget):
             if idx in self.selected:
                 pygame.draw.rect(surface, self.select_color, item_rect)
             item_surf = self.font.render(str(self.items[idx]), True, self.foreground)
-            surface.blit(
-                item_surf, (8, y + (self.item_height - item_surf.get_height()) // 2)
-            )
+            surface.blit(item_surf, (8, y + (self.item_height - item_surf.get_height()) // 2))
             # Optional: draw separator line
             pygame.draw.line(
                 surface,

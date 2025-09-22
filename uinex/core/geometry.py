@@ -122,9 +122,7 @@ class Pack:
     @ipadx.setter
     def ipadx(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in x direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in x direction must be a non-negative integer")
         self._ipadx = value
 
     @property
@@ -137,9 +135,7 @@ class Pack:
     @ipady.setter
     def ipady(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in y direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in y direction must be a non-negative integer")
         self._ipady = value
 
     @property
@@ -371,9 +367,7 @@ class Grid:
     @ipadx.setter
     def ipadx(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in x direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in x direction must be a non-negative integer")
         self._ipadx = value
 
     @property
@@ -384,9 +378,7 @@ class Grid:
     @ipady.setter
     def ipady(self, value: int):
         if value < 0:
-            raise ValueError(
-                "Internal padding in y direction must be a non-negative integer"
-            )
+            raise ValueError("Internal padding in y direction must be a non-negative integer")
         self._ipady = value
 
     @property
@@ -502,12 +494,8 @@ class Grid:
         # Internal and external padding
         rect.width += 2 * (self._ipadx or 0)
         rect.height += 2 * (self._ipady or 0)
-        rect.width += 2 * (
-            self._padx if isinstance(self._padx, (int, float)) else sum(self._padx)
-        )
-        rect.height += 2 * (
-            self._pady if isinstance(self._pady, (int, float)) else sum(self._pady)
-        )
+        rect.width += 2 * (self._padx if isinstance(self._padx, (int, float)) else sum(self._padx))
+        rect.height += 2 * (self._pady if isinstance(self._pady, (int, float)) else sum(self._pady))
 
         # Sticky (align inside cell)
         if self._sticky == "n":

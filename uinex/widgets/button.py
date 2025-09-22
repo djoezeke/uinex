@@ -284,15 +284,11 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         # surface.blit(shadow_surf, shadow_rect.topleft)
 
         # Draw filled rounded rectangle for button background
-        pygame.draw.rect(
-            surface, background, self._rect, border_radius=self._border_radius
-        )
+        pygame.draw.rect(surface, background, self._rect, border_radius=self._border_radius)
 
         # Draw border (rounded)
         if self._borderwidth > 0:
-            pygame.draw.rect(
-                surface, bordercolor, self._rect, self._borderwidth, self._border_radius
-            )
+            pygame.draw.rect(surface, bordercolor, self._rect, self._borderwidth, self._border_radius)
 
         # Draw optional image (left of text)
         text_offset_x = 0
@@ -362,9 +358,7 @@ if __name__ == "__main__":
     def command(hello):
         print(f"Clicked {hello.text}")
 
-    button = Button(
-        master=screen, text="Click Me", tooltip="Say hello", command=command
-    )
+    button = Button(master=screen, text="Click Me", tooltip="Say hello", command=command)
     button.pack()
 
     running: bool = True

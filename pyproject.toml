@@ -11,7 +11,7 @@ dependencies = [
 ]
 authors = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
-  {name = "PygameUI Contributers"},
+  {name = "Uinex Contributers"},
 ]
 maintainers = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },

@@ -207,17 +207,11 @@ class ComboBox(Widget):
                     self.dropdown_open = False
                 elif event.key == pygame.K_BACKSPACE:
                     if self._cursor_pos > 0:
-                        self.text = (
-                            self.text[: self._cursor_pos - 1]
-                            + self.text[self._cursor_pos :]
-                        )
+                        self.text = self.text[: self._cursor_pos - 1] + self.text[self._cursor_pos :]
                         self._cursor_pos -= 1
                 elif event.key == pygame.K_DELETE:
                     if self._cursor_pos < len(self.text):
-                        self.text = (
-                            self.text[: self._cursor_pos]
-                            + self.text[self._cursor_pos + 1 :]
-                        )
+                        self.text = self.text[: self._cursor_pos] + self.text[self._cursor_pos + 1 :]
                 elif event.key == pygame.K_LEFT:
                     if self._cursor_pos > 0:
                         self._cursor_pos -= 1
@@ -225,11 +219,7 @@ class ComboBox(Widget):
                     if self._cursor_pos < len(self.text):
                         self._cursor_pos += 1
                 elif event.unicode:
-                    self.text = (
-                        self.text[: self._cursor_pos]
-                        + event.unicode
-                        + self.text[self._cursor_pos :]
-                    )
+                    self.text = self.text[: self._cursor_pos] + event.unicode + self.text[self._cursor_pos :]
                     self._cursor_pos += 1
                 self._dirty = True
         elif self.dropdown_open and event.type == pygame.KEYDOWN:
@@ -291,11 +281,7 @@ class ComboBox(Widget):
             self._dirty = True
         if "selected" in kwargs:
             self.selected = kwargs["selected"]
-            self.text = (
-                self.items[self.selected]
-                if 0 <= self.selected < len(self.items)
-                else ""
-            )
+            self.text = self.items[self.selected] if 0 <= self.selected < len(self.items) else ""
             self._dirty = True
         if "text" in kwargs:
             self.text = kwargs["text"]

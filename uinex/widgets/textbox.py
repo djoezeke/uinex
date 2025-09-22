@@ -171,18 +171,14 @@ class TextBox(Widget):
                 if self.selection and self.selection[0] != self.selection[1]:
                     self._delete_selection()
                 elif self.cursor_pos > 0:
-                    self.text = (
-                        self.text[: self.cursor_pos - 1] + self.text[self.cursor_pos :]
-                    )
+                    self.text = self.text[: self.cursor_pos - 1] + self.text[self.cursor_pos :]
                     self.cursor_pos -= 1
                     self._trigger_on_change()
             elif event.key == pygame.K_DELETE:
                 if self.selection and self.selection[0] != self.selection[1]:
                     self._delete_selection()
                 elif self.cursor_pos < len(self.text):
-                    self.text = (
-                        self.text[: self.cursor_pos] + self.text[self.cursor_pos + 1 :]
-                    )
+                    self.text = self.text[: self.cursor_pos] + self.text[self.cursor_pos + 1 :]
                     self._trigger_on_change()
             elif event.key == pygame.K_LEFT:
                 if self.cursor_pos > 0:
@@ -214,9 +210,7 @@ class TextBox(Widget):
                 if self.multiline:
                     self._insert_text("\n")
                 # else: ignore in single-line
-            elif event.unicode and (
-                self.max_length is None or len(self.text) < self.max_length
-            ):
+            elif event.unicode and (self.max_length is None or len(self.text) < self.max_length):
                 self._insert_text(event.unicode)
             self._dirty = True
 

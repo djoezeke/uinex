@@ -1,11 +1,15 @@
 blank_issues_enabled: false
 
 contact_links:
-  - name: Uinex
+  - name: Uinex Engine 🎮
     url: https://github.com/djoezeke/uinex
-    about: Modern GUIs with pygame.
+    about: Modern Pygame Gui with Python.
 
-  - name: Uinex Issues | Bug Bounty
+  - name: Uinex Discussions 💖
+    url: https://github.com/djoezeke/uinex/discussions
+    about: The "Discussions" forum is where you want to start.
+
+  - name: Uinex Issues | Bug Bounty 🐞
     url: https://github.com/djoezeke/uinex/issues
     about: Please report issues and vulnerabilities here.
 

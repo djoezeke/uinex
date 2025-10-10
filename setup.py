@@ -44,11 +44,31 @@ setup(
     py_modules=["uinex"],
     install_requires=["pygame>=2.6.1", "pillow>=11.3.0"],
     extras_require={
-        "dev": [],
-        "docs": [],
+        "dev": [
+            # We add uinex[standard] so `uv sync` considers the extras.
+            "uinex[standard]",
+            "ruff",  # format & check
+            "pytest",  # testing
+            "twine",  # check dist
+        ],
+        "docs": [
+            "mkdocs==1.6.1",
+            "mkdocs-material==9.6.13",
+            "mkdocstrings-python==1.16.12",
+            "mkdocs-llmstxt==0.2.0",
+        ],
     },
     python_requires=">=3.13",
-    keywords=["pygame", "uinex", "game ui", "2d", "games", "development", "gui", "library"],
+    keywords=[
+        "pygame",
+        "uinex",
+        "game ui",
+        "2d",
+        "games",
+        "development",
+        "gui",
+        "library",
+    ],
     platforms=["any"],
     classifiers=[
         "Intended Audience :: Developers",

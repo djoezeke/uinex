@@ -5,10 +5,11 @@ build-backend = "uv_build"
 [project]
 name = "uinex"
 version = "0.1.0"
-dependencies = [
-    "pillow",
-    "pygame",
-]
+description = "Create modern looking GUIs with pygame."
+long_description = "A modern and customizable pygame UI-library."
+long_description_content_type = "text/markdown"
+readme = "README.md"
+requires-python = ">=3.13"
 authors = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
   {name = "Uinex Contributers"},
@@ -16,11 +17,6 @@ authors = [
 maintainers = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
 ]
-description = "Create modern looking GUIs with pygame."
-long_description = "A modern and customizable pygame UI-library."
-long_description_content_type = "text/markdown"
-readme = "README.md"
-requires-python = ">=3.13"
 keywords=[
   "pygame", "uinex", "game ui", "2d", "games", "development", "gui", "library"
 ]
@@ -39,6 +35,10 @@ classifiers = [
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "pillow",
+    "pygame",
+]
 
 [project.scripts]
 uinex = "uinex.__main__:main"
@@ -49,19 +49,34 @@ Documentation = "https://github.com/djoezeke/uinex#readme"
 Issues = "https://github.com/djoezeke/uinex/issues"
 "Release Notes" = "https://github.com/djoezeke/uinex/releases"
 Source = "https://github.com/djoezeke/uinex"
-
-[dependency-groups]
-dev = []
+[project.optional-dependencies]
+standard = [
+    "rich>=14.1.0",
+]
 
 [project.optional-dependencies]
-dev = []
-docs = []
+standard = [
+]
+
+[dependency-groups]
+dev = [
+    # We add uinex[standard] so `uv sync` considers the extras.
+    "uinex[standard]",
+    "ruff",   # format & check
+    "pytest", # testing
+    "twine",  # check dist
+]
+docs = [
+    "mkdocs==1.6.1",
+    "mkdocs-material==9.6.13",
+    "mkdocstrings-python==1.16.12",
+    "mkdocs-llmstxt==0.2.0",
+]
 
 [tool.uv]
 package = true 
-
-[tool.uv.sources]
-uinex = { path = "../uinex", editable = true }
+required-version = ">=0.8.6"
+default-groups = ["dev", "docs"]
 
 [tool.uv.build-backend]
 module-name = "uinex"
@@ -77,9 +92,7 @@ src = ["uinex", "examples", "tests"]
 fix = true
 show-fixes = true
 output-format = "full"
-select = ["E", "W", "F", "I"] # Example: select error, warning, flake8-bugbear, and isort rules
-ignore = ["E501"] # Example: ignore line length errors
-line-length = 120 # Example: set line length
+line-length = 120 # line length
 
 # Further linting configurations
 [tool.ruff.lint]
@@ -93,12 +106,14 @@ unfixable = ["F841"] # Example: prevent fixing of unused local variables
     "W",  # pycodestyle warning
 ]
 ignore = [
+    "E501",  # ignore line length errors
     "UP038",  # keep isinstance tuple
 ]
   
 [tool.ruff.lint.isort]
 force-single-line = true
 order-by-type = false
+combine-as-imports = true
 
 # Configure Ruff's formatter
 [tool.ruff.format]

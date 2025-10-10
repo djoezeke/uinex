@@ -16,11 +16,11 @@ permissions:
 
 jobs:
   build:
-    name: Uinex Lint & Format
+    name: Uinex Test, Lint, Type Check & Format.
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.9", "3.13"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
@@ -28,11 +28,11 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Ruff Uinex Type Checking
-        run: uv run ruff check .
-      - name: Ruff Uinex Formating
-        run: uv run ruff format --diff .
+      - name: Uinex Ruff Formatting.
+        run: uv run ruff format --check --diff
+      - name: Uinex Ruff Type Checking.
+        run: uv run ruff check --fix xodex tests
       - name: Prettier Markdown Fromating
         run: npx prettier --prose-wrap always --check "**/*.md"
-      - name: Uinex Testing
+      - name: Uinex Pytest Unittesting.
         run: uv run pytest

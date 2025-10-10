@@ -1,7 +1,7 @@
 import pygame
 import pytest
 
-from uinex.widgets.button import Button
+from uinex.widget.button import Button
 
 
 class TestButton:

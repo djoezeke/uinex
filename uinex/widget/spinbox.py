@@ -22,7 +22,7 @@ License: MIT
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
 
 __all__ = ["SpinBox"]

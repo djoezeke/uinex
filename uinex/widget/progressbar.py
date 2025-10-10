@@ -28,7 +28,7 @@ from typing import Literal, Optional, Union, Any
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 
 __all__ = ["Progressbar"]
 

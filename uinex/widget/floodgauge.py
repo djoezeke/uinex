@@ -23,7 +23,7 @@ from typing import Literal, Optional, Union, Any
 
 import pygame
 
-from uinex.widgets.progressbar import Progressbar
+from uinex.widget.progressbar import Progressbar
 
 
 class Floodgauge(Progressbar):

@@ -1,7 +1,7 @@
 import pygame
 import pytest
 
-from uinex.widgets.scale import Scale
+from uinex.widget.scale import Scale
 
 
 def test_scale_creation(screen):

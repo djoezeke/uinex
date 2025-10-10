@@ -28,9 +28,9 @@ from typing import Union, Tuple, Callable, Optional, Any
 import pygame
 
 from uinex.core.themes import ThemeManager
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 
-from uinex.core.mixins import (
+from uinex.utils.mixins import (
     HoverableMixin,
     DoubleClickMixin,
     ClickableMixin,

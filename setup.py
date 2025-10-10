@@ -1,6 +1,6 @@
 import os
 from setuptools import setup, find_packages
-from uinex.version import vernum
+from uinex.utils.version import vernum
 
 
 def readme():
@@ -31,24 +31,25 @@ setup(
     },
     license="MIT",
     package_dir={"": "src"},
-    packages=find_packages(where="."),
+    packages=find_packages(
+        where=".",
+        exclude=["tests"],
+        include=[
+            "uinex",
+            "uinex.core",
+            "uinex.utils",
+            "uinex.widget",
+        ],
+    ),
+    py_modules=["uinex"],
     install_requires=["pygame>=2.6.1", "pillow>=11.3.0"],
     extras_require={
         "dev": [],
         "docs": [],
     },
-    keywords=[
-        "pygame",
-        "uinex",
-        "game ui",
-        "2d",
-        "games",
-        "development",
-        "gui",
-        "library",
-    ],
-    platforms=["any"],
     python_requires=">=3.13",
+    keywords=["pygame", "uinex", "game ui", "2d", "games", "development", "gui", "library"],
+    platforms=["any"],
     classifiers=[
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",

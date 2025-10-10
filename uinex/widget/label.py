@@ -21,9 +21,9 @@ from typing import Union, Tuple, Optional, Any
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
-from uinex.core.mixins import HoverableMixin
+from uinex.utils.mixins import HoverableMixin
 
 __all__ = ["Label"]
 

@@ -22,7 +22,7 @@ License: MIT
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
 
 __all__ = ["SpinBox"]
@@ -96,12 +96,8 @@ class SpinBox(Widget):
 
         # Button rects
         self._button_width = height
-        self._up_rect = pygame.Rect(
-            width - self._button_width, 0, self._button_width, height // 2
-        )
-        self._down_rect = pygame.Rect(
-            width - self._button_width, height // 2, self._button_width, height // 2
-        )
+        self._up_rect = pygame.Rect(width - self._button_width, 0, self._button_width, height // 2)
+        self._down_rect = pygame.Rect(width - self._button_width, height // 2, self._button_width, height // 2)
 
         super().__init__(
             master,
@@ -200,32 +196,19 @@ class SpinBox(Widget):
                 self._editing = False
             elif event.key == pygame.K_BACKSPACE:
                 if self._cursor_pos > 0:
-                    self._text = (
-                        self._text[: self._cursor_pos - 1]
-                        + self._text[self._cursor_pos :]
-                    )
+                    self._text = self._text[: self._cursor_pos - 1] + self._text[self._cursor_pos :]
                     self._cursor_pos -= 1
             elif event.key == pygame.K_DELETE:
                 if self._cursor_pos < len(self._text):
-                    self._text = (
-                        self._text[: self._cursor_pos]
-                        + self._text[self._cursor_pos + 1 :]
-                    )
+                    self._text = self._text[: self._cursor_pos] + self._text[self._cursor_pos + 1 :]
             elif event.key == pygame.K_LEFT:
                 if self._cursor_pos > 0:
                     self._cursor_pos -= 1
             elif event.key == pygame.K_RIGHT:
                 if self._cursor_pos < len(self._text):
                     self._cursor_pos += 1
-            elif event.unicode and (
-                event.unicode.isdigit()
-                or (event.unicode == "." and "." not in self._text)
-            ):
-                self._text = (
-                    self._text[: self._cursor_pos]
-                    + event.unicode
-                    + self._text[self._cursor_pos :]
-                )
+            elif event.unicode and (event.unicode.isdigit() or (event.unicode == "." and "." not in self._text)):
+                self._text = self._text[: self._cursor_pos] + event.unicode + self._text[self._cursor_pos :]
                 self._cursor_pos += 1
             self._dirty = True
 

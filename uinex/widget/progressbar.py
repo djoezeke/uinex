@@ -28,7 +28,7 @@ from typing import Literal, Optional, Union, Any
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 
 __all__ = ["Progressbar"]
 
@@ -279,15 +279,11 @@ class Progressbar(Widget):
         rect = self._rect
 
         # Draw filled rounded rectangle for button background
-        pygame.draw.rect(
-            surface, background, self._rect, border_radius=self._border_radius
-        )
+        pygame.draw.rect(surface, background, self._rect, border_radius=self._border_radius)
 
         # Draw border (rounded)
         if self._borderwidth > 0:
-            pygame.draw.rect(
-                surface, bordercolor, self._rect, self._borderwidth, self._border_radius
-            )
+            pygame.draw.rect(surface, bordercolor, self._rect, self._borderwidth, self._border_radius)
 
         percent = (self._value - self._minimum) / (self._maximum - self._minimum)
         percent = max(0.0, min(1.0, percent))
@@ -355,13 +351,9 @@ class Progressbar(Widget):
                 return
             mouse = (event.pos[0] - self._rect.x, event.pos[1] - self._rect.y)
             if self.orientation == "horizontal":
-                percent = (mouse[0] - self._borderwidth) / (
-                    self._rect.width - 2 * self._borderwidth
-                )
+                percent = (mouse[0] - self._borderwidth) / (self._rect.width - 2 * self._borderwidth)
             elif self.orientation == "vertical":
-                percent = 1.0 - (mouse[1] - self._borderwidth) / (
-                    self._rect.height - 2 * self._borderwidth
-                )
+                percent = 1.0 - (mouse[1] - self._borderwidth) / (self._rect.height - 2 * self._borderwidth)
             value = self._minimum + percent * (self._maximum - self._minimum)
             self.set(value)
 
@@ -375,11 +367,7 @@ class Progressbar(Widget):
             now = time.time()
             elapsed = now - self._last_update
             self._last_update = now
-            bar_length = (
-                self._rect.width
-                if self.orientation == "horizontal"
-                else self._rect.height
-            )
+            bar_length = self._rect.width if self.orientation == "horizontal" else self._rect.height
             self._indet_pos += self._indet_speed * elapsed
             if self._indet_pos > bar_length:
                 self._indet_pos = 0.0

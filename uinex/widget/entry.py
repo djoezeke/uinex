@@ -29,9 +29,9 @@ from typing import Optional, Callable, Any
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
-from uinex.core.mixins import HoverableMixin, ClickableMixin
+from uinex.utils.mixins import HoverableMixin, ClickableMixin
 
 
 class Entry(Widget, HoverableMixin, ClickableMixin):
@@ -82,9 +82,7 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
         self._blink = True
         self._blink_timer = 0
 
-        font_ = pygame.font.SysFont(
-            ThemeManager.theme["font"]["family"], ThemeManager.theme["font"]["size"]
-        )
+        font_ = pygame.font.SysFont(ThemeManager.theme["font"]["family"], ThemeManager.theme["font"]["size"])
         self._font = font or font_
 
         Widget.__init__(self, master, width, height, **kwargs)
@@ -137,13 +135,7 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
         """
         theme = ThemeManager.theme.get("Entry", {})
         state = (
-            "disabled"
-            if self._disabled
-            else "focused"
-            if self._focused
-            else "hovered"
-            if self.hovered
-            else "normal"
+            "disabled" if self._disabled else "focused" if self._focused else "hovered" if self.hovered else "normal"
         )
         entry_theme = theme.get(state, theme.get("normal", {}))
 
@@ -171,15 +163,11 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
 
         # Draw blinking cursor if focused and not disabled
         if self._focused and not self._disabled:
-            cursor_x = (
-                txt_rect.left + self._font.size(self._text[: self._cursor_pos])[0]
-            )
+            cursor_x = txt_rect.left + self._font.size(self._text[: self._cursor_pos])[0]
             cursor_y1 = rect.top + 8
             cursor_y2 = rect.bottom - 8
             if self._blink:
-                pygame.draw.line(
-                    surface, text_color, (cursor_x, cursor_y1), (cursor_x, cursor_y2), 2
-                )
+                pygame.draw.line(surface, text_color, (cursor_x, cursor_y1), (cursor_x, cursor_y2), 2)
 
     def _handle_event_(self, event: pygame.event.Event, *args, **kwargs) -> None:
         """
@@ -202,17 +190,11 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
         if self._focused and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
                 if self._cursor_pos > 0:
-                    self._text = (
-                        self._text[: self._cursor_pos - 1]
-                        + self._text[self._cursor_pos :]
-                    )
+                    self._text = self._text[: self._cursor_pos - 1] + self._text[self._cursor_pos :]
                     self._cursor_pos -= 1
             elif event.key == pygame.K_DELETE:
                 if self._cursor_pos < len(self._text):
-                    self._text = (
-                        self._text[: self._cursor_pos]
-                        + self._text[self._cursor_pos + 1 :]
-                    )
+                    self._text = self._text[: self._cursor_pos] + self._text[self._cursor_pos + 1 :]
             elif event.key == pygame.K_LEFT:
                 if self._cursor_pos > 0:
                     self._cursor_pos -= 1
@@ -224,11 +206,7 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
             elif event.key == pygame.K_END:
                 self._cursor_pos = len(self._text)
             elif event.unicode and event.key != pygame.K_RETURN:
-                self._text = (
-                    self._text[: self._cursor_pos]
-                    + event.unicode
-                    + self._text[self._cursor_pos :]
-                )
+                self._text = self._text[: self._cursor_pos] + event.unicode + self._text[self._cursor_pos :]
                 self._cursor_pos += 1
             if self._on_change:
                 self._on_change(self._text)

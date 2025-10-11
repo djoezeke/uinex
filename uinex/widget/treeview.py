@@ -21,7 +21,7 @@ License: MIT
 """
 
 import pygame
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
 
 __all__ = ["TreeView"]
@@ -183,16 +183,10 @@ class TreeView(Widget):
                 icon_rect = pygame.Rect(x + 2, y + self.node_height // 2 - 6, 12, 12)
                 pygame.draw.rect(surface, (180, 180, 180), icon_rect, 1)
                 if node.expanded:
-                    pygame.draw.line(
-                        surface, (80, 80, 80), icon_rect.midleft, icon_rect.midright, 2
-                    )
+                    pygame.draw.line(surface, (80, 80, 80), icon_rect.midleft, icon_rect.midright, 2)
                 else:
-                    pygame.draw.line(
-                        surface, (80, 80, 80), icon_rect.midleft, icon_rect.midright, 2
-                    )
-                    pygame.draw.line(
-                        surface, (80, 80, 80), icon_rect.midtop, icon_rect.midbottom, 2
-                    )
+                    pygame.draw.line(surface, (80, 80, 80), icon_rect.midleft, icon_rect.midright, 2)
+                    pygame.draw.line(surface, (80, 80, 80), icon_rect.midtop, icon_rect.midbottom, 2)
             else:
                 icon_rect = None
 
@@ -234,9 +228,7 @@ class TreeView(Widget):
             if 0 <= idx < len(nodes):
                 node = nodes[idx]
                 # Check if click was on expand/collapse icon
-                if node._icon_rect and node._icon_rect.collidepoint(
-                    event.pos[0] - self._rect.x, mouse_y
-                ):
+                if node._icon_rect and node._icon_rect.collidepoint(event.pos[0] - self._rect.x, mouse_y):
                     node.expanded = not node.expanded
                     if self.on_expand:
                         self.on_expand(node)

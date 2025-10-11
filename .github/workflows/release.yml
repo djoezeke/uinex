@@ -1,0 +1,38 @@
+name: Release Uinex
+
+on:
+  push:
+    tags:
+      # Publish on any tag starting with a `v`, e.g., v1.2.3
+      - v*
+
+jobs:
+  pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    # Environment and permissions trusted publishing.
+    environment:
+      # Create this environment in the GitHub repository under Settings -> Environments
+      name: pypi_test
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Install Python 3.13
+        run: uv python install 3.13
+      - name: Build Uinex
+        run: uv build
+      # Check that basic features work and we didn't miss to include crucial files
+      - name: Uinex (wheel)
+        run: uv run --isolated --no-project --with dist/*.whl tests/*.py examples/*.py
+      - name: Uinex (source distribution)
+        run: uv run --isolated --no-project --with dist/*.tar.gz tests/*.py examples/*.py
+      - name: Publish Uinex
+        run: uv publish
+        # The part below with testpypi only because it's a demo repo, remove the next two lines for production usage
+        env:
+          UV_PUBLISH_URL: https://test.pypi.org/legacy/

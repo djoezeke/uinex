@@ -66,35 +66,35 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributo
 License: MIT
 """
 
-from uinex.version import vernum
+from uinex.utils.version import vernum
 
 __version__ = str(vernum)
 
 # Base Classes
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 
 # Theme/Manager Classes
 from uinex.core.themes import ThemeManager
 
 # Widget Classes
-from uinex.widgets.frame import Frame
-from uinex.widgets.label import Label
-from uinex.widgets.entry import Entry
-from uinex.widgets.meter import Meter
-from uinex.widgets.scale import Scale
-from uinex.widgets.button import Button
-from uinex.widgets.textbox import TextBox
-from uinex.widgets.spinbox import SpinBox
-from uinex.widgets.listbox import ListBox
-from uinex.widgets.sizegrip import SizeGrip
-from uinex.widgets.treeview import TreeView
-from uinex.widgets.combobox import ComboBox
-from uinex.widgets.separator import Separator
-from uinex.widgets.menubutton import MenuButton
-from uinex.widgets.floodgauge import Floodgauge
-from uinex.widgets.checkbutton import CheckButton
-from uinex.widgets.radiobutton import RadioButton
-from uinex.widgets.progressbar import Progressbar
+from uinex.widget.frame import Frame
+from uinex.widget.label import Label
+from uinex.widget.entry import Entry
+from uinex.widget.meter import Meter
+from uinex.widget.scale import Scale
+from uinex.widget.button import Button
+from uinex.widget.textbox import TextBox
+from uinex.widget.spinbox import SpinBox
+from uinex.widget.listbox import ListBox
+from uinex.widget.sizegrip import SizeGrip
+from uinex.widget.treeview import TreeView
+from uinex.widget.combobox import ComboBox
+from uinex.widget.separator import Separator
+from uinex.widget.menubutton import MenuButton
+from uinex.widget.floodgauge import Floodgauge
+from uinex.widget.checkbutton import CheckButton
+from uinex.widget.radiobutton import RadioButton
+from uinex.widget.progressbar import Progressbar
 
 # Utility Functions
 
@@ -137,9 +137,7 @@ def _apply_theme_to_all_widgets():
         Progressbar,
     ]
     for widget_cls in widget_classes:
-        if hasattr(widget_cls, "set_theme") and callable(
-            getattr(widget_cls, "set_theme")
-        ):
+        if hasattr(widget_cls, "set_theme") and callable(getattr(widget_cls, "set_theme")):
             widget_cls.set_theme(ThemeManager.theme)
         # Optionally, update all existing widget instances if you keep a registry
 

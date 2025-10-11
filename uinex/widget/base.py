@@ -173,12 +173,8 @@ class Widget(Place, Grid, Pack):
         self._tooltip_timer: float = 0.0
 
         # Surface and rect setup
-        self._surface = pygame.Surface(
-            (width, height), pygame.SRCALPHA, 32
-        )  # Surface of the widget
-        self._rect: pygame.Rect = self._surface.get_rect(
-            topleft=(0, 0)
-        )  # To position the widget
+        self._surface = pygame.Surface((width, height), pygame.SRCALPHA, 32)  # Surface of the widget
+        self._rect: pygame.Rect = self._surface.get_rect(topleft=(0, 0))  # To position the widget
 
         # Blending and Blitting Data
         self._blendmode: int = pygame.BLEND_RGBA_ADD
@@ -525,9 +521,7 @@ class Widget(Place, Grid, Pack):
             elif num_params == 1:
                 self._handler[event] = lambda: function(self)
             else:
-                raise ValueError(
-                    "Command function signatures can have 0 or 1 parameter."
-                )
+                raise ValueError("Command function signatures can have 0 or 1 parameter.")
         else:
             raise TypeError("Command function must be callable")
 
@@ -602,9 +596,7 @@ class Widget(Place, Grid, Pack):
         assert isinstance(fps, int)
 
         if surface is None:
-            surface = pygame.display.set_mode(
-                (self._rect.width + 100, self._rect.height + 100)
-            )
+            surface = pygame.display.set_mode((self._rect.width + 100, self._rect.height + 100))
             pygame.display.set_caption(f"PygameUI {self.__class__.__name__} ")
             self._master = surface
             self.pack(anchor="center")
@@ -729,21 +721,13 @@ class Widget(Place, Grid, Pack):
 
         self._tooltip = self._kwarg_get(kwargs, "shadow", self._shadow)
         self._show_tooltip = self._kwarg_get(kwargs, "show_tooltip", self._show_tooltip)
-        self._tooltip_delay = self._kwarg_get(
-            kwargs, "tooltip_delay", self._tooltip_delay
-        )
-        self._tooltip_timer = self._kwarg_get(
-            kwargs, "tooltip_timer", self._tooltip_timer
-        )
+        self._tooltip_delay = self._kwarg_get(kwargs, "tooltip_delay", self._tooltip_delay)
+        self._tooltip_timer = self._kwarg_get(kwargs, "tooltip_timer", self._tooltip_timer)
 
-        self._border_radius = self._kwarg_get(
-            kwargs, "border_radius", self._border_radius
-        )
+        self._border_radius = self._kwarg_get(kwargs, "border_radius", self._border_radius)
         self._borderwidth = self._kwarg_get(kwargs, "borderwidth", self._borderwidth)
         self._bordermode = self._kwarg_get(kwargs, "bordermode", self._bordermode)
-        self._border_position = self._kwarg_get(
-            kwargs, "border_position", self._border_position
-        )
+        self._border_position = self._kwarg_get(kwargs, "border_position", self._border_position)
 
         # background
         # disable_color

@@ -21,9 +21,9 @@ from typing import Union, Tuple, Optional, Any
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
-from uinex.core.mixins import HoverableMixin
+from uinex.utils.mixins import HoverableMixin
 
 __all__ = ["Label"]
 
@@ -153,11 +153,7 @@ class Label(Widget, HoverableMixin):
         Returns:
             pygame.Color: The foreground color.
         """
-        return (
-            self._theme["text_color"]
-            if self._state == "hovered"
-            else self._theme["text_color"]
-        )
+        return self._theme["text_color"] if self._state == "hovered" else self._theme["text_color"]
 
     def _get_state_background_(self) -> pygame.Color:
         """Get the background color based on the current state.
@@ -165,11 +161,7 @@ class Label(Widget, HoverableMixin):
         Returns:
             pygame.Color: The background color.
         """
-        return (
-            self._theme["hover_color"]
-            if self._state == "hovered"
-            else self._theme["background"]
-        )
+        return self._theme["hover_color"] if self._state == "hovered" else self._theme["background"]
 
     def _configure_set_(self, **kwargs) -> None:
         """Configure method to set custom attributes.

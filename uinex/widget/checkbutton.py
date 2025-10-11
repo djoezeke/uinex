@@ -27,9 +27,9 @@ from typing import Optional, Callable, Any
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
-from uinex.core.mixins import HoverableMixin, ClickableMixin
+from uinex.utils.mixins import HoverableMixin, ClickableMixin
 
 
 class CheckButton(Widget, HoverableMixin, ClickableMixin):
@@ -73,15 +73,11 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         self._text = text
 
         # Font and theme
-        font_ = pygame.font.SysFont(
-            ThemeManager.theme["font"]["family"], ThemeManager.theme["font"]["size"]
-        )
+        font_ = pygame.font.SysFont(ThemeManager.theme["font"]["family"], ThemeManager.theme["font"]["size"])
         self._font = kwargs.pop("font", font_)
 
         # Sizing
-        width = kwargs.pop(
-            "width", 28 + (self._font.size(self._text)[0] + 12 if self._text else 0)
-        )
+        width = kwargs.pop("width", 28 + (self._font.size(self._text)[0] + 12 if self._text else 0))
         height = kwargs.pop("height", max(28, self._font.get_height() + 8))
 
         HoverableMixin.__init__(self)
@@ -119,11 +115,7 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         # Theme colors
         theme = ThemeManager.theme.get("Checkbox", {})
         state = (
-            "disabled"
-            if self._disabled
-            else (
-                "hovered" if self.hovered else "selected" if self._checked else "normal"
-            )
+            "disabled" if self._disabled else ("hovered" if self.hovered else "selected" if self._checked else "normal")
         )
         box_theme = theme.get(state, theme.get("normal", {}))
 

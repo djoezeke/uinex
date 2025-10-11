@@ -1,14 +1,6 @@
-def readme():
-    fname = "README.md"
-    if os.path.exists(fname):
-        with open(fname, encoding="utf-8") as f:
-            return f.read()
-    return ""
-
-
 import os
 from setuptools import setup, find_packages
-from uinex.version import vernum
+from uinex.utils.version import vernum
 
 
 def readme():
@@ -39,14 +31,32 @@ setup(
     },
     license="MIT",
     package_dir={"": "src"},
-    packages=find_packages(where="src"),
-    install_requires=[
-        "pillow>=11.3.0",
-        "pygame",
-    ],
+    packages=find_packages(
+        where=".",
+        exclude=["tests"],
+        include=[
+            "uinex",
+            "uinex.core",
+            "uinex.utils",
+            "uinex.widget",
+        ],
+    ),
+    py_modules=["uinex"],
+    install_requires=["pygame>=2.6.1", "pillow>=11.3.0"],
     extras_require={
-        "dev": ["pytest", "build", "twine", "wheel"],
-        "docs": [],
+        "dev": [
+            # We add uinex[standard] so `uv sync` considers the extras.
+            "uinex[standard]",
+            "ruff",  # format & check
+            "pytest",  # testing
+            "twine",  # check dist
+        ],
+        "docs": [
+            "mkdocs==1.6.1",
+            "mkdocs-material==9.6.13",
+            "mkdocstrings-python==1.16.12",
+            "mkdocs-llmstxt==0.2.0",
+        ],
     },
     python_requires=">=3.13",
     keywords=[
@@ -61,23 +71,18 @@ setup(
     ],
     platforms=["any"],
     classifiers=[
-        "Framework :: Uinex",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Operating System :: Microsoft :: Windows",
-        "Operating System :: Linux",
-        "Operating System :: MacOS",
+        "Programming Language :: Python :: 3.13",
         "Operating System :: OS Independent",
         "Topic :: Games/Entertainment",
         "Topic :: Multimedia :: Graphics",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
-        "Typing :: Typed",
     ],
+    setup_requires=["setuptools", "wheel"],
+    options={"bdist_wheel": {"universal": False}},
     include_package_data=True,
     zip_safe=False,
 )

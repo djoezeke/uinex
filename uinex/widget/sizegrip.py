@@ -19,7 +19,7 @@ License: MIT
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
 
 __all__ = ["SizeGrip"]
@@ -96,9 +96,7 @@ class SizeGrip(Widget):
                     self._master.height = new_height
                     # Optionally, update surface/rect if needed
                     if hasattr(self._master, "surface"):
-                        self._master.surface = pygame.Surface(
-                            (new_width, new_height), pygame.SRCALPHA
-                        )
+                        self._master.surface = pygame.Surface((new_width, new_height), pygame.SRCALPHA)
                         self._master.rect.size = (new_width, new_height)
                 self._dirty = True
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

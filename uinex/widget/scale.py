@@ -22,7 +22,7 @@ License: MIT
 
 import pygame
 
-from uinex.core.widget import Widget
+from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
 
 __all__ = ["Scale"]
@@ -210,11 +210,7 @@ class Scale(Widget):
         # Snap to step
         value = round((value - vmin) / self.step) * self.step + vmin
         value = min(max(value, vmin), vmax)
-        if (
-            isinstance(self.from_, int)
-            and isinstance(self.to, int)
-            and isinstance(self.step, int)
-        ):
+        if isinstance(self.from_, int) and isinstance(self.to, int) and isinstance(self.step, int):
             value = int(value)
         return value
 

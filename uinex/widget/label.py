@@ -17,13 +17,13 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributo
 License: MIT
 """
 
-from typing import Union, Tuple, Optional, Any
+from typing import Any
 
 import pygame
 
-from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
 from uinex.utils.mixins import HoverableMixin
+from uinex.widget.base import Widget
 
 __all__ = ["Label"]
 
@@ -69,14 +69,14 @@ class Label(Widget, HoverableMixin):
 
     def __init__(
         self,
-        master: Optional[Union[Widget, pygame.Surface]] = None,
+        master: Widget | pygame.Surface | None = None,
         width: int = 200,
         height: int = 40,
         text: str = "Label",
-        font: Optional[Union[Tuple, pygame.font.Font]] = None,
-        image: Union[pygame.Surface, None] = None,
-        background: Optional[pygame.Color] = None,
-        foreground: Optional[pygame.Color] = None,
+        font: tuple | pygame.font.Font | None = None,
+        image: pygame.Surface | None = None,
+        background: pygame.Color | None = None,
+        foreground: pygame.Color | None = None,
         **kwargs,
     ) -> "Label":
         """

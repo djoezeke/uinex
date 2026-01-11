@@ -19,7 +19,8 @@ Author: Sackey Ezekiel Etrue & PygameUI Contributors
 License: MIT
 """
 
-from typing import Literal, Optional, Union, Any
+from typing import Any
+from typing import Literal
 
 import pygame
 
@@ -68,15 +69,15 @@ class Floodgauge(Progressbar):
 
     def __init__(
         self,
-        master: Optional[Any] = None,
+        master: Any | None = None,
         text: str = "flood",
         length: int = 200,
         thickness: int = 24,
-        mask: Optional[str] = None,
-        value: Union[float, int] = 0,
-        minimum: Union[float, int] = 0,
-        maximum: Union[float, int] = 100,
-        font: Optional[pygame.font.Font] = None,
+        mask: str | None = None,
+        value: float | int = 0,
+        minimum: float | int = 0,
+        maximum: float | int = 100,
+        font: pygame.font.Font | None = None,
         mode: Literal["determinate", "indeterminate"] = "determinate",
         orientation: Literal["horizontal", "vertical"] = "horizontal",
         **kwargs,

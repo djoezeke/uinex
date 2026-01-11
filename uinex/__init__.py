@@ -71,30 +71,29 @@ from uinex.utils.version import vernum
 __version__ = str(vernum)
 
 # Base Classes
-from uinex.widget.base import Widget
-
 # Theme/Manager Classes
 from uinex.core.themes import ThemeManager
+from uinex.widget.base import Widget
+from uinex.widget.button import Button
+from uinex.widget.checkbutton import CheckButton
+from uinex.widget.combobox import ComboBox
+from uinex.widget.entry import Entry
+from uinex.widget.floodgauge import Floodgauge
 
 # Widget Classes
 from uinex.widget.frame import Frame
 from uinex.widget.label import Label
-from uinex.widget.entry import Entry
-from uinex.widget.meter import Meter
-from uinex.widget.scale import Scale
-from uinex.widget.button import Button
-from uinex.widget.textbox import TextBox
-from uinex.widget.spinbox import SpinBox
 from uinex.widget.listbox import ListBox
-from uinex.widget.sizegrip import SizeGrip
-from uinex.widget.treeview import TreeView
-from uinex.widget.combobox import ComboBox
-from uinex.widget.separator import Separator
 from uinex.widget.menubutton import MenuButton
-from uinex.widget.floodgauge import Floodgauge
-from uinex.widget.checkbutton import CheckButton
-from uinex.widget.radiobutton import RadioButton
+from uinex.widget.meter import Meter
 from uinex.widget.progressbar import Progressbar
+from uinex.widget.radiobutton import RadioButton
+from uinex.widget.scale import Scale
+from uinex.widget.separator import Separator
+from uinex.widget.sizegrip import SizeGrip
+from uinex.widget.spinbox import SpinBox
+from uinex.widget.textbox import TextBox
+from uinex.widget.treeview import TreeView
 
 # Utility Functions
 
@@ -137,7 +136,7 @@ def _apply_theme_to_all_widgets():
         Progressbar,
     ]
     for widget_cls in widget_classes:
-        if hasattr(widget_cls, "set_theme") and callable(getattr(widget_cls, "set_theme")):
+        if hasattr(widget_cls, "set_theme") and callable(widget_cls.set_theme):
             widget_cls.set_theme(ThemeManager.theme)
         # Optionally, update all existing widget instances if you keep a registry
 

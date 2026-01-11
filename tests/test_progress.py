@@ -1,9 +1,8 @@
 import pygame
 import pytest
-
-from uinex.widget.progressbar import Progressbar
-from uinex.widget.meter import Meter
 from uinex.widget.floodgauge import Floodgauge
+from uinex.widget.meter import Meter
+from uinex.widget.progressbar import Progressbar
 
 
 class TestProgressbar:

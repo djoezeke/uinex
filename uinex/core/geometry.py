@@ -13,17 +13,17 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Framework 
 License: MIT
 """
 
-from typing import Optional, Union, Literal, TypeAlias
+from typing import Literal
 
 __all__ = ["Pack", "Grid", "Place"]
 
-Anchor: TypeAlias = Literal["nw", "n", "ne", "w", "center", "e", "sw", "s", "se"]
-Compound: TypeAlias = Literal["top", "left", "center", "right", "bottom", "none"]
-Relief: TypeAlias = Literal["raised", "sunken", "flat", "ridge", "solid", "groove"]
-Bordermode: TypeAlias = Literal["inside", "outside", "ignore"]
-Side: TypeAlias = Literal["left", "right", "top", "bottom"]
-ScreenUnits: TypeAlias = Union[int, float]
-Fill: TypeAlias = Literal["none", "x", "y", "both"]
+type Anchor = Literal["nw", "n", "ne", "w", "center", "e", "sw", "s", "se"]
+type Compound = Literal["top", "left", "center", "right", "bottom", "none"]
+type Relief = Literal["raised", "sunken", "flat", "ridge", "solid", "groove"]
+type Bordermode = Literal["inside", "outside", "ignore"]
+type Side = Literal["left", "right", "top", "bottom"]
+type ScreenUnits = int | float
+type Fill = Literal["none", "x", "y", "both"]
 
 
 class Pack:
@@ -54,14 +54,14 @@ class Pack:
         self._anchor: Anchor = None
         self._ipadx: ScreenUnits = 0
         self._ipady: ScreenUnits = 0
-        self._expand: Union[bool, Literal[0, 1]] = False
-        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
-        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
+        self._expand: bool | Literal[0, 1] = False
+        self._padx: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0
+        self._pady: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0
 
     # region Properties
 
     @property
-    def anchor(self) -> Optional[str]:
+    def anchor(self) -> str | None:
         """
         Anchor position of the widget (e.g., 'n', 's', 'e', 'w', 'center').
         """
@@ -87,7 +87,7 @@ class Pack:
         self._expand = value
 
     @property
-    def fill(self) -> Optional[str]:
+    def fill(self) -> str | None:
         """
         How the widget should fill the available space ('none', 'x', 'y', 'both').
         """
@@ -100,7 +100,7 @@ class Pack:
         self._fill = value
 
     @property
-    def side(self) -> Optional[str]:
+    def side(self) -> str | None:
         """
         Side of the parent widget where the widget should be placed.
         """
@@ -139,7 +139,7 @@ class Pack:
         self._ipady = value
 
     @property
-    def padx(self) -> Union[int, tuple]:
+    def padx(self) -> int | tuple:
         """
         External padding in the x direction.
         """
@@ -152,7 +152,7 @@ class Pack:
         self._padx = value
 
     @property
-    def pady(self) -> Union[int, tuple]:
+    def pady(self) -> int | tuple:
         """
         External padding in the y direction.
         """
@@ -173,11 +173,11 @@ class Pack:
         anchor: Anchor = None,
         ipadx: ScreenUnits = 0,
         ipady: ScreenUnits = 0,
-        expand: Union[bool, Literal[0, 1]] = False,
+        expand: bool | Literal[0, 1] = False,
         fill: Literal["none", "x", "y", "both"] = None,
         side: Literal["left", "right", "top", "bottom"] = "top",
-        padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
-        pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
+        padx: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0,
+        pady: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0,
         **kwargs,
     ):
         """
@@ -310,8 +310,8 @@ class Grid:
         self._ipadx: ScreenUnits = 0
         self._ipady: ScreenUnits = 0
         self._sticky: Literal["n", "s", "w", "e"] = None
-        self._padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
-        self._pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0
+        self._padx: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0
+        self._pady: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0
 
     # region Properties
 
@@ -448,8 +448,8 @@ class Grid:
         ipadx: ScreenUnits = 0,
         ipady: ScreenUnits = 0,
         sticky: Literal["n", "s", "w", "e"] = None,
-        padx: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
-        pady: Union[ScreenUnits, tuple[ScreenUnits, ScreenUnits]] = 0,
+        padx: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0,
+        pady: ScreenUnits | tuple[ScreenUnits, ScreenUnits] = 0,
         **kwargs,
     ):
         """Position a widget in the parent widget in a grid.
@@ -548,10 +548,10 @@ class Place:
         self._x: ScreenUnits = 0
         self._y: ScreenUnits = 0
         self._anchor: Anchor = None
-        self._relx: Union[int, float] = 0
-        self._rely: Union[int, float] = 0
-        self._relwidth: Union[int, float] = 0
-        self._relheight: Union[int, float] = 0
+        self._relx: int | float = 0
+        self._rely: int | float = 0
+        self._relwidth: int | float = 0
+        self._relheight: int | float = 0
         self._bordermode: Literal["inside", "outside", "ignore"] = None
 
     # region Properties
@@ -647,12 +647,12 @@ class Place:
         x: ScreenUnits = 0,
         y: ScreenUnits = 0,
         anchor: Anchor = None,
-        relx: Union[int, float] = 0,
-        rely: Union[int, float] = 0,
-        relwidth: Union[int, float] = 0,
-        relheight: Union[int, float] = 0,
-        width: Optional[ScreenUnits] = None,
-        height: Optional[ScreenUnits] = None,
+        relx: int | float = 0,
+        rely: int | float = 0,
+        relwidth: int | float = 0,
+        relheight: int | float = 0,
+        width: ScreenUnits | None = None,
+        height: ScreenUnits | None = None,
         bordermode: Literal["inside", "outside", "ignore"] = None,
         **kwargs,
     ):

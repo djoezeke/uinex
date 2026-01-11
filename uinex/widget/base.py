@@ -14,16 +14,22 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributo
 License: MIT
 """
 
-from abc import abstractmethod
-from inspect import signature
-from typing import Union, Optional, Any, Callable
-from pygame.event import Event
-from pygame import Surface
-import pygame
 import time
+from abc import abstractmethod
+from collections.abc import Callable
+from inspect import signature
+from typing import Any
+from typing import Union
 
-from uinex.core.geometry import Grid, Pack, Place
-from uinex.core.exceptions import PygameuiError
+import pygame
+from pygame import Surface
+from pygame.event import Event
+
+# from uinex.core.exceptions import PygameuiError
+from uinex.core.geometry import Grid
+from uinex.core.geometry import Pack
+from uinex.core.geometry import Place
+from uinex.theme.manager import ThemeManager
 
 __all__ = ["Widget"]
 
@@ -53,9 +59,9 @@ class Widget(Place, Grid, Pack):
 
     def __init__(
         self,
-        master: Optional[Union["Widget", pygame.Surface]] = None,
-        width: Union[float, int] = 100,
-        height: Union[float, int] = 100,
+        master: Union["Widget", pygame.Surface] | None = None,
+        width: float | int = 100,
+        height: float | int = 100,
         **kwargs,
     ) -> "Widget":
         """
@@ -81,6 +87,7 @@ class Widget(Place, Grid, Pack):
             "border_color": (0, 90, 180),
         }
 
+        self._theme.update(ThemeManager.theme.get(self.__class__.__name__, {}))
         self._theme.update(custom_theme)
 
         if kwargs.pop("theme", None) is not None:
@@ -113,7 +120,7 @@ class Widget(Place, Grid, Pack):
         self._border_position: str = "none"
 
         self._border_radius: int = kwargs.pop("border_radius", 0)
-        self._border_radius: Union[dict, int] = kwargs.pop("border_radius", 0)
+        self._border_radius: dict | int = kwargs.pop("border_radius", 0)
         if isinstance(self._border_radius, dict):
             try:
                 for side in ["left", "right", "top", "bottom"]:
@@ -123,7 +130,7 @@ class Widget(Place, Grid, Pack):
         if isinstance(self._border_radius, int):
             self._border_radius = self._border_radius
 
-        self._borderwidth: Union[dict, int] = kwargs.pop("borderwidth", 0)
+        self._borderwidth: dict | int = kwargs.pop("borderwidth", 0)
         if isinstance(self._borderwidth, dict):
             try:
                 for side in ["left", "right", "top", "bottom"]:
@@ -178,7 +185,7 @@ class Widget(Place, Grid, Pack):
 
         # Blending and Blitting Data
         self._blendmode: int = pygame.BLEND_RGBA_ADD
-        self.blit_data: Union[tuple, list] = [
+        self.blit_data: tuple | list = [
             self._surface,
             self._rect,
             None,
@@ -214,7 +221,7 @@ class Widget(Place, Grid, Pack):
 
         :return: Raises copy exception
         """
-        raise PygameuiError("Widget class cannot be copied")
+        # raise PygameuiError("Widget class cannot be copied")
 
     def __deepcopy__(self, memodict: dict) -> "Widget":
         """
@@ -223,7 +230,7 @@ class Widget(Place, Grid, Pack):
         :param memodict: Memo dict
         :return: Raises copy exception
         """
-        raise PygameuiError("Widget class cannot be deep-copied")
+        # raise PygameuiError("Widget class cannot be deep-copied")
 
     # region Properties
 
@@ -354,7 +361,7 @@ class Widget(Place, Grid, Pack):
         self.blit_data[3] = self._blendmode
 
     @property
-    def theme(self) -> Optional[str]:
+    def theme(self) -> str | None:
         """Return the name of the widget's theme."""
         return "light"
 
@@ -503,7 +510,7 @@ class Widget(Place, Grid, Pack):
         """
         return self._configure_get_(config)
 
-    def bind(self, event: int, function: Optional[Callable] = None):
+    def bind(self, event: int, function: Callable | None = None):
         """
         Bind a function to a button event.
 
@@ -534,7 +541,7 @@ class Widget(Place, Grid, Pack):
         """
         return self._handler.pop(event, None)
 
-    def post(self, event: int, data: Optional[dict[str, Any]] = None):
+    def post(self, event: int, data: dict[str, Any] | None = None):
         """
         Widget to trigger/post an event.
 
@@ -547,7 +554,7 @@ class Widget(Place, Grid, Pack):
         data.update({"widget": self})
         pygame.event.post(pygame.event.Event(event, data))
 
-    def after(self, ms: int, function: Union[Callable, str], *args, **kwargs) -> str:
+    def after(self, ms: int, function: Callable | str, *args, **kwargs) -> str:
         """
         Call function once after given time (in milliseconds).
         Args:
@@ -866,7 +873,7 @@ class Widget(Place, Grid, Pack):
         params: dict[str, Any],
         key: str,
         default: Any = None,
-        value_type: Optional[str] = None,
+        value_type: str | None = None,
     ) -> Any:
         """
         Return a value from a dictionary.

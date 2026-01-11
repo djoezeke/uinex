@@ -1,6 +1,5 @@
 import pygame
 import pytest
-
 from uinex.widget.scale import Scale
 
 

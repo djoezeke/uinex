@@ -12,7 +12,6 @@ readme = "README.md"
 requires-python = ">=3.13"
 authors = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
-  {name = "Uinex Contributers"},
 ]
 maintainers = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
@@ -49,14 +48,9 @@ Documentation = "https://github.com/djoezeke/uinex#readme"
 Issues = "https://github.com/djoezeke/uinex/issues"
 "Release Notes" = "https://github.com/djoezeke/uinex/releases"
 Source = "https://github.com/djoezeke/uinex"
-[project.optional-dependencies]
-standard = [
-    "rich>=14.1.0",
-]
 
 [project.optional-dependencies]
-standard = [
-]
+standard = []
 
 [dependency-groups]
 dev = [
@@ -88,7 +82,7 @@ namespaces = false
 
 # Configure Ruff's linting rules
 [tool.ruff]
-src = ["uinex", "examples", "tests"]
+src = ["uinex", "examples"]
 fix = true
 show-fixes = true
 output-format = "full"

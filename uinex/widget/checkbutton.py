@@ -23,13 +23,15 @@ Author: Sackey Ezekiel Etrue & PygameUI Contributors
 License: MIT
 """
 
-from typing import Optional, Callable, Any
+from collections.abc import Callable
+from typing import Any
 
 import pygame
 
-from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
-from uinex.utils.mixins import HoverableMixin, ClickableMixin
+from uinex.utils.mixins import ClickableMixin
+from uinex.utils.mixins import HoverableMixin
+from uinex.widget.base import Widget
 
 
 class CheckButton(Widget, HoverableMixin, ClickableMixin):
@@ -54,10 +56,10 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
 
     def __init__(
         self,
-        master: Optional[Any] = None,
+        master: Any | None = None,
         text: str = "",
         checked: bool = False,
-        command: Optional[Callable[[bool], None]] = None,
+        command: Callable[[bool], None] | None = None,
         disabled: bool = False,
         **kwargs,
     ):

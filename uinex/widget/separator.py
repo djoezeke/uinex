@@ -15,7 +15,8 @@ Author: Your Name & PygameUI Contributors
 License: MIT
 """
 
-from typing import Literal, Optional, Union, Any
+from typing import Any
+from typing import Literal
 
 import pygame
 
@@ -47,7 +48,7 @@ class Separator(Widget):
 
     def __init__(
         self,
-        master: Optional[Any] = None,
+        master: Any | None = None,
         length: int = 200,
         thickness: int = 2,
         color: pygame.Color = (58, 141, 255),

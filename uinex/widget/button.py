@@ -23,18 +23,16 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributo
 License: MIT
 """
 
-from typing import Union, Tuple, Callable, Optional, Any
+from collections.abc import Callable
+from typing import Any
 
 import pygame
 
-from uinex.core.themes import ThemeManager
+from uinex.theme.manager import ThemeManager
+from uinex.utils.mixins import ClickableMixin
+from uinex.utils.mixins import DoubleClickMixin
+from uinex.utils.mixins import HoverableMixin
 from uinex.widget.base import Widget
-
-from uinex.utils.mixins import (
-    HoverableMixin,
-    DoubleClickMixin,
-    ClickableMixin,
-)
 
 
 class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
@@ -72,19 +70,19 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
 
     def __init__(
         self,
-        master: Optional[Any] = None,
+        master: Any | None = None,
         width: int = 100,
         height: int = 40,
         text: str = "Button",
         state: str = "normal",
         disabled: bool = False,
-        font: Optional[Union[Tuple, pygame.font.Font]] = None,
-        image: Union[pygame.Surface, None] = None,
-        background: Optional[pygame.Color] = None,
-        text_color: Optional[pygame.Color] = None,
-        hovercolor: Optional[pygame.Color] = None,
-        border_color: Optional[pygame.Color] = None,
-        command: Optional[Union[Callable[[], Any], None]] = None,
+        font: tuple | pygame.font.Font | None = None,
+        image: pygame.Surface | None = None,
+        background: pygame.Color | None = None,
+        text_color: pygame.Color | None = None,
+        hovercolor: pygame.Color | None = None,
+        border_color: pygame.Color | None = None,
+        command: Callable[[], Any] | None | None = None,
         **kwargs,
     ):
         """
@@ -109,7 +107,7 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
 
         # Font
         font_: pygame.Font = pygame.font.SysFont(
-            ThemeManager.theme["font"]["family"], ThemeManager.theme["font"]["size"]
+            ThemeManager.theme["Font"]["family"], ThemeManager.theme["font"]["size"]
         )
         self._font: pygame.font.Font = font_ if font is None else font
 
@@ -121,6 +119,7 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
             "disable_color": (0, 90, 180),
             "border_color": (0, 90, 180),
         }
+        self._theme.update(ThemeManager.theme.get(self.__class__.__name__, {}))
         self._theme.update(custom_theme)
 
         DoubleClickMixin.__init__(self)

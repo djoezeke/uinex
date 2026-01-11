@@ -1,7 +1,9 @@
 """PygameUI Simple Widgets Demo"""
 
 import pygame
-from uinex import Label, Button, Separator
+from uinex import Button
+from uinex import Label
+from uinex import Separator
 
 # --------------------------------------------------------------------
 # PygameUI Simple Widget Demonstration.

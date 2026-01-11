@@ -1,6 +1,5 @@
 import pygame
 import pytest
-
 from uinex.widget.base import Widget
 
 

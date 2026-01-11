@@ -13,7 +13,7 @@ class Version(tuple):
         return tuple.__new__(cls, (major, minor, patch))
 
     def __repr__(self) -> str:
-        fields = (f"{fld}={val}" for fld, val in zip(self.fields, self))
+        fields = (f"{fld}={val}" for fld, val in zip(self.fields, self, strict=False))
         return f"{self.__class__.__name__}({', '.join(fields)})"
 
     def __str__(self) -> str:

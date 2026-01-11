@@ -21,12 +21,11 @@ Author: Sackey Ezekiel Etrue & PygameUI Contributors
 License: MIT
 """
 
-from typing import Optional, Any
+from typing import Any
 
 import pygame
 
 from uinex.widget.base import Widget
-from uinex.core.themes import ThemeManager
 
 
 class Frame(Widget):
@@ -52,13 +51,13 @@ class Frame(Widget):
 
     def __init__(
         self,
-        master: Optional[Any] = None,
+        master: Any | None = None,
         width: int = 200,
         height: int = 120,
-        background: Optional[pygame.Color] = None,
-        bordercolor: Optional[pygame.Color] = None,
-        borderwidth: Optional[int] = None,
-        border_radius: Optional[int] = None,
+        background: pygame.Color | None = None,
+        bordercolor: pygame.Color | None = None,
+        borderwidth: int | None = None,
+        border_radius: int | None = None,
         **kwargs,
     ):
         Widget.__init__(self, master, width, height, **kwargs)

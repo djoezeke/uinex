@@ -25,6 +25,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+build
+site
 
 # PyInstaller
 #   Usually these files are written by a python script from a template
@@ -166,6 +168,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+mkdocs_material.egg-info
 
 # mypy
 .mypy_cache/
@@ -209,6 +212,9 @@ ruff.toml
 # PyPI configuration file
 .pypirc
 
+# Never ignore .gitkeep files
+!**/.gitkeep
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
@@ -217,7 +223,11 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Uinex and Xodex build artifacts
+# uv Python package manager
+uv.lock
+.python-version
+
+# Uinex
 images
 styles
 TODO.md

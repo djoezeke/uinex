@@ -22,7 +22,6 @@ License: MIT
 import pygame
 
 from uinex.widget.base import Widget
-from uinex.core.themes import ThemeManager
 
 __all__ = ["TextBox"]
 

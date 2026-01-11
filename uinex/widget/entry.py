@@ -25,13 +25,15 @@ Author: Sackey Ezekiel Etrue & PygameUI Contributors
 License: MIT
 """
 
-from typing import Optional, Callable, Any
+from collections.abc import Callable
+from typing import Any
 
 import pygame
 
-from uinex.widget.base import Widget
 from uinex.core.themes import ThemeManager
-from uinex.utils.mixins import HoverableMixin, ClickableMixin
+from uinex.utils.mixins import ClickableMixin
+from uinex.utils.mixins import HoverableMixin
+from uinex.widget.base import Widget
 
 
 class Entry(Widget, HoverableMixin, ClickableMixin):
@@ -63,13 +65,13 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
 
     def __init__(
         self,
-        master: Optional[Any] = None,
+        master: Any | None = None,
         width: int = 200,
         height: int = 36,
-        font: Optional[pygame.font.Font] = None,
+        font: pygame.font.Font | None = None,
         text: str = "",
         placeholder: str = "",
-        on_change: Optional[Callable[[str], None]] = None,
+        on_change: Callable[[str], None] | None = None,
         disabled: bool = False,
         **kwargs,
     ):

@@ -1,0 +1,6 @@
+# Project information
+site_name: uineex
+site_url: https://djoezeke.github.io/uinex
+site_dir: site/uinex
+site_author: djoezeke
+strict: true

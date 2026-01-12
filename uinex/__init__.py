@@ -70,29 +70,29 @@ from uinex.utils.version import vernum
 
 __version__ = str(vernum)
 
-# Base Classes
+# Base Class
 # Theme/Manager Classes
-from uinex.core.themes import ThemeManager
+from uinex.theme import ThemeManager
 from uinex.widget.base import Widget
-from uinex.widget.button import Button
-from uinex.widget.checkbutton import CheckButton
-from uinex.widget.combobox import ComboBox
-from uinex.widget.entry import Entry
-from uinex.widget.floodgauge import Floodgauge
 
 # Widget Classes
+from uinex.widget.boxes import ComboBox
+from uinex.widget.boxes import ListBox
+from uinex.widget.boxes import SpinBox
+from uinex.widget.boxes import TextBox
+from uinex.widget.buttons import Button
+from uinex.widget.buttons import CheckButton
+from uinex.widget.buttons import MenuButton
+from uinex.widget.buttons import RadioButton
 from uinex.widget.frame import Frame
+from uinex.widget.inputs import Entry
 from uinex.widget.label import Label
-from uinex.widget.listbox import ListBox
-from uinex.widget.menubutton import MenuButton
-from uinex.widget.meter import Meter
-from uinex.widget.progressbar import Progressbar
-from uinex.widget.radiobutton import RadioButton
+from uinex.widget.progress import Floodgauge
+from uinex.widget.progress import Meter
+from uinex.widget.progress import Progressbar
 from uinex.widget.scale import Scale
 from uinex.widget.separator import Separator
 from uinex.widget.sizegrip import SizeGrip
-from uinex.widget.spinbox import SpinBox
-from uinex.widget.textbox import TextBox
 from uinex.widget.treeview import TreeView
 
 # Utility Functions

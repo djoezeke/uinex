@@ -1,4 +1,4 @@
-"""PygameUI Widgets"""
+"""Uinex Widgets"""
 
 from uinex.widget.boxes import ComboBox
 from uinex.widget.boxes import ListBox

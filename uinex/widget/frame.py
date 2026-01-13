@@ -1,6 +1,6 @@
-"""PygameUI Frame Widget
+"""Uinex Frame Widget
 
-This module defines the Frame widget for PygameUI, which acts as a container for grouping
+This module defines the Frame widget for Uinex, which acts as a container for grouping
 other widgets. The Frame supports modern theming, rounded corners, borders, and background color.
 
 Features:
@@ -17,7 +17,7 @@ Usage Example:
     frame.draw()
     ...
 
-Author: Sackey Ezekiel Etrue & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 

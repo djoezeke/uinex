@@ -1,4 +1,4 @@
-"""PygameUI SizeGrip Widget
+"""Uinex SizeGrip Widget
 
 A SizeGrip is a small draggable handle, usually placed at the bottom-right corner of a window or frame,
 allowing the user to resize the parent widget by dragging. It provides visual feedback and integrates
@@ -13,7 +13,7 @@ Features:
 Example:
     grip = SizeGrip(master, size=16, color=(160, 160, 160))
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 

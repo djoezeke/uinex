@@ -1,1 +1,1 @@
-"""PygameUI Tests"""
+"""Uinex Tests"""

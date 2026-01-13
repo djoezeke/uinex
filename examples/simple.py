@@ -1,4 +1,4 @@
-"""PygameUI Simple Widgets Demo"""
+"""Simple Widgets Demo"""
 
 import pygame
 from uinex import Button
@@ -6,7 +6,7 @@ from uinex import Label
 from uinex import Separator
 
 # --------------------------------------------------------------------
-# PygameUI Simple Widget Demonstration.
+# Simple Widget Demonstration.
 
 if __name__ == "__main__":
     pygame.init()

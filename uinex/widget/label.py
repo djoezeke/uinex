@@ -1,6 +1,6 @@
-"""PygameUI Label Widget Element
+"""Uinex Label Widget Element
 
-This module defines the Label widget for PygameUI, supporting rounded corners,
+This module defines the Label widget for Uinex, supporting rounded corners,
 borders, hover effects, and flexible configuration. The Label can display text
 and an optional image, and supports theming via the ThemeManager.
 
@@ -13,7 +13,7 @@ Usage Example:
     label.draw()
     ...
 
-Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributors
+Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & Uinex Contributors
 License: MIT
 """
 
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     pygame.font.init()
 
     screen = pygame.display.set_mode((480, 280))
-    pygame.display.set_caption("PygameUI Label")
+    pygame.display.set_caption("Uinex Label")
 
     label = Label(master=screen, text="My Label", tooltip="Say hello")
 

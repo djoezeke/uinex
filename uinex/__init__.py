@@ -1,7 +1,7 @@
 """
-PygameUI (Modern GUI With Pygame)
+Uinex (Modern GUI With Pygame)
 
-PygameUI provides classes for the display, positioning, and
+Uinex provides classes for the display, positioning, and
 control of modern GUI widgets using Pygame.
 
 Available Widgets:
@@ -36,14 +36,14 @@ Actions can be bound to events via resources (e.g., the
 
 Example (Hello, World):
     ```python
-    import pygameui
-    from pygameui import Label
+    import uinex
+    from uinex import Label
 
     pygame.init()
     pygame.font.init()
 
     screen = pygame.display.set_mode((480, 280))
-    pygame.display.set_caption("PygameUI Label")
+    pygame.display.set_caption("Uinex Label")
 
     label = Label(master=screen, text="Hello, World")
 
@@ -62,7 +62,7 @@ Example (Hello, World):
     ```
 For detailed information, see the documentation.
 
-Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributors
+Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & Uinex Contributors
 License: MIT
 """
 

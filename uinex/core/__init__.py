@@ -1,4 +1,4 @@
-"""PygameUI Core"""
+"""Uinex Core"""
 
 from uinex.core.geometry import Grid
 from uinex.core.geometry import Pack

@@ -1,4 +1,4 @@
-"""PygameUI TreeView Widget
+"""Uinex TreeView Widget
 
 A TreeView is a widget that displays a hierarchical tree of items, allowing users to expand/collapse nodes
 and select items. It is commonly used for file browsers, project explorers, and structured data navigation.
@@ -16,7 +16,7 @@ Example:
     tree.add_node("Child", parent="Root")
     tree.on_select = lambda node: print("Selected:", node)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 

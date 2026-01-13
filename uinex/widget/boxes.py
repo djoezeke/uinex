@@ -1,4 +1,4 @@
-"""PygameUI TextBox Widget
+"""Uinex TextBox Widget
 
 A TextBox is a single-line or multi-line text input field for user text entry.
 This widget supports keyboard input, cursor movement, selection, and basic editing.
@@ -15,7 +15,7 @@ Example:
     tb = TextBox(master, width=200, text="Hello", multiline=False)
     tb.on_change = lambda text: print("Text changed:", text)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -283,7 +283,7 @@ class TextBox(Widget):
             self.max_length = kwargs["max_length"]
 
 
-"""PygameUI ListBox Widget
+"""Uinex ListBox Widget
 
 A ListBox is a widget that displays a list of items, allowing the user to select one or more items.
 It supports keyboard and mouse navigation, customizable appearance, and callbacks for selection changes.
@@ -299,7 +299,7 @@ Example:
     lb = ListBox(master, items=["Apple", "Banana", "Cherry"])
     lb.on_select = lambda idx, value: print("Selected:", idx, value)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -458,7 +458,7 @@ class ListBox(Widget):
         return super().configure(**kwargs)
 
 
-"""PygameUI SpinBox Widget
+"""Uinex SpinBox Widget
 
 A SpinBox is a widget that allows the user to select a numeric value by either typing it
 or using increment/decrement buttons. It supports value bounds, step size, and callbacks
@@ -476,7 +476,7 @@ Example:
     sb = SpinBox(master, min_value=0, max_value=10, step=1, value=5)
     sb.on_change = lambda v: print("SpinBox value:", v)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -758,7 +758,7 @@ class SpinBox(Widget):
             self.step
 
 
-"""PygameUI ComboBox Widget
+"""Uinex ComboBox Widget
 
 A ComboBox is a widget that combines a text field with a dropdown list of options.
 It allows the user to select one item from a list or type a custom value (optional).
@@ -776,7 +776,7 @@ Example:
     cb = ComboBox(master, items=["One", "Two", "Three"], width=120)
     cb.on_select = lambda idx, value: print("Selected:", idx, value)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 

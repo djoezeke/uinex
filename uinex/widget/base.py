@@ -1,6 +1,6 @@
-"""PygameUI Base Widget
+"""Uinex Base Widget
 
-This module defines the base Widget class for PygameUI, providing geometry management,
+This module defines the base Widget class for Uinex, providing geometry management,
 theming, visibility, and core widget functionality. All widgets should inherit from this class.
 
 Features:
@@ -10,7 +10,7 @@ Features:
     - Surface and rect management
     - Abstract methods for drawing, event handling, and updating
 
-Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributors
+Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & Uinex Contributors
 License: MIT
 """
 
@@ -36,7 +36,7 @@ __all__ = ["Widget"]
 
 class Widget(Place, Grid, Pack):
     """
-    Base class for all PygameUI widgets.
+    Base class for all Uinex widgets.
 
     Features:
         - Geometry management (Pack, Place, Grid)
@@ -604,7 +604,7 @@ class Widget(Place, Grid, Pack):
 
         if surface is None:
             surface = pygame.display.set_mode((self._rect.width + 100, self._rect.height + 100))
-            pygame.display.set_caption(f"PygameUI {self.__class__.__name__} ")
+            pygame.display.set_caption(f"Uinex {self.__class__.__name__} ")
             self._master = surface
             self.pack(anchor="center")
         else:

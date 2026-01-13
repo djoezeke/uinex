@@ -1,4 +1,4 @@
-"""PygameUI Separator Widget
+"""Uinex Separator Widget
 
 A Separator is a simple visual divider used to separate groups of widgets in a UI layout.
 It can be horizontal or vertical, with customizable thickness, color, and padding.
@@ -11,7 +11,7 @@ Features:
 Example:
     sep = Separator(master, orientation="horizontal", color=(180,180,180), thickness=2)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     pygame.font.init()
 
     screen = pygame.display.set_mode((480, 280))
-    pygame.display.set_caption("PygameUI Seperator")
+    pygame.display.set_caption("Uinex Seperator")
     clock = pygame.time.Clock()
 
     seperator = Separator(master=screen, orientation="vertical")

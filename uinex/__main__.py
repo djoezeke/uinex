@@ -1,11 +1,11 @@
-"""PygameUI Main Module
+"""Uinex Main Module
 
-This is the entry point for running PygameUI as a module.
+This is the entry point for running Uinex as a module.
 
 Usage:
-    python -m pygameui
+    python -m uinex
 
-Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributors
+Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & Uinex Contributors
 License: MIT
 """
 
@@ -34,13 +34,13 @@ def create_window(width: int = 800, height: int = 600) -> pygame.Surface:
         pygame.Surface: The created window surface.
     """
     window = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("PygameUI Widgets")
+    pygame.display.set_caption("Uinex Widgets")
     return window
 
 
 def main():
     """
-    Main function to run the PygameUI application.
+    Main function to run the Uinex application.
 
     Handles the main event loop and window updates.
     """
@@ -48,7 +48,7 @@ def main():
 
     # If run as a module, adjust sys.argv[0] for clarity in error messages.
     if sys.argv[0].endswith("__main__.py"):
-        sys.argv[0] = "python -m pygameui"
+        sys.argv[0] = "python -m uinex"
 
     window = create_window()
 

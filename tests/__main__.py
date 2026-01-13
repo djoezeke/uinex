@@ -1,4 +1,4 @@
-"""PygameUI Tests"""
+"""Uinex Main Tests Module"""
 
 import pytest
 

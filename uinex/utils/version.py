@@ -1,4 +1,4 @@
-"""PygameUI version."""
+"""Uinex version."""
 
 __all__ = ["Version", "vernum"]
 

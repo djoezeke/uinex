@@ -1,4 +1,4 @@
-"""PygameUI Scale Widget
+"""Uinex Scale Widget
 
 A Scale is a slider widget that allows the user to select a numeric value by dragging a handle
 along a track. It supports horizontal and vertical orientation, value bounds, step size, and callbacks
@@ -16,7 +16,7 @@ Example:
     scale = Scale(master, from_=0, to=100, value=50, orientation="horizontal")
     scale.on_change = lambda v: print("Scale value:", v)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 

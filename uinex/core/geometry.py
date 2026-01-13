@@ -1,6 +1,6 @@
-"""PygameUI Geometry Managers
+"""Uinex Geometry Managers
 
-This module provides geometry manager base classes for widget layout in PygameUI.
+This module provides geometry manager base classes for widget layout in Uinex.
 
 Supported managers:
     - Pack:   Side-based packing (like Tkinter's pack)
@@ -9,7 +9,7 @@ Supported managers:
 
 Each manager provides methods and properties for flexible widget layout.
 
-Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Framework Contributors
+Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & Uinex Library Contributors
 License: MIT
 """
 

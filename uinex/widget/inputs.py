@@ -1,6 +1,6 @@
-"""PygameUI Entry Widget
+"""Uinex Entry Widget
 
-This module defines the Entry widget for PygameUI, providing a modern single-line
+This module defines the Entry widget for Uinex, providing a modern single-line
 text input box with theming, cursor, focus, and keyboard input support.
 
 Features:
@@ -21,7 +21,7 @@ Usage Example:
     text = entry.get()
     ...
 
-Author: Sackey Ezekiel Etrue & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 

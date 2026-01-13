@@ -1,6 +1,6 @@
-"""PygameUI Button Widget Element
+"""Uinex Button Widget Element
 
-This module defines the Button widget for PygameUI, supporting rounded corners,
+This module defines the Button widget for Uinex, supporting rounded corners,
 borders, hover/click/disabled effects, image support, and command binding.
 
 Features:
@@ -19,7 +19,7 @@ Usage Example:
     button.draw()
     ...
 
-Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & PygameUI Contributors
+Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & Uinex Contributors
 License: MIT
 """
 
@@ -351,7 +351,7 @@ if __name__ == "__main__":
     pygame.font.init()
 
     screen = pygame.display.set_mode((480, 280))
-    pygame.display.set_caption("PygameUI Label")
+    pygame.display.set_caption("Uinex Label")
     clock = pygame.time.Clock()
 
     def command(hello):
@@ -375,9 +375,9 @@ if __name__ == "__main__":
 
         pygame.display.flip()
 
-"""PygameUI CheckButton Widget
+"""Uinex CheckButton Widget
 
-This module defines the CheckButton widget for PygameUI, supporting modern theming,
+This module defines the CheckButton widget for Uinex, supporting modern theming,
 rounded corners, hover/active/disabled states, and callback binding.
 
 Features:
@@ -396,7 +396,7 @@ Usage Example:
     check.draw()
     ...
 
-Author: Sackey Ezekiel Etrue & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -538,7 +538,7 @@ class CheckButton(Widget, HoverableMixin, ClickableMixin):
         """
 
 
-"""PygameUI RadioButton Widget
+"""Uinex RadioButton Widget
 
 A RadioButton is a circular button that can be selected or deselected, typically used in groups
 where only one button can be selected at a time. This widget provides a customizable radio button
@@ -555,7 +555,7 @@ Example:
     rb2 = RadioButton(master, text="Option 2", group="group1")
     rb1.on_change = lambda checked: print("rb1 checked:", checked)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -716,11 +716,11 @@ class RadioButton(Widget):
                 _RADIO_GROUPS.setdefault(self.group, []).append(self)
 
 
-"""PygameUI MenuButton Widget
+"""Uinex MenuButton Widget
 
 A MenuButton is a button that displays a dropdown menu when clicked. It is commonly used
 for toolbars, context menus, and navigation bars. The MenuButton supports custom labels,
-menu items, callbacks, and integrates with the PygameUI event and layout system.
+menu items, callbacks, and integrates with the Uinex event and layout system.
 
 Features:
     - Displays a dropdown menu on click
@@ -733,7 +733,7 @@ Example:
     mb = MenuButton(master, text="File", menu_items=[("Open", on_open), ("Save", on_save)])
     mb.on_select = lambda label: print("Selected:", label)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 

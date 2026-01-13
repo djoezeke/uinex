@@ -1,4 +1,4 @@
-"""PygameUI Progressbar Widget
+"""Uinex Progressbar Widget
 
 A Progressbar is a visual indicator of progress for a task, typically displayed as a horizontal or vertical bar
 that fills as progress increases. It supports value bounds, orientation, colors, and optional value display.
@@ -19,7 +19,7 @@ Example:
     pb.step(10) # Increment by 10
     pb.stop()   # Stop indeterminate animation
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -36,7 +36,7 @@ __all__ = ["Progressbar"]
 
 
 class Progressbar(Widget):
-    """A modern, customizable progress bar widget for PygameUI.
+    """A modern, customizable progress bar widget for Uinex.
 
     The Progressbar visually represents the progress of a task. It can operate in two modes:
     - Determinate: Shows the amount completed relative to the total.
@@ -47,7 +47,7 @@ class Progressbar(Widget):
     Examples:
 
         ```python
-        from pygameui import Progressbar
+        from uinex import Progressbar
 
         progress = ttk.Progressbar(
             master=screen,
@@ -416,7 +416,7 @@ class Progressbar(Widget):
     # endregion
 
 
-"""PygameUI Meter Widget
+"""Uinex Meter Widget
 
 A Meter is a visual widget that displays a value as a filled bar or arc, commonly used for meter,
 capacity, or gauge indicators. It supports horizontal, vertical, and circular styles, value bounds,
@@ -434,7 +434,7 @@ Example:
     meter = Meter(master, min_value=0, max_value=100, value=50, style="horizontal")
     meter.set_value(75)
 
-Author: Your Name & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -454,7 +454,7 @@ class Meter(Progressbar):
     Examples:
 
         ```python
-        from pygameui import Meter
+        from uinex import Meter
 
         gauge = ttk.Meter(
             master=screen,
@@ -625,7 +625,7 @@ class Meter(Progressbar):
     # endregion
 
 
-"""PygameUI Floodgauge Widget
+"""Uinex Floodgauge Widget
 
 A Floodgauge is a modern progress indicator that visually fills as progress increases.
 It supports theming, rounded corners, smooth animation, and optional text display.
@@ -642,7 +642,7 @@ Example:
     flood.set(50)
     flood.draw()
 
-Author: Sackey Ezekiel Etrue & PygameUI Contributors
+Author: Sackey Ezekiel Etrue & Uinex Contributors
 License: MIT
 """
 
@@ -662,7 +662,7 @@ class Floodgauge(Progressbar):
     Examples:
 
         ```python
-        from pygameui import Floodgauge
+        from uinex import Floodgauge
 
         gauge = ttk.Floodgauge(
             master=screen,
@@ -795,7 +795,7 @@ if __name__ == "__main__":
     pygame.font.init()
 
     screen = pygame.display.set_mode((480, 280))
-    pygame.display.set_caption("PygameUI Progressbar")
+    pygame.display.set_caption("Uinex Progressbar")
     clock = pygame.time.Clock()
 
     progress = Progressbar(

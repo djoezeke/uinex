@@ -17,34 +17,51 @@
 <details><summary>Table of Contents</summary>
 
 - [📍 Overview](#-overview)
-- [👾 Features](#-features)
 - [🚀 Getting Started](#-getting-started)
-  - [☑️ Prerequisites](#-prerequisites)
   - [⚙️ Installation](#-installation)
-  - [🤖 Usage](#🤖-usage)
-  - [🧪 Testing](#🧪-testing)
-- [📌 Project Roadmap](#-project-roadmap)
+  - [🤖 Example](#-example)
+  - [☑️ Dependencies](#-dependencies)
 - [🔰 Contributing](#-contributing)
-- [🙌 Acknowledgments](#-acknowledgments)
+<!-- - [🙌 Acknowledgments](#-acknowledgments) -->
 - [📃 License](#-license)
 
 </details>
- 
+
 ## 📍 Overview
 
-## 👾 Features
+uinex is a library for building
+
+**Documentation**: <a href="https://github.io/djoezeke/uinex" target="_blank">https://github.io/djoezeke/uinex</a>
+
+**Source Code**: <a href="https://github.com/djoezeke/uinex" target="_blank">https://github.com/djoezeke/uinex</a>
 
 ## 🚀 Getting Started
 
-## ☑️ Prerequisites
-
 ## ⚙️ Installation
 
-## 🤖 Usage
+Install using `pip`:
 
-## 🧪 Testing
+```shell
+$ pip install uinex
+```
 
-## 📌 Project Roadmap
+This will install uinex with minimal dependencies.
+
+```shell
+$ pip install 'uinex[standard]'
+```
+
+## 🤖 Example
+
+## ☑️ Dependencies
+
+**uinex** stands on the shoulders of a giant. Its only internal required dependency is <a href="" class="external-link" target="_blank">Pygame</a>.
+
+By default it also comes with extra standard dependencies:
+
+- <a href="" class="external-link" target="_blank"><code>pygame</code></a>: to show draw widgets.
+
+- <a href="" class="external-link" target="_blank"><code>pillow</code></a>: for image loading.
 
 ## 🔰 Contributing
 
@@ -87,15 +104,7 @@
 </p>
 </details>
 
----
-
-## 🙌 Acknowledgments
-
-### References
-
-### More Reading
-
----
+<!-- ## 🙌 Acknowledgments -->
 
 ## 📃 License
 

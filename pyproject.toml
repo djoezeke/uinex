@@ -6,18 +6,21 @@ build-backend = "uv_build"
 name = "uinex"
 version = "0.1.0"
 description = "Create modern looking GUIs with pygame."
-long_description = "A modern and customizable pygame UI-library."
-long_description_content_type = "text/markdown"
 readme = "README.md"
-requires-python = ">=3.13"
-authors = [
-  { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
-]
+requires-python = ">=3.10"
+authors = [{ name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" }]
 maintainers = [
   { name = "Sackey Ezekiel Etrue", email = "sackeyetrue@gmail.com" },
 ]
-keywords=[
-  "pygame", "uinex", "game ui", "2d", "games", "development", "gui", "library"
+keywords = [
+  "pygame",
+  "uinex",
+  "game ui",
+  "2d",
+  "games",
+  "development",
+  "gui",
+  "library",
 ]
 classifiers = [
   "Intended Audience :: Developers",
@@ -27,17 +30,14 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
   "Topic :: Games/Entertainment",
   "Topic :: Multimedia :: Graphics",
-  "Topic :: Software Development :: Libraries :: Application Frameworks",
-  "Operating System :: Microsoft :: Windows",
+  "Operating System :: OS Independent",
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
-dependencies = [
-    "pillow",
-    "pygame",
-]
+dependencies = ["pillow", "pygame"]
 
 [project.scripts]
 uinex = "uinex.__main__:main"
@@ -50,60 +50,60 @@ Issues = "https://github.com/djoezeke/uinex/issues"
 Source = "https://github.com/djoezeke/uinex"
 
 [project.optional-dependencies]
-standard = []
+standard = ["pillow", "pygame"]
 
 [dependency-groups]
 dev = [
-    # We add uinex[standard] so `uv sync` considers the extras.
-    "uinex[standard]",
-    "ruff",   # format & check
-    "pytest", # testing
-    "twine",  # check dist
+  # We add uinex[standard] so `uv sync` considers the extras.
+  "uinex[standard]",
+  "ruff",            # format & check
+  "pytest",          # testing
+  "twine",           # check dist
 ]
 docs = [
-    "mkdocs==1.6.1",
-    "mkdocs-material==9.6.13",
-    "mkdocstrings-python==1.16.12",
-    "mkdocs-llmstxt==0.2.0",
+  "mkdocs==1.6.1",
+  "mkdocs-material==9.6.13",
+  "mkdocstrings-python==1.16.12",
+  "mkdocs-llmstxt==0.2.0",
 ]
 
 [tool.uv]
-package = true 
+package = true
 required-version = ">=0.8.6"
 default-groups = ["dev", "docs"]
 
 [tool.uv.build-backend]
 module-name = "uinex"
 module-root = ""
-source-include = ["*.md",]
-source-exclude = ["tests/",]
+source-include = ["*.md"]
+source-exclude = ["tests/", "examples/"]
 wheel-exclude = ["*.bin"]
 namespaces = false
 
 # Configure Ruff's linting rules
 [tool.ruff]
-src = ["uinex", "examples"]
+src = ["uinex", "tests", "examples"]
 fix = true
 show-fixes = true
 output-format = "full"
-line-length = 120 # line length
+line-length = 120                    # line length
 
 # Further linting configurations
 [tool.ruff.lint]
 unfixable = ["F841"] # Example: prevent fixing of unused local variables
-  select = [
-    "B",  # flake8-bugbear
-    "E",  # pycodestyle error
-    "F",  # pyflakes
-    "I",  # isort
-    "UP",  # pyupgrade
-    "W",  # pycodestyle warning
+select = [
+  "B",  # flake8-bugbear
+  "E",  # pycodestyle error
+  "F",  # pyflakes
+  "I",  # isort
+  "UP", # pyupgrade
+  "W",  # pycodestyle warning
 ]
 ignore = [
-    "E501",  # ignore line length errors
-    "UP038",  # keep isinstance tuple
+  "E501",  # ignore line length errors
+  "UP038", # keep isinstance tuple
 ]
-  
+
 [tool.ruff.lint.isort]
 force-single-line = true
 order-by-type = false

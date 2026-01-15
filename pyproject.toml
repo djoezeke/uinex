@@ -23,17 +23,16 @@ keywords = [
   "library",
 ]
 classifiers = [
-  "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
   "Typing :: Typed",
   "Topic :: Games/Entertainment",
   "Topic :: Multimedia :: Graphics",
+  "Intended Audience :: Developers",
   "Operating System :: OS Independent",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
@@ -50,7 +49,7 @@ Issues = "https://github.com/djoezeke/uinex/issues"
 Source = "https://github.com/djoezeke/uinex"
 
 [project.optional-dependencies]
-standard = ["pillow", "pygame"]
+standard = ["pillow"]
 
 [dependency-groups]
 dev = [
@@ -108,6 +107,16 @@ ignore = [
 force-single-line = true
 order-by-type = false
 combine-as-imports = true
+split-on-trailing-comma = true
+known-first-party = ["uinex"]
+known-third-party = ["pygame"]
+section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
 
 # Configure Ruff's formatter
 [tool.ruff.format]

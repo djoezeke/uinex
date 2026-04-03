@@ -1,5 +1,6 @@
 import pygame
 import pytest
+
 from uinex.widget.base import Widget
 
 
@@ -146,6 +147,55 @@ def test_widget_geometry(screen):
     assert widget.rect.size == (200, 50)
     widget.draw()
     pygame.display.flip()
+
+
+def test_widget_runtime_style_update(screen):
+    """Test runtime style updates with set_style/reset_style."""
+    widget = Widget(master=screen, width=120, height=40)
+    original_bg = widget.style.get("background")
+
+    widget.set_style(background=(10, 20, 30), border_color=(120, 130, 140))
+    assert widget.style["background"] == (10, 20, 30)
+    assert widget.style["border_color"] == (120, 130, 140)
+
+    widget.reset_style()
+    assert widget.style.get("background") == original_bg
+
+
+def test_widget_set_background_helper(screen):
+    """Test helper for setting background color."""
+    widget = Widget(master=screen, width=120, height=40)
+    widget.set_background("#112233")
+    assert widget.configure("background") == pygame.Color("#112233")
+
+
+def test_widget_configure_theme_and_background(screen):
+    """Test configuring style values via configure API."""
+    widget = Widget(master=screen, width=120, height=40)
+    widget.configure(theme={"background": (1, 2, 3), "border_color": (4, 5, 6)})
+    assert widget.configure("background") == (1, 2, 3)
+    assert widget.configure("bordercolor") == (4, 5, 6)
+
+    widget.configure(background=(11, 12, 13), bordercolor=(21, 22, 23))
+    assert widget.configure("background") == (11, 12, 13)
+    assert widget.configure("bordercolor") == (21, 22, 23)
+
+
+def test_widget_opacity_customization(screen):
+    """Test setting and reading widget opacity."""
+    widget = Widget(master=screen, width=120, height=40)
+    widget.set_opacity(120)
+    assert widget.configure("opacity") == 120
+
+    widget.configure(opacity=200)
+    assert widget.configure("opacity") == 200
+
+
+def test_widget_opacity_out_of_range_raises(screen):
+    """Opacity outside 0-255 should raise ValueError."""
+    widget = Widget(master=screen, width=120, height=40)
+    with pytest.raises(ValueError):
+        widget.set_opacity(500)
 
 
 if __name__ == "__main__":

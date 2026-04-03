@@ -76,7 +76,8 @@ class TestUIEventDispatcher:
         assert any(e.type == pygame.QUIT for e in unconsumed), "QUIT event should be unconsumed"
 
     def test_clear(self, screen):
-        from uinex import Button, Label
+        from uinex import Button
+        from uinex import Label
         from uinex.core.events import UIEventDispatcher
 
         dispatcher = UIEventDispatcher()
@@ -144,7 +145,8 @@ class TestWidgetManager:
         assert len(unconsumed) == 0, "Dialog should consume all events while open"
 
     def test_draw_all_does_not_raise(self, screen):
-        from uinex import Button, Label
+        from uinex import Button
+        from uinex import Label
         from uinex.widget.manager import WidgetManager
 
         mgr = WidgetManager()
@@ -159,7 +161,8 @@ class TestWidgetManager:
 
     def test_higher_layer_drawn_last(self, screen):
         """Verify layer ordering: higher layer widgets are registered on top."""
-        from uinex import Button, Label
+        from uinex import Button
+        from uinex import Label
         from uinex.widget.manager import WidgetManager
 
         mgr = WidgetManager()

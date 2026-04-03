@@ -37,6 +37,8 @@ uinex is a library for building
 
 ## 🚀 Getting Started
 
+Use `uv` for local development and running examples/tests.
+
 ## ⚙️ Installation
 
 Install using `pip`:
@@ -51,7 +53,29 @@ This will install uinex with minimal dependencies.
 $ pip install 'uinex[standard]'
 ```
 
+Install project dependencies for contributors using `uv`:
+
+```shell
+$ uv sync
+```
+
+Run tests with `uv`:
+
+```shell
+$ uv run pytest -q
+```
+
 ## 🤖 Example
+
+Run the included examples with `uv`:
+
+```shell
+$ uv run python -m examples.simple
+$ uv run python -m examples.showcase
+$ uv run python -m examples.customization
+$ uv run python -m examples.theming
+$ uv run python -m examples.ui_samples
+```
 
 ## ☑️ Dependencies
 

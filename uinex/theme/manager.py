@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import pathlib
@@ -131,9 +132,45 @@ _DEFAULT_THEME: dict = {
 
 
 class ThemeManager:
-    theme: dict = dict(_DEFAULT_THEME)  # pre-populated with defaults
+    theme: dict = copy.deepcopy(_DEFAULT_THEME)  # pre-populated with defaults
     _built_in_themes: list[str] = ["blue"]
     _currently_loaded_theme: str | None = None
+
+    @staticmethod
+    def _deep_merge(base: dict, updates: dict) -> dict:
+        """Recursively merge ``updates`` into ``base`` and return a new dict."""
+        merged = copy.deepcopy(base)
+        for key, value in updates.items():
+            if isinstance(value, dict) and isinstance(merged.get(key), dict):
+                merged[key] = ThemeManager._deep_merge(merged[key], value)
+            else:
+                merged[key] = value
+        return merged
+
+    @classmethod
+    def get_default_theme(cls) -> dict:
+        """Return a deep copy of the internal default theme."""
+        return copy.deepcopy(_DEFAULT_THEME)
+
+    @classmethod
+    def reset_theme(cls) -> None:
+        """Reset the currently active theme back to package defaults."""
+        cls.theme = copy.deepcopy(_DEFAULT_THEME)
+        cls._currently_loaded_theme = None
+
+    @classmethod
+    def update_theme(cls, updates: dict) -> None:
+        """Patch the active theme in-place using a deep merge.
+
+        Args:
+            updates: Partial theme dictionary to merge into the active theme.
+
+        Raises:
+            ThemeError: If updates is not a dictionary.
+        """
+        if not isinstance(updates, dict):
+            raise ThemeError("Theme updates must be a dictionary.")
+        cls.theme = cls._deep_merge(cls.theme, updates)
 
     @classmethod
     def load_theme(cls, theme_name_or_path: str):
@@ -167,12 +204,7 @@ class ThemeManager:
             raise ThemeError(f"Invalid JSON in theme file: {theme_name_or_path!r}") from exc
 
         # Deep merge: start fresh from defaults then apply file values
-        merged = dict(_DEFAULT_THEME)
-        for key, value in loaded.items():
-            if isinstance(value, dict) and isinstance(merged.get(key), dict):
-                merged[key] = {**merged[key], **value}
-            else:
-                merged[key] = value
+        merged = cls._deep_merge(_DEFAULT_THEME, loaded)
         cls.theme = merged
 
         # store theme path for saving

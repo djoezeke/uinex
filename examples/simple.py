@@ -1,6 +1,7 @@
 """Simple Widgets Demo"""
 
 import pygame
+
 from uinex import Button
 from uinex import Label
 from uinex import Separator

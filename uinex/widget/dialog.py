@@ -247,6 +247,9 @@ class Dialog(Widget):
         return True
 
     def _perform_update_(self, delta: float, *args, **kwargs) -> None:
-        """Ensure button rects are updated if the dialog rect has moved."""
+        """Rebuild button rects only when the dialog rect has changed position."""
         if self._visible:
-            self._rebuild_button_rects()
+            current_pos = self._rect.topleft
+            if not hasattr(self, "_last_rect_pos") or self._last_rect_pos != current_pos:
+                self._rebuild_button_rects()
+                self._last_rect_pos = current_pos

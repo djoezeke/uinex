@@ -14,6 +14,7 @@ Author: Sackey Ezekiel Etrue (https://github.com/djoezeke) & Uinex Contributors
 License: MIT
 """
 
+import copy
 import time
 from abc import abstractmethod
 from collections.abc import Callable
@@ -78,20 +79,15 @@ class Widget(Place, Grid, Pack):
         pygame.font.init()
         self._cursor: pygame.Cursor = kwargs.pop("cursor", None)
 
-        # Default theme
+        # Default theme – start with class-level defaults then overlay theme file values
         self._theme: dict = {}
-
-        custom_theme = {
-            "background": (0, 120, 215),
-            "disable_color": (0, 90, 180),
-            "border_color": (0, 90, 180),
-        }
-
         self._theme.update(ThemeManager.theme.get(self.__class__.__name__, {}))
-        self._theme.update(custom_theme)
 
-        if kwargs.pop("theme", None) is not None:
-            self._theme.update(kwargs.pop("theme"))
+        # Allow per-instance theme overrides via the ``theme`` kwarg
+        _instance_theme = kwargs.pop("theme", None)
+        if isinstance(_instance_theme, dict):
+            self._theme.update(_instance_theme)
+        self._base_theme: dict = copy.deepcopy(self._theme)
 
         # Command/event handler registry
         self._handler: dict[int, Callable] = {}
@@ -118,8 +114,8 @@ class Widget(Place, Grid, Pack):
 
         # Border color, radius and width
         self._border_position: str = "none"
+        self._bordermode: str = "inside"
 
-        self._border_radius: int = kwargs.pop("border_radius", 0)
         self._border_radius: dict | int = kwargs.pop("border_radius", 0)
         if isinstance(self._border_radius, dict):
             try:
@@ -127,8 +123,6 @@ class Widget(Place, Grid, Pack):
                     self._border_radius[side] = int(self._border_radius.get(side, 0))
             except KeyError:
                 self._border_radius = 0
-        if isinstance(self._border_radius, int):
-            self._border_radius = self._border_radius
 
         self._borderwidth: dict | int = kwargs.pop("borderwidth", 0)
         if isinstance(self._borderwidth, dict):
@@ -137,8 +131,6 @@ class Widget(Place, Grid, Pack):
                     self._borderwidth[side] = int(self._borderwidth.get(side, 0))
             except KeyError:
                 self._borderwidth = 0
-        if isinstance(self._borderwidth, int):
-            self._borderwidth = self._borderwidth
 
         # Shadow support
         self._shadow: bool = kwargs.pop("shadow", False)
@@ -148,22 +140,16 @@ class Widget(Place, Grid, Pack):
         if isinstance(self._shadowcolor, str):
             self._shadowcolor = pygame.Color(self._shadowcolor)
 
-        # Surface and rect setup
-        self._surface = pygame.Surface((width, height), pygame.SRCALPHA, 32)
-        self._rect: pygame.Rect = self._surface.get_rect(topleft=(0, 0))
-        self._blendmode: int = pygame.BLEND_RGBA_ADD
-        self.blit_data = [self._surface, self._rect, None, self._blendmode]
-
         # Widget transforms
         self._angle: int = kwargs.pop("angle", 0)  # Rotation angle (degrees)
         self._flipx: bool = kwargs.pop("flipx", False)
-        self._flipy: bool = kwargs.pop("flip", False)
+        self._flipy: bool = kwargs.pop("flipy", False)
 
         # Master Surface and Rect
         if isinstance(master, pygame.Rect):
             self._master: pygame.Surface = None
             self._master_rect: pygame.Rect = master
-        if isinstance(master, pygame.Surface):
+        elif isinstance(master, pygame.Surface):
             self._master: pygame.Surface = master
             self._master_rect: pygame.Rect = master.get_rect()
         elif isinstance(master, Widget):
@@ -443,23 +429,46 @@ class Widget(Place, Grid, Pack):
             self._draw_tooltip_(surface)
             self._dirty = False
 
-    def handle(self, event: Event, *args, **kwargs) -> None:
+    def handle(self, event: Event, *args, **kwargs) -> bool:
         """
         Handle an event for the widget.
 
+        Returns ``True`` if the event was *consumed* by this widget (i.e. the
+        event was relevant to the widget and should not be propagated further).
+        Returns ``False`` if the event was not relevant.
+
+        This return value is used by :class:`uinex.core.events.UIEventDispatcher`
+        to filter out consumed events before returning the remaining ones to the
+        host application.
+
         Args:
             event (pygame.Event): The event to handle.
+
+        Returns:
+            bool: True if the event was consumed by the widget.
         """
+        if self._disabled:
+            return False
+
+        consumed = False
+
         if event.type == pygame.KEYDOWN and self._focused:
             self.on_keydown(event)
+            consumed = True
         elif event.type == pygame.KEYUP and self._focused:
             self.on_keyup(event)
+            consumed = True
+
         self._handle_event_(event, *args, **kwargs)
-        try:
-            command = self._handler[event.type]
-            command()
-        except KeyError:
-            pass
+
+        if event.type in self._handler:
+            try:
+                self._handler[event.type]()
+                consumed = True
+            except Exception:
+                pass
+
+        return consumed
 
     def update(self, *args, delta: float = 0.0, **kwargs) -> None:
         """
@@ -689,6 +698,30 @@ class Widget(Place, Grid, Pack):
         self._width = width
         self._height = height
 
+    def set_style(self, **style) -> None:
+        """Update this widget's style dictionary at runtime."""
+        if not style:
+            return
+        self._theme.update(style)
+        self._dirty = True
+
+    def reset_style(self) -> None:
+        """Reset runtime style overrides back to initial theme values."""
+        self._theme = copy.deepcopy(self._base_theme)
+        self._dirty = True
+
+    def set_background(self, color: pygame.Color | tuple | str) -> None:
+        """Set the widget background color in the style theme."""
+        self._theme["background"] = self._normalize_color_(color)
+        self._dirty = True
+
+    def set_opacity(self, alpha: int) -> None:
+        """Set surface alpha/opacity between 0 and 255."""
+        if alpha < 0 or alpha > 255:
+            raise ValueError("alpha must be between 0 and 255")
+        self._surface.set_alpha(int(alpha))
+        self._dirty = True
+
     # endregion
 
     # region Private
@@ -704,7 +737,6 @@ class Widget(Place, Grid, Pack):
         self._height = self._kwarg_get(kwargs, "height", self._height)
         self._width = self._kwarg_get(kwargs, "width", self._width)
         self._cursor = self._kwarg_get(kwargs, "cursor", self._cursor)
-        self._theme = self._kwarg_get(kwargs, "cursor", self._theme)
         self._state = self._kwarg_get(kwargs, "state", self._state)
         self._disabled = self._kwarg_get(kwargs, "disabled", self._disabled)
         self._focused = self._kwarg_get(kwargs, "focused", self._focused)
@@ -726,7 +758,7 @@ class Widget(Place, Grid, Pack):
         self._master = self._kwarg_get(kwargs, "master", self._master)
         self._master_rect = self._kwarg_get(kwargs, "master_rect", self._master_rect)
 
-        self._tooltip = self._kwarg_get(kwargs, "shadow", self._shadow)
+        self._tooltip = self._kwarg_get(kwargs, "tooltip", self._tooltip)
         self._show_tooltip = self._kwarg_get(kwargs, "show_tooltip", self._show_tooltip)
         self._tooltip_delay = self._kwarg_get(kwargs, "tooltip_delay", self._tooltip_delay)
         self._tooltip_timer = self._kwarg_get(kwargs, "tooltip_timer", self._tooltip_timer)
@@ -735,6 +767,22 @@ class Widget(Place, Grid, Pack):
         self._borderwidth = self._kwarg_get(kwargs, "borderwidth", self._borderwidth)
         self._bordermode = self._kwarg_get(kwargs, "bordermode", self._bordermode)
         self._border_position = self._kwarg_get(kwargs, "border_position", self._border_position)
+
+        theme_update = self._kwarg_get(kwargs, "theme", None)
+        if isinstance(theme_update, dict):
+            self._theme.update(theme_update)
+
+        background = self._kwarg_get(kwargs, "background", None)
+        if background is not None:
+            self._theme["background"] = self._normalize_color_(background)
+
+        bordercolor = self._kwarg_get(kwargs, "bordercolor", None)
+        if bordercolor is not None:
+            self._theme["border_color"] = self._normalize_color_(bordercolor)
+
+        opacity = self._kwarg_get(kwargs, "opacity", None)
+        if opacity is not None:
+            self.set_opacity(int(opacity))
 
         # background
         # disable_color
@@ -809,13 +857,15 @@ class Widget(Place, Grid, Pack):
             return self._border_position
 
         if attribute == "background":
-            return
+            return self._theme.get("background")
         if attribute == "disable_color":
             return
         if attribute == "shadowcolor":
-            return
+            return self._shadowcolor
         if attribute == "bordercolor":
-            return
+            return self._theme.get("border_color")
+        if attribute == "opacity":
+            return self._surface.get_alpha()
 
         return None
 
@@ -929,8 +979,8 @@ class Widget(Place, Grid, Pack):
                             for side in ["left", "right", "top", "bottom"]:
                                 value[side] = int(value.get(side))
                             return value
-                        except KeyError:
-                            raise Exception("Invalid sides")
+                        except KeyError as exc:
+                            raise Exception("Invalid sides") from exc
                     raise Exception(f"Value Cant be Of type {value_type}")
                 if value_type == "angle":
                     if isinstance(value, int):
@@ -939,6 +989,12 @@ class Widget(Place, Grid, Pack):
                         raise Exception(f"Angle must range 0-360 not {value}")
                     raise Exception(f"Value Cant be Of type {value_type}")
 
+        return value
+
+    def _normalize_color_(self, value):
+        """Normalize string colors into pygame.Color while preserving tuples."""
+        if isinstance(value, str):
+            return pygame.Color(value)
         return value
 
     def rotate(self, angle: int) -> "Widget":

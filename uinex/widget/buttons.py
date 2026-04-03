@@ -101,26 +101,34 @@ class Button(Widget, HoverableMixin, DoubleClickMixin, ClickableMixin):
         self._disabled: bool = disabled
 
         self._text: str = text
-        self._wraplenght: bool = kwargs.pop("wraplenght", True)
-        self._underline: bool = kwargs.pop("underline", False)
+        self._wraplenght: bool = True
+        self._underline: bool = False
         self._image: pygame.Surface = image
 
-        # Font
+        # Font – prefer explicit argument, then fall back to theme, then system default
+        _font_cfg = ThemeManager.theme.get("font", ThemeManager.theme.get("Font", {}))
         font_: pygame.Font = pygame.font.SysFont(
-            ThemeManager.theme["Font"]["family"], ThemeManager.theme["font"]["size"]
+            _font_cfg.get("family", "Arial"), _font_cfg.get("size", 14)
         )
         self._font: pygame.font.Font = font_ if font is None else font
 
-        custom_theme = {
-            "background": (0, 120, 215),
-            "text_color": (255, 255, 255),
-            "hover_color": (0, 90, 180),
-            "select_color": (0, 90, 180),
-            "disable_color": (0, 90, 180),
-            "border_color": (0, 90, 180),
-        }
-        self._theme.update(ThemeManager.theme.get(self.__class__.__name__, {}))
-        self._theme.update(custom_theme)
+        # Apply per-instance colour overrides (kwargs take precedence over theme)
+        if background is not None:
+            self._theme["background"] = background
+        if text_color is not None:
+            self._theme["text_color"] = text_color
+        if hovercolor is not None:
+            self._theme["hover_color"] = hovercolor
+        if border_color is not None:
+            self._theme["border_color"] = border_color
+
+        # Ensure mandatory keys exist
+        self._theme.setdefault("background", (0, 120, 215))
+        self._theme.setdefault("text_color", (255, 255, 255))
+        self._theme.setdefault("hover_color", (0, 90, 180))
+        self._theme.setdefault("select_color", (0, 70, 140))
+        self._theme.setdefault("disable_color", (90, 90, 100))
+        self._theme.setdefault("border_color", (0, 90, 180))
 
         DoubleClickMixin.__init__(self)
         ClickableMixin.__init__(self)

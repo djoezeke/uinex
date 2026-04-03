@@ -30,7 +30,7 @@ from typing import Any
 
 import pygame
 
-from uinex.core.themes import ThemeManager
+from uinex.theme.manager import ThemeManager
 from uinex.utils.mixins import ClickableMixin
 from uinex.utils.mixins import HoverableMixin
 from uinex.widget.base import Widget
@@ -84,7 +84,8 @@ class Entry(Widget, HoverableMixin, ClickableMixin):
         self._blink = True
         self._blink_timer = 0
 
-        font_ = pygame.font.SysFont(ThemeManager.theme["font"]["family"], ThemeManager.theme["font"]["size"])
+        _font_cfg = ThemeManager.theme.get("font", ThemeManager.theme.get("Font", {}))
+        font_ = pygame.font.SysFont(_font_cfg.get("family", "Arial"), _font_cfg.get("size", 14))
         self._font = font or font_
 
         Widget.__init__(self, master, width, height, **kwargs)

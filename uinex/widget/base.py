@@ -78,20 +78,14 @@ class Widget(Place, Grid, Pack):
         pygame.font.init()
         self._cursor: pygame.Cursor = kwargs.pop("cursor", None)
 
-        # Default theme
+        # Default theme – start with class-level defaults then overlay theme file values
         self._theme: dict = {}
-
-        custom_theme = {
-            "background": (0, 120, 215),
-            "disable_color": (0, 90, 180),
-            "border_color": (0, 90, 180),
-        }
-
         self._theme.update(ThemeManager.theme.get(self.__class__.__name__, {}))
-        self._theme.update(custom_theme)
 
-        if kwargs.pop("theme", None) is not None:
-            self._theme.update(kwargs.pop("theme"))
+        # Allow per-instance theme overrides via the ``theme`` kwarg
+        _instance_theme = kwargs.pop("theme", None)
+        if isinstance(_instance_theme, dict):
+            self._theme.update(_instance_theme)
 
         # Command/event handler registry
         self._handler: dict[int, Callable] = {}
@@ -118,8 +112,8 @@ class Widget(Place, Grid, Pack):
 
         # Border color, radius and width
         self._border_position: str = "none"
+        self._bordermode: str = "inside"
 
-        self._border_radius: int = kwargs.pop("border_radius", 0)
         self._border_radius: dict | int = kwargs.pop("border_radius", 0)
         if isinstance(self._border_radius, dict):
             try:
@@ -127,8 +121,6 @@ class Widget(Place, Grid, Pack):
                     self._border_radius[side] = int(self._border_radius.get(side, 0))
             except KeyError:
                 self._border_radius = 0
-        if isinstance(self._border_radius, int):
-            self._border_radius = self._border_radius
 
         self._borderwidth: dict | int = kwargs.pop("borderwidth", 0)
         if isinstance(self._borderwidth, dict):
@@ -137,8 +129,6 @@ class Widget(Place, Grid, Pack):
                     self._borderwidth[side] = int(self._borderwidth.get(side, 0))
             except KeyError:
                 self._borderwidth = 0
-        if isinstance(self._borderwidth, int):
-            self._borderwidth = self._borderwidth
 
         # Shadow support
         self._shadow: bool = kwargs.pop("shadow", False)
@@ -148,22 +138,16 @@ class Widget(Place, Grid, Pack):
         if isinstance(self._shadowcolor, str):
             self._shadowcolor = pygame.Color(self._shadowcolor)
 
-        # Surface and rect setup
-        self._surface = pygame.Surface((width, height), pygame.SRCALPHA, 32)
-        self._rect: pygame.Rect = self._surface.get_rect(topleft=(0, 0))
-        self._blendmode: int = pygame.BLEND_RGBA_ADD
-        self.blit_data = [self._surface, self._rect, None, self._blendmode]
-
         # Widget transforms
         self._angle: int = kwargs.pop("angle", 0)  # Rotation angle (degrees)
         self._flipx: bool = kwargs.pop("flipx", False)
-        self._flipy: bool = kwargs.pop("flip", False)
+        self._flipy: bool = kwargs.pop("flipy", False)
 
         # Master Surface and Rect
         if isinstance(master, pygame.Rect):
             self._master: pygame.Surface = None
             self._master_rect: pygame.Rect = master
-        if isinstance(master, pygame.Surface):
+        elif isinstance(master, pygame.Surface):
             self._master: pygame.Surface = master
             self._master_rect: pygame.Rect = master.get_rect()
         elif isinstance(master, Widget):
@@ -443,23 +427,46 @@ class Widget(Place, Grid, Pack):
             self._draw_tooltip_(surface)
             self._dirty = False
 
-    def handle(self, event: Event, *args, **kwargs) -> None:
+    def handle(self, event: Event, *args, **kwargs) -> bool:
         """
         Handle an event for the widget.
 
+        Returns ``True`` if the event was *consumed* by this widget (i.e. the
+        event was relevant to the widget and should not be propagated further).
+        Returns ``False`` if the event was not relevant.
+
+        This return value is used by :class:`uinex.core.events.UIEventDispatcher`
+        to filter out consumed events before returning the remaining ones to the
+        host application.
+
         Args:
             event (pygame.Event): The event to handle.
+
+        Returns:
+            bool: True if the event was consumed by the widget.
         """
+        if self._disabled:
+            return False
+
+        consumed = False
+
         if event.type == pygame.KEYDOWN and self._focused:
             self.on_keydown(event)
+            consumed = True
         elif event.type == pygame.KEYUP and self._focused:
             self.on_keyup(event)
+            consumed = True
+
         self._handle_event_(event, *args, **kwargs)
-        try:
-            command = self._handler[event.type]
-            command()
-        except KeyError:
-            pass
+
+        if event.type in self._handler:
+            try:
+                self._handler[event.type]()
+                consumed = True
+            except Exception:
+                pass
+
+        return consumed
 
     def update(self, *args, delta: float = 0.0, **kwargs) -> None:
         """
@@ -704,7 +711,6 @@ class Widget(Place, Grid, Pack):
         self._height = self._kwarg_get(kwargs, "height", self._height)
         self._width = self._kwarg_get(kwargs, "width", self._width)
         self._cursor = self._kwarg_get(kwargs, "cursor", self._cursor)
-        self._theme = self._kwarg_get(kwargs, "cursor", self._theme)
         self._state = self._kwarg_get(kwargs, "state", self._state)
         self._disabled = self._kwarg_get(kwargs, "disabled", self._disabled)
         self._focused = self._kwarg_get(kwargs, "focused", self._focused)
@@ -726,7 +732,7 @@ class Widget(Place, Grid, Pack):
         self._master = self._kwarg_get(kwargs, "master", self._master)
         self._master_rect = self._kwarg_get(kwargs, "master_rect", self._master_rect)
 
-        self._tooltip = self._kwarg_get(kwargs, "shadow", self._shadow)
+        self._tooltip = self._kwarg_get(kwargs, "tooltip", self._tooltip)
         self._show_tooltip = self._kwarg_get(kwargs, "show_tooltip", self._show_tooltip)
         self._tooltip_delay = self._kwarg_get(kwargs, "tooltip_delay", self._tooltip_delay)
         self._tooltip_timer = self._kwarg_get(kwargs, "tooltip_timer", self._tooltip_timer)

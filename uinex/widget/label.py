@@ -21,7 +21,7 @@ from typing import Any
 
 import pygame
 
-from uinex.core.themes import ThemeManager
+from uinex.theme.manager import ThemeManager
 from uinex.utils.mixins import HoverableMixin
 from uinex.widget.base import Widget
 
@@ -87,26 +87,29 @@ class Label(Widget, HoverableMixin):
         """
         Widget.__init__(self, master, width, height, **kwargs)
 
-        custom_theme = {
-            "background": (0, 120, 215),
-            "disable_color": (0, 90, 180),
-            # Label
-            "text_color": (255, 255, 255),
-            "hover_text_color": (0, 90, 180),
-            "disable_text_color": (0, 90, 180),
-            "hover_color": (0, 120, 215),  # background
-        }
+        # Apply per-instance colour overrides
+        if background is not None:
+            self._theme["background"] = background
+        if foreground is not None:
+            self._theme["text_color"] = foreground
 
-        self._theme.update(custom_theme)
+        # Ensure mandatory keys exist
+        self._theme.setdefault("background", (30, 30, 46))
+        self._theme.setdefault("text_color", (220, 220, 220))
+        self._theme.setdefault("hover_text_color", (255, 255, 255))
+        self._theme.setdefault("disable_text_color", (140, 140, 150))
+        self._theme.setdefault("hover_color", (50, 50, 70))
+        self._theme.setdefault("border_color", (100, 100, 120))
 
         # Text
         self._text: str = text
-        self._wraplength: bool = kwargs.pop("wraplength", True)
-        self._underline: bool = kwargs.pop("underline", False)
+        self._wraplength: bool = True
+        self._underline: bool = False
 
         # Font
+        _font_cfg = ThemeManager.theme.get("font", ThemeManager.theme.get("Font", {}))
         font_: pygame.Font = pygame.font.SysFont(
-            ThemeManager.theme["font"]["family"], ThemeManager.theme["font"]["size"]
+            _font_cfg.get("family", "Arial"), _font_cfg.get("size", 14)
         )
         self._font: pygame.Font = font_ if font is None else font
 
@@ -117,13 +120,22 @@ class Label(Widget, HoverableMixin):
 
     # region Public
 
+    @property
+    def text(self) -> str:
+        """Get or set the label text."""
+        return self._text
+
+    @text.setter
+    def text(self, value: str) -> None:
+        self._text = value
+
     def get_text(self) -> str:
         """Get the current label text.
 
         Returns:
             str: The label's text.
         """
-        return self.configure(config="text")
+        return self._text
 
     def set_text(self, new_text: str) -> None:
         """Set the label text.
@@ -131,7 +143,7 @@ class Label(Widget, HoverableMixin):
         Args:
             new_text (str): The new text to display.
         """
-        self.configure(config=None, **{"text": new_text})
+        self._text = new_text
 
     # endregion
 
@@ -224,32 +236,40 @@ class Label(Widget, HoverableMixin):
 
         # Draw Label Background
         pygame.draw.rect(
-            self._master,
+            surface,
             background,
             self._rect,
             border_radius=self._border_radius,
         )
 
         # Draw Label Border
-        pygame.draw.rect(
-            self._master,
-            self._theme["border_color"],
-            self._rect,
-            self._borderwidth,
-            self._border_radius,
-        )
+        if self._borderwidth > 0:
+            pygame.draw.rect(
+                surface,
+                self._theme.get("border_color", (100, 100, 120)),
+                self._rect,
+                self._borderwidth,
+                self._border_radius,
+            )
 
-        # Draw Label Text
-        btn_text = self._font.render(self._text, True, foreground)
-        btn_text_rect = btn_text.get_rect(center=self._rect.center)
-        self._master.blit(btn_text, btn_text_rect)
-
-        # Draw image if provided (centered left of text)
+        # Draw image if provided (left of text)
+        text_offset_x = 0
         if self._image:
             img_rect = self._image.get_rect()
             img_rect.centery = self._rect.centery
-            img_rect.left = self._rect.left + 8  # Padding from left
-            self._master.blit(self._image, img_rect)
+            img_rect.left = self._rect.left + 8
+            surface.blit(self._image, img_rect)
+            text_offset_x = img_rect.width + 8
+
+        # Draw Label Text
+        btn_text = self._font.render(self._text, True, foreground)
+        if self._image:
+            btn_text_rect = btn_text.get_rect()
+            btn_text_rect.centery = self._rect.centery
+            btn_text_rect.left = self._rect.left + text_offset_x
+        else:
+            btn_text_rect = btn_text.get_rect(center=self._rect.center)
+        surface.blit(btn_text, btn_text_rect)
 
     def _handle_event_(self, event: pygame.event.Event, *args, **kwargs) -> None:
         """Handle an event for the widget.
